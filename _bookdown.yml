@@ -1,2 +1,3 @@
 book_filename: "AnalisisMultivarianteComunidad"
 chapter_name: "Capítulo "
+output_dir: "docs"
