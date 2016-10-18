@@ -1,0 +1,1163 @@
+\documentclass[]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Análisis multivariante de la comunidad},
+            pdfauthor={Carlos Iván Espinosa},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{{#1}}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{{#1}}}
+\newcommand{\ImportTok}[1]{{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{{#1}}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{{#1}}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{{#1}}}}
+\newcommand{\BuiltInTok}[1]{{#1}}
+\newcommand{\ExtensionTok}[1]{{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{{#1}}}
+\newcommand{\RegionMarkerTok}[1]{{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{{#1}}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{{#1}}}}
+\newcommand{\NormalTok}[1]{{#1}}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Análisis multivariante de la comunidad}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Carlos Iván Espinosa}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{Octubre 2016}
+
+\usepackage{booktabs}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\chapter*{Prefacio}\label{prefacio}
+\addcontentsline{toc}{chapter}{Prefacio}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+La comunidad biológica se refiere a una agrupación de poblaciones de
+especies que se presentan juntas en el espacio y el tiempo (Begon et al.
+1999). Este concepto plantea que las comunidades tienen unos límites en
+el espacio y el tiempo, y que estos límites están dados por la
+distribución de las poblaciones. Sin embargo, la distribución de las
+poblaciones no es homogénea y cada población responde diferente en el
+espacio y el tiempo.
+
+De esta forma la caracterización de una comunidad biológica se
+constituye en un reto ya que implica poder rescatar los efectos que se
+dan a varios niveles en la comunidad. El definir por ejemplo ¿Dónde
+inicia y termina una comunidad? o ¿Cómo difieren las comunidades entre
+localidades? o ¿Cómo la comunidad responde a las condiciones ambientales
+o disturbios? representan algunas de las principales preguntas que
+necesitamos responder. Una de las formas de responder estas preguntas
+puede ser intentar cuantificar las similitudes entre localidades.
+
+\chapter*{Objetivos}\label{objetivos}
+\addcontentsline{toc}{chapter}{Objetivos}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\begin{itemize}
+\item
+  Comprender las bases teóricas para el cálculo de similitudes de la
+  estructura de la comunidad entre localidades.
+\item
+  Utilizar herramientas de análisis para calcular índices de similitud y
+  distancias entre comunidades.
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{lagar.jpg}
+\caption{Stenocercus iridicens}
+\end{figure}
+
+\chapter{Medidas de similitud}\label{medidas-de-similitud}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+La caracterización de una comunidad biológica presenta varios retos a
+los ecólogos. ¿Dónde inicia y termina una comunidad? ¿Cómo difieren las
+comunidades entre localidades? ¿Cómo la comunidad responde a las
+condiciones ambientales o disturbios? ¿Cómo se mantiene la diversidad en
+un área determinada? son algunas de las temáticas con mayor desarrollo
+científico dentro de la ecología de comunidades. En el presente capítulo
+se introduce a los estudiantes en los conceptos que los ecólogos
+utilizan para comparar comunidades y se presenta una guía de algunos de
+los análisis básicos de análisis de la estructura de las comunidades.
+
+\section{Medidas de abundancia}\label{medidas-de-abundancia}
+
+\begin{quote}
+``La abundancia se refiere al número de individuos de una especie en una
+determinada área''
+
+--- (Smith and Smith 2010)
+\end{quote}
+
+Cuando hablamos de la composición de especies de una comunidad nos
+referimos al conjunto de especies que habitan una determinada localidad.
+Típicamente, esto incluye cierto grado de abundancia de cada especie,
+pero puede también ser simplemente un listado de especies en esa
+localidad, donde se registra la presencia o ausencia de cada especie.
+Ahora, imaginemos que tenemos cuatro localidades (A, B, C, D) donde
+recogemos los datos de densidad de dos especies; \emph{Tabebuia
+billbergii} y \emph{Geofroea spinosa}, especies características de
+bosques secos tropicales. Podemos introducir datos hipotéticos de
+abundancia para cada especie en cada una de las localidades.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dens <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{T.bil =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{), }\DataTypeTok{G.spi =} \KeywordTok{c}\NormalTok{(}\DecValTok{21}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{5}\NormalTok{)) }
+\KeywordTok{row.names}\NormalTok{(dens) <-}\StringTok{ }\NormalTok{LETTERS[}\DecValTok{1}\NormalTok{:}\DecValTok{4}\NormalTok{]}
+\NormalTok{dens}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   T.bil G.spi
+## A     1    21
+## B     1     8
+## C     2    13
+## D     3     5
+\end{verbatim}
+
+Generamos un gráfico para ver cuánto se parece cada sitio (Figura
+\ref{fig:NMDS})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{mgp=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\FloatTok{0.3}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{tcl=} \NormalTok{-}\FloatTok{0.2}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(dens, }\DataTypeTok{type =} \StringTok{"n"}\NormalTok{, }\DataTypeTok{cex.axis=}\FloatTok{0.8}\NormalTok{) }
+\KeywordTok{text}\NormalTok{(dens, }\KeywordTok{row.names}\NormalTok{(dens), }\DataTypeTok{col =}\StringTok{"blue"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/NMDS-1.pdf}
+\caption{\label{fig:NMDS}Distancias de cuatro localidades hipotéticas}
+\end{figure}
+
+En la Figura \ref{fig:NMDS} vemos que la composición de especies en el
+sitio A es diferente de la composición del sitio D. Es decir, la
+distancia entre el sitio A y D es mayor que entre los otros sitios. Lo
+siguiente que nos deberíamos preguntar es; ¿qué tan distantes están los
+dos sitios? Claramente, esto depende de la escala de medición (los
+valores de los ejes), y sobre cómo medimos la distancia a través del
+espacio multivariado \citep{Stevens2009}.
+
+Estas diferencias entre sitios son dependientes de la abundancia de cada
+especie. En el caso de \emph{G. spinosa} su eje varía entre 5 y 21,
+mientras que para \emph{T. billbergii} varía entre 1 y 3. Una forma de
+corregir esta distorsión es calcular la densidad relativa de cada
+especie, de esta forma cada especie variará entre 0 y 1
+\citep{Stevens2009}. Para ello dividimos la abundancia de cada especie
+para la suma total de los individuos de las especies en esa muestra.
+
+\begin{quote}
+``La distancia se refiere a la diferencia en un espacio multidimensional
+(dado por las especies) entre dos comunidades. Esta distancia puede ser
+medida por múltiples vías''
+\end{quote}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dens[}\DecValTok{1}\NormalTok{, ]/}\KeywordTok{sum}\NormalTok{(dens[}\DecValTok{1}\NormalTok{, ])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        T.bil     G.spi
+## A 0.04545455 0.9545455
+\end{verbatim}
+
+Este resultado nos muestra que el sitio A esta constituido en un 95\%
+por \emph{G. spinosa}, mientras que \emph{T. billbergii} aporta
+únicamente el 5\%. Cuando nos referimos a densidad relativa hablamos de
+la densidad de una especie con referencia a algo, en el caso anterior
+con referencia a otras especies en el mismo sitio, pero también
+podríamos calcular en relación a otros sitios la misma especie.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dens[,}\DecValTok{1}\NormalTok{]/}\KeywordTok{sum}\NormalTok{(dens[,}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1428571 0.1428571 0.2857143 0.4285714
+\end{verbatim}
+
+Ahora podemos ver cómo \emph{T. billbergii} varía en su abundancia en
+los cuatro sitios. El sitio A y B tienen el 14\% de individuos mientras
+que el D tiene el 42\% de los individuos de esta especie.
+
+Ya sea que nuestras medidas de abundancia son absoluta o relativa, nos
+interesa conocer cuan diferente es la comunidad de una muestra (o sitio)
+con relación a la otra. En el ejemplo ha sido fácil entender la
+diferencia entre las dos comunidades debido a que teníamos únicamente
+dos especies, pero con más de tres especies es complicado observar estas
+diferencias gráficamente. Tal vez la forma más sencilla de describir la
+diferencia entre los sitios es calcular las \emph{distancias} entre cada
+par de sitios.
+
+\section{Distancias entre sitios}\label{distancias-entre-sitios}
+
+La \emph{distancia} entre dos muestras está dada por la diferencia entre
+la abundancia y la composición de especies, como lo hemos visto esto
+genera una distancia, en el caso del ejemplo la comunidad A esta más
+alejada de la comunidad D que de las otras dos.
+
+Existen muchas formas de poder calcular las distancias entre estos
+puntos una de las más sencillas es la distancia \emph{Euclidiana}. La
+distancia euclidiana entre dos sitios es simplemente la longitud del
+vector que conecta los sitios y la podemos obtener como
+\(\sqrt{x^2+y^2}\), donde \emph{``x''} y \emph{``y''} son las
+coordenadas (x, y) de distancia entre un par de sitios.
+
+En nuestro caso si queremos comparar B y C tenemos que la distancia en
+el eje \emph{x} es la diferencia de la abundancia de \emph{T. bilbergii}
+entre el sitio B y C.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\NormalTok{dens[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{] -}\StringTok{ }\NormalTok{dens[}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Mientras que la distancia en el eje \emph{y} es la diferencia en la
+abundancia de \emph{G. spinosa} entre el sitio B y C.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y <-}\StringTok{ }\NormalTok{dens[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{] -}\StringTok{ }\NormalTok{dens[}\DecValTok{3}\NormalTok{, }\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+Ahora obtenemos las distancias entre los dos sitios
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sqrt}\NormalTok{(x^}\DecValTok{2} \NormalTok{+}\StringTok{ }\NormalTok{y^}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.09902
+\end{verbatim}
+
+Pero como en \emph{R} todo es sencillo podemos utilizar la función
+\emph{dist}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dist}\NormalTok{(dens)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           A         B         C
+## B 13.000000                    
+## C  8.062258  5.099020          
+## D 16.124515  3.605551  8.062258
+\end{verbatim}
+
+Si bien este cálculo es sencillo con dos especies, si tenemos que
+calcular la distancia para una comunidad con más de tres especies los
+cálculos son tediosos y largos. Para calcular la distancia
+\emph{Euclidiana} entre pares de sitios con \emph{R} especies utilizamos
+la siguiente ecuación:
+
+\begin{quote}
+\[D_E = \sqrt{\sum_{i=l}^R (x_{ai} - x_{bi})^2}\] Distancia Euclidiana
+\end{quote}
+
+Existen otras formas de medir distancias entre dos localidades. En
+ecología una de las distancias más utilizada es la distancia de
+\emph{Bray-Curtis}, conocida también como \emph{Sorensen}. Esta
+distancia es calculada como:
+
+\begin{quote}
+\[D_{BC} = \sum_{i=l}^R \frac{(x_{ai} - x_{bi})}{(x_{ai} + x_{bi})}\]
+Distancia de Bray-Curtis
+\end{quote}
+
+La distancia \emph{Bray-Curtis} no es más que la diferencia total en la
+abundancia de especies entre dos sitios, dividido para la abundancia
+total en cada sitio. La distancia Bray-Curtis tiende a resultar más
+intuitiva debido a que las especies comunes y raras tienen pesos
+relativamente similares, mientras que la distancia euclidia depende en
+mayor medida de las especies más abundantes. Esto sucede porque las
+distancias euclidianas se basan en diferencias al cuadrado, mientras que
+Bray-Curtis utiliza diferencias absolutas. El elevar un número al
+cuadrado siempre amplifica la importancia de los valores más grandes. En
+la figura \ref{fig:bray} se compara gráficos basados en distancias
+euclidianas y Bray-Curtis de los mismos datos.
+
+Como se había comentado es virtualmente imposible representar una
+distancia en más de tres dimensiones (cada especie es una dimensión).
+Una forma sencilla de mostrar distancias para tres o más especies es
+crear un gráfico de dos dimensiones, intentando organizar todos los
+sitios para que las distancias sean aproximadamente las correctas. Está
+claro que esto es una aproximación nunca estas serán exactas. Una
+técnica que intenta crear un arreglo aproximado es escalamiento
+multidimensional no métrico (NMDS). Vamos a calcular las distancias para
+nuestra comunidad, primero vamos a añadir dos especies más a nuestra
+comunidad, \emph{Ceiba trichistandra} y \emph{Colicodendron scabridum}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dens$C.tri<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{11}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{dens$C.sca<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+La función de escalamiento multidimensional no-métrico está en el
+paquete \texttt{vegan}. Aquí mostramos las distancias euclidianas entre
+sitios (Figura \ref{fig:bray}a) y las distancias de Bray-Curtis (Figura
+\ref{fig:bray}b).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(vegan) }
+
+\CommentTok{#Distancia Euclidiana}
+\NormalTok{mdsE <-}\StringTok{ }\KeywordTok{metaMDS}\NormalTok{(dens, }\DataTypeTok{distance =} \StringTok{"euc"}\NormalTok{, }\DataTypeTok{autotransform =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{trace =} \DecValTok{0}\NormalTok{) }
+\CommentTok{#Distancia de Bray-Curtis}
+\NormalTok{mdsB <-}\StringTok{ }\KeywordTok{metaMDS}\NormalTok{(dens, }\DataTypeTok{distance =} \StringTok{"bray"}\NormalTok{, }\DataTypeTok{autotransform =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{trace =} \DecValTok{0}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfcol=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{oma=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+    \DataTypeTok{mgp=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\FloatTok{0.3}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{tcl=} \NormalTok{-}\FloatTok{0.2}\NormalTok{)}
+
+\KeywordTok{plot}\NormalTok{(mdsE, }\DataTypeTok{display =} \StringTok{"sites"}\NormalTok{, }
+     \DataTypeTok{type =} \StringTok{"text"}\NormalTok{,}\DataTypeTok{main=}\StringTok{"a)Euclidiana"}\NormalTok{, }
+     \DataTypeTok{cex.axis=} \FloatTok{0.7}\NormalTok{, }\DataTypeTok{cex.main=}\FloatTok{0.75}\NormalTok{, }\DataTypeTok{cex.lab=}\FloatTok{0.7}\NormalTok{)}
+
+\KeywordTok{plot}\NormalTok{(mdsB, }\DataTypeTok{display =} \StringTok{"sites"}\NormalTok{, }\DataTypeTok{type =} \StringTok{"text"}\NormalTok{, }
+     \DataTypeTok{main=}\StringTok{"b)Bray-Curtis"}\NormalTok{, }
+     \DataTypeTok{cex.axis=} \FloatTok{0.7}\NormalTok{, }\DataTypeTok{cex.main=}\FloatTok{0.75}\NormalTok{, }\DataTypeTok{cex.lab=}\FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/bray-1.pdf}
+\caption{\label{fig:bray}Arreglo de las parcelas en distancias
+multidimensionales no métricas (NMDS). Estas dos figuras muestran los
+mismos datos en bruto, pero las distancias euclidianas tienden a
+enfatizar las diferencias debidas a las especies más abundantes,
+mientras que Bray-Curtis no lo hace.}
+\end{figure}
+
+\section{Similitud}\label{similitud}
+
+Ahora que sabemos cuan distantes son los diferentes sitios, muchas veces
+nos podría interesar cuan similares son cada uno de los sitios a
+continuación se describen dos medidas de similitud; \emph{Porcentaje de
+Similitud} e \emph{Índice de Sorensen}.
+
+El \emph{porcentaje de similitud} puede ser simplemente la suma de los
+porcentajes mínimos de cada especie en la comunidad. Lo primero que
+debemos hacer es convertir la abundancia de cada especie a su abundancia
+relativa dentro de cada sitio. Para ello dividimos la abundancia de cada
+especie por la suma de las abundancias en cada sitio.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dens.RA <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{apply}\NormalTok{(dens, }\DecValTok{1}\NormalTok{, function(sp.abun) sp.abun/}\KeywordTok{sum}\NormalTok{(sp.abun)))}
+\NormalTok{dens.RA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        T.bil     G.spi     C.tri     C.sca
+## A 0.02040816 0.4285714 0.2244898 0.3265306
+## B 0.08333333 0.6666667 0.2500000 0.0000000
+## C 0.06451613 0.4193548 0.2258065 0.2903226
+## D 0.17647059 0.2941176 0.2941176 0.2352941
+\end{verbatim}
+
+El siguiente paso para comparar entre sitios, es encontrar el valor
+mínimo para cada especie entre los sitios que debemos comparar. Vamos a
+comparar los sitios A y B, para esto utilizamos la función
+\texttt{aplly}, la cual nos permite encontrar el valor mínimo entre las
+filas 1 y 2 (sitio A y B respectivamente). Para \emph{T. billbergi} en
+el sitio A la abundancia relativa es 0.02 que es menor a la abundancia
+en el sitio B que es de 0.08.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mins <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(dens.RA[}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{, ], }\DecValTok{2}\NormalTok{, min)}
+\NormalTok{mins}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      T.bil      G.spi      C.tri      C.sca 
+## 0.02040816 0.42857143 0.22448980 0.00000000
+\end{verbatim}
+
+Finalmente para conocer el porcentaje de similitud entre los dos sitios
+sumamos estos valores y multiplicamos por 100.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(mins)*}\DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 67.34694
+\end{verbatim}
+
+Esto significa que la comunidad A y B tienen un porcentaje de similitud
+del 67\%.
+
+El índice de Sorensen es la segunda medida de similitud que vamos a
+estudiar, este índice es medido como:
+
+\begin{quote}
+\[S_s= \frac{(2C)}{(A+B)}\] Índice de Sorensen
+\end{quote}
+
+Donde \emph{C} es el número de especies en común entre los dos sitios, y
+\emph{A} y \emph{B} son el número de especies en cada sitio. Esto es
+equivalente a dividir las especies compartidas por la riqueza media.
+
+Para calcular el índice de Sorensen entre los sitios A y B necesitamos
+definir el número de especies compartidas y luego la riqueza de cada uno
+de los dos sitios.
+
+Definimos si alguna de las especies en uno de los sitios la abundancia
+no es igual a cero, eso nos dirá en qué casos se comparten especies.
+Finalmente, sumamos todas las especies que su abundancia es mayor a
+cero.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{comp<-}\StringTok{ }\KeywordTok{apply}\NormalTok{(dens[}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{, ], }\DecValTok{2}\NormalTok{, function(abuns) }\KeywordTok{all}\NormalTok{(abuns !=}\StringTok{ }\DecValTok{0}\NormalTok{))}
+\NormalTok{comp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## T.bil G.spi C.tri C.sca 
+##  TRUE  TRUE  TRUE FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Rs <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(dens[}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{, ], }\DecValTok{1}\NormalTok{, function(x) }\KeywordTok{sum}\NormalTok{(x >}\StringTok{ }\DecValTok{0}\NormalTok{))}
+\NormalTok{Rs}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## A B 
+## 4 3
+\end{verbatim}
+
+Como vemos, la abundancia de \emph{C. scabridum} en uno de los dos
+sitios es igual a Cero, lo confirmamos al tener la riqueza por sitio. El
+sitio B tenemos únicamente 3 especies.
+
+Ahora aplicamos la formula, dividimos las especies compartidas
+(\emph{comp}) para la riqueza total de los dos sitios y lo multiplicamos
+por 2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(}\DecValTok{2}\NormalTok{*}\KeywordTok{sum}\NormalTok{(comp))/}\KeywordTok{sum}\NormalTok{(Rs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8571429
+\end{verbatim}
+
+Según el índice de Sorensen estos dos sitios son parecidos en un 86\%.
+Los datos de los dos índices utilizados difieren entre sí, el porcentaje
+de similitud utiliza no solamente la presencia ausencia sino también la
+abundancia lo que podría estar reduciendo la similitud entre sitios.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{Ejercicio: Análisis de
+similitud}\label{ejercicio-analisis-de-similitud}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+Una de las preguntas básicas de un ecólogo es saber ¿Cómo de diferentes
+son dos comunidades?, en el presente ejercicio nos interesa entender
+comprender la similitud y distancias entre estas cinco comunidades
+hipotéticas (tabla \ref{tab:ejer1} )
+
+\begin{table}
+
+\caption{\label{tab:ejer1}Comunidades hipotéticas}
+\centering
+\begin{tabular}[t]{lrrrrrrrr}
+\toprule
+  & sp1 & sp2 & sp3 & sp4 & sp5 & sp6 & sp7 & sp8\\
+\midrule
+A & 26 & 17 & 16 & 1995 & 159 & 0 & 362 & 0\\
+B & 0 & 35 & 14 & 236 & 54 & 0 & 496 & 57\\
+C & 24 & 0 & 26 & 17 & 88 & 18 & 907 & 20\\
+D & 35 & 18 & 24 & 2033 & 175 & 15 & 376 & 16\\
+E & 105 & 129 & 40 & 18 & 191 & 53 & 964 & 134\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Con los datos anteriores:
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Convierta los datos en abundancia relativa por sitio (la suma en cada
+  sitio debe ser igual a 1). Dibuje dos gráficas para representar; i) la
+  abundancia total y ii) abundancia relativa de cada localidad. ¿Qué
+  diferencias puede ver en la gráfica i y en la ii?
+\item
+  Calcule la distancia Euclideana y de Bray Curtis para cada sitio con
+  las dos medidas de abundancia y grafíquelas utilizando el NMDS. ¿Cómo
+  cambia entre distancias y abundancias? Explique las diferencias.
+\item
+  Evalúe la similitud (Sorensen) y el porcentaje de similitud entre
+  pares de sitios. ¿Cuáles son los sitios más similares? ¿Cuál es la
+  razón de las diferencias entre los índices utilizados?
+\end{enumerate}
+
+\chapter{Análisis multivariado de la composición de la
+comunidad}\label{analisis-multivariado-de-la-composicion-de-la-comunidad}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+Los índices de similitud nos permiten comparar las comunidades entre dos
+sitios, pero claramente cuando estudiamos las comunidades nuestros datos
+no son tan sencillos como lo que hemos utilizado hasta el momento. El
+organizar los datos de composición de la comunidad y poder
+interpretarlos en relación a otras comunidades, entender que comunidades
+son más similares entre sí, y saber si esta similitud o distancia es el
+resultado de unas respuestas al entorno pueden ser algunas de las cosas
+que podremos responder utilizando las técnicas de análisis multivariado
+de la comunidad. A continuación vamos a describir algunas técnicas de
+clasificación y ordenación que nos permitirán abordar estas temáticas.
+
+Las técnicas de ordenación y clasificación son estrategias alternativas
+para simplificar los datos. La ordenación intenta simplificar los datos
+en un mapa que muestra las similitudes entre los puntos. La
+clasificación simplifica datos colocando los puntos similares en una
+misma clase o grupo Oksanen 2014\footnote{\url{http://cc.oulu.fi/~jarioksa/opetus/metodi/sessio3.pdf}}.
+
+Utilizaremos el paquete \emph{Vegan} para los análisis de ordenación y
+clasificación, para mayor información puede referirse a Oksanen
+2013\footnote{\url{http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf}}.
+
+\section{Agrupamiento Jerárquico (Hierarchic
+Cluster)}\label{agrupamiento-jerarquico-hierarchic-cluster}
+
+A continuación vamos a realizar un análisis Cluster (análisis de
+conglomerados) utilizando la función \emph{hclust} del paquete
+\emph{vegan}. La función hclust necesita una matriz de disimilitudes
+como entrada. El Análisis de conglomerados intenta generar conglomerados
+que tengan la máxima homogeneidad en cada grupo y la mayor diferencia
+entre los grupos.
+
+Aunque la función \emph{dist} nos permite calcular disimilitudes, para
+el análisis de comunidades biológicas utilizaremos la función
+\emph{vegdist} del paquete \emph{vegan}. Esta función nos permite
+calcular varios índices de disimilitud. El método de cálculo de la
+disimilitud por defecto es Bray-Curtis (\emph{``bray''}).
+
+Una de las características importantes del método Bray-Curtis es que
+varía entre 0 y 1, dos comunidades que no comparten ninguna especie
+tendrían 1 como resultado.
+
+Calculemos una matriz de disimilitudes usando el método Bray-Curtis,
+utilizaremos los datos de Barro Colorado Island (BCI) cargados en el
+paquete \emph{vegan}. Para eso necesitamos cargar el paquete y los datos
+de BCI, únicamente utilizaremos los datos de los primeros 10 sitios.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(vegan)}
+\KeywordTok{data}\NormalTok{(BCI)}
+
+\NormalTok{dist<-}\StringTok{ }\KeywordTok{vegdist}\NormalTok{(BCI[}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{,], }\DataTypeTok{method=}\StringTok{"bray"}\NormalTok{)}
+\NormalTok{dist[}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 0.2706682 0.3501647 0.3682008 0.3725079 0.3744186 0.3518519 0.3424346
+##  [8] 0.4235706 0.3770140 0.2873051
+\end{verbatim}
+
+Podemos ver que el sitio 1 es 27\% diferente al sitio 2, 35\% al sitio
+3, 36\% al sitio 4 y así sucesivamente con los 10 sitios.
+
+Con la matriz de disimilitudes calculada se puede analizar los puntos
+que conforman una agrupación. Utilizaremos los métodos de agrupación de
+la función \emph{hclust} que nos propone tres métodos de agrupamiento:
+agrupación simple, agrupación completa y agrupación promedio.
+
+Todos los métodos inician con el agrupamiento de las dos comunidades
+(dos sitios) más similares y a partir de esta primera comparación se
+continúa con el resto de puntos.
+
+A continuación ejemplificaremos el cálculo de las distancias usando los
+tres métodos. Extraemos los cinco primeros sitios de la matriz de BCI y
+generamos un nuevo objeto (S\_BCI). Con este nuevo objeto calculamos la
+distancia entre los cinco sitios.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{S_BCI<-}\StringTok{ }\NormalTok{BCI[}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{,]}
+\NormalTok{dist1<-}\StringTok{ }\KeywordTok{vegdist}\NormalTok{(S_BCI, }\DataTypeTok{method=}\StringTok{"bray"}\NormalTok{)}
+\NormalTok{dist1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           1         2         3         4
+## 2 0.2706682                              
+## 3 0.3501647 0.2873051                    
+## 4 0.3682008 0.3149523 0.3244078          
+## 5 0.3725079 0.3851064 0.3595041 0.3721619
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  En base de la matriz de disimilitudes se busca el par de puntos que se
+  encuentren más cercanos (menos disimiles). En nuestro caso el punto 1
+  y 2 tienen la distancia más baja 0.27. Una vez identificado, inicia el
+  proceso de agrupación y es donde se diferencian los tres métodos.
+\item
+  Con el primer grupo generado debemos comenzar la construcción del
+  resto de grupos, para esto construimos una nueva matriz de disimilitud
+  calculando las distancias desde este primer grupo (1-2) al resto de
+  sitios. El cálculo de esta distancia es dependiente del método.
+\end{enumerate}
+
+\begin{quote}
+Recuerde, para los sitios del 3 al 5 tendremos dos distancias, la
+distancia desde el sitio 1 y del sitio 2 a cada uno de estos sitios. Por
+tanto utilizaremos estas dos distancias para calcular la distancia desde
+el grupo.
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  En el método de agrupación simple la distancia entre el grupo y el
+  sitio 3 será igual a la distancia más baja comparando entre la
+  distancia del sitio 1 y el sitio 2. En el caso de la distancia al
+  sitio 3 el valor mínimo es 0.287.\\
+\item
+  En el método completo el nuevo valor de distancia será el valor más
+  alto, en este caso 0.350, y
+\item
+  En el método de agrupación promedio, obtenemos el valor promedio entre
+  las distancias primer grupo y el sitio 3 en este caso 0.318 (Tabla 1).
+\end{itemize}
+
+\textbf{Tabla 1.} Cálculo de nuevas distancias entre el grupo 1 (sitio 1
+y 2) y los sitios restantes. \emph{\textbf{A. simple}}: cálculo de
+distancia mediante el método de agrupación simple. \textbf{\emph{A.
+completa}}: cálculo de distancia mediante el método de agrupación
+completa. \textbf{\emph{A. promedio}}: cálculo de distancia mediante el
+método de agrupación promedio.
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+\begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
+Sitios\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Sitio 1\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
+Sitio 2\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+A. Simple\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+A. Completa\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+A. Media\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+Sitio 3\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3501647\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+0.2873051\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.2873051\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0.3501647\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3187349\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+Sitio 4\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3682008\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+0.3149523\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3149523\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0.3682008\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3415765\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+Sitio 5\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3725079\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+0.3851064\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3725079\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0.3851064\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3788071\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  A partir de estos cálculos se construye nuevamente la matriz de
+  distancia. Mostramos las nuevas matrices de distancias según el método
+  de agrupación utilizado.
+\end{enumerate}
+
+Para el método de agrupación \textbf{simple}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Sitio\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Grupo1-2\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Sitio 3\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Sitio 4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.2873051\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3149523\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3244078\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3725079\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3595041\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3721619\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Para el método de agrupación \textbf{completo}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Sitio\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Grupo1-2\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Sitio 3\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Sitio 4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3501647\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3682008\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3244078\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3851064\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3595041\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3721619\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Para el método de agrupación \textbf{promedio}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Sitio\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Grupo1-2\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Sitio 3\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+Sitio 4\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3187349\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3415765\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3244078\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3788071\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0.3595041\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
+0.3721619\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Se repite el procedimiento, se busca los puntos que tienen la menor
+  disimilitud en la nueva matriz y se vuelve a calcular las distancias
+  desde este nuevo grupo al resto de grupos, esto se repite tantas veces
+  hasta que todos los sitios están asociados.
+\end{enumerate}
+
+Podemos calcular directamente la agrupación utilizando la función
+\emph{hclust}, y graficarlo con la función \emph{plot}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfcol=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+
+\NormalTok{csim <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(dist1, }\DataTypeTok{method=}\StringTok{"single"}\NormalTok{)}
+\NormalTok{ccom <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(dist1, }\DataTypeTok{method=}\StringTok{"complete"}\NormalTok{)}
+\NormalTok{cpro <-}\StringTok{ }\KeywordTok{hclust}\NormalTok{(dist1, }\DataTypeTok{method=}\StringTok{"average"}\NormalTok{)}
+
+\KeywordTok{plot}\NormalTok{(csim, }\DataTypeTok{cex.axis=}\FloatTok{0.7}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(ccom, }\DataTypeTok{cex.axis=}\FloatTok{0.7}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(cpro, }\DataTypeTok{cex.axis=}\FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/den3-1.pdf}
+\caption{\label{fig:den3}Dendrograma construido a partir de los 3 métodos de
+agrupación}
+\end{figure}
+
+Como podemos ver en la figura \ref{fig:den3} en todos los casos el
+primer grupo es el mismo, el grupo entre los sitios 1 y 2 con una
+disimilitud de 0.27, a partir de este punto los dendrogramas varían
+según el método utilizado. En el caso del método simple la disimilitud
+más baja es entre el grupo 1-2 y el sitio 3, con una disimilitud del
+0.287. En el caso del método completo la disimilitud más baja se da
+entre el sitio 3 y 4 que conforman un segundo grupo con una disimilitud
+de 0.32. Finalmente, en el caso del método de promedio la menor
+disimilitud se da entre el grupo 1-2 y el sitio 3 con una disimilitud de
+0.31 (Figura \ref{fig:den3})
+
+Los métodos de agrupamiento jerárquico (cluster) producen
+clasificaciones donde todas las observaciones se encuentran agrupadas de
+diferente forma. En los extremos todas las observaciones se encuentran
+agrupadas en una sola clase o cada observación conforma su clase
+privada, entre estos extremos las observaciones forman diferentes
+agrupamientos con niveles de disimilitud variables. Normalmente nos
+interesa tener un cierto número de clases con niveles de disimilitud
+establecido. La conformación de estos grupos se puede mostrar
+visualmente con función \textbf{rect.hclust} (Figura \ref{fig:dengr})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(ccom, }\DataTypeTok{hang=}\NormalTok{-}\FloatTok{0.1}\NormalTok{, }\DataTypeTok{cex.axis=}\FloatTok{0.7}\NormalTok{, }\DataTypeTok{cex.lab=}\FloatTok{0.8}\NormalTok{, }\DataTypeTok{cex.main=}\FloatTok{0.8}\NormalTok{)}
+\KeywordTok{rect.hclust}\NormalTok{(ccom, }\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/dengr-1.pdf}
+\caption{\label{fig:dengr}Dendrograma con número de grupos}
+\end{figure}
+
+\section{Interpretando el cluster}\label{interpretando-el-cluster}
+
+El análisis de conglomerados (cluster) no es un test estadístico, y como
+vimos hay varios factores que pueden afectar la generación de los grupos
+\citep{Borcard2011}, por lo que debemos ser consientes de lo que
+obtenemos como resultado. POdemos usar la función \texttt{summary()}
+para ver la información que tenemos luego de haber utilizado el
+\texttt{hclust}, estos datos pueden ser utilizados para interpretar el
+agrupamiento \citep{Borcard2011}.
+
+Como vimos anteriormente el investigador puede decidir, en función de su
+experiencia y de los arboles generados, cuantos grupos se generan dentro
+del árbol y que metodo de agrupamiento utilizar, sin embargo, podemos
+utilizar algunas funciones que nos permitan determinar grupos
+consistentes.
+
+Una forma que podemos utilizar para definir los grupos es la distancia
+Cofenética. Esta distancia es calculada como la distancia entre dos
+objetos de un mismo grupo en el dendrograma, la distancia desde el
+primer objeto al segundo objeto pasando por el nodo de unión de los dos
+objetos es la distancia Cofenética. Una matriz cofenética es una matriz
+que representa las distancias cophenéticas entre todos los pares de
+objetos. Con esta matriz podemos correlacionar con la matriz de
+disimilitud original. El método con la correlación cofenética más alta
+puede ser vista como la que produjo el mejor modelo de agrupación para
+la matriz de distancia.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Calculamos la matriz cofenética para cada método de}
+\CommentTok{#agrupamiento}
+
+\NormalTok{csim_coph <-}\StringTok{ }\KeywordTok{cophenetic}\NormalTok{(csim)}
+\NormalTok{cpro_coph <-}\StringTok{ }\KeywordTok{cophenetic}\NormalTok{(cpro)}
+\NormalTok{ccom_coph <-}\StringTok{ }\KeywordTok{cophenetic}\NormalTok{(ccom)}
+
+\CommentTok{#Calculamos la correlación}
+\KeywordTok{cor}\NormalTok{(csim_coph, dist1); }\KeywordTok{cor}\NormalTok{(cpro_coph, dist1);}\KeywordTok{cor}\NormalTok{(ccom_coph, dist1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8143114
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.846916
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.7487461
+\end{verbatim}
+
+Según estos datos el método promedio es el método que produce un mejor
+agrupamiento.
+
+Otra forma de evaluar el mejor método es calcular la distancia de Gower,
+calculado como la suma de los cuadrados de la diferencia entre la matriz
+de distancia y la distancia Cofenética, el menor valor significa que es
+el mejor método de agrupamiento.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sim_gow <-}\StringTok{ }\KeywordTok{sum}\NormalTok{((dist1-csim_coph)^}\DecValTok{2}\NormalTok{)}
+\NormalTok{pro_gow <-}\StringTok{ }\KeywordTok{sum}\NormalTok{((dist1-cpro_coph)^}\DecValTok{2}\NormalTok{)}
+\NormalTok{com_gow <-}\StringTok{ }\KeywordTok{sum}\NormalTok{((dist1-ccom_coph)^}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{sim_gow; pro_gow; com_gow}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.007860928
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.003917673
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.01068659
+\end{verbatim}
+
+En este caso vemos que la decisión usando la distancia de Gower y la
+Cofenética es la misma, el método promedio produce el mejor
+agrupamiento. Sin embargo, no siempre el resultado es consistente entre
+los dos métodos.
+
+Podemos utilizar la \textbf{silhouette width (anchura de la silueta)}
+para medir el grado de pertenenciade un objeto a su agrupación, basado
+en la distancia media entre este objeto y todos los objetos de la
+agrupación a la que se pertenece, en comparación con la misma medida
+calculada para el siguiente grupo más cercano \citep{Borcard2011}.
+Utilizaremos la función \texttt{siluette}del paquete \textbf{cluster}.
+La salidad de esta función varía entre 1 y -1. Los valores negativos
+significan que los objetos correspondientes probablemente se han
+colocado en un grupo erroneo.
+
+\chapter{Ordenaciónes Indirectas}\label{ordenaciones-indirectas}
+
+\chapter{Ordenaciones Directas o
+Constreñidas}\label{ordenaciones-directas-o-constrenidas}
+
+\bibliography{packages}
+
+
+\end{document}
