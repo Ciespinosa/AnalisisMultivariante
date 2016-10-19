@@ -142,11 +142,23 @@ rect.hclust(ccom, 3)
 
 ```
 
+Ahora podríamos obtener la pertenencia a un grupo y relacionarlo con otra variable explicativa, y analizar si la genración del grupo responde a algún factor.
+
+```{r}
+grupo <- cutree(ccom, 3)
+grupo
+```
+
+
+
+
 ##Interpretando el cluster
 
 El análisis de conglomerados (cluster) no es un test estadístico, y como vimos hay varios factores que pueden afectar la generación de los grupos [@Borcard2011], por lo que debemos ser consientes de lo que obtenemos como resultado.  POdemos usar la función `summary()` para ver la información que tenemos luego de haber utilizado el `hclust`, estos datos pueden ser utilizados para interpretar el agrupamiento [@Borcard2011].
 
 Como vimos anteriormente el investigador puede decidir, en función de su experiencia y de los arboles generados, cuantos grupos se generan dentro del árbol y que metodo de agrupamiento utilizar, sin embargo, podemos utilizar algunas funciones que nos permitan determinar grupos consistentes.
+
+### Elegir la función de enlace
 
 Una forma que podemos utilizar para definir los grupos es la distancia Cofenética. Esta distancia es calculada como la distancia entre dos objetos de un mismo grupo en el dendrograma, la distancia desde el primer objeto al segundo objeto pasando por el nodo de unión de los dos objetos es la distancia Cofenética. Una matriz cofenética es una matriz que representa las distancias cophenéticas entre todos los pares de objetos. Con esta matriz podemos correlacionar con la matriz de disimilitud original. El método con la correlación cofenética más alta puede ser vista como la que produjo el mejor modelo de agrupación para la matriz de distancia.
 
@@ -181,9 +193,90 @@ sim_gow; pro_gow; com_gow
 En este caso vemos que la decisión usando la distancia de Gower y la Cofenética es la misma, el método promedio produce el mejor agrupamiento.  Sin embargo, no siempre el resultado es consistente entre los dos métodos.
 
 
+>Este proceso nos ha permitido obtener la mejor función de enlace, sin embargo, para definir cuales son los subconjuntos de datos (tener un punto de corte) se puede utilizar algunas otras herramientas.
 
-Podemos utilizar la __silhouette width (anchura de la silueta)__ para medir el grado de pertenenciade un objeto a su agrupación,  basado en la distancia media entre este objeto y todos los objetos de la agrupación a la que se pertenece, en comparación con la misma medida calculada para el siguiente grupo más cercano [@Borcard2011]. Utilizaremos la función `siluette`del paquete __cluster__. La salidad de esta función varía entre 1 y -1.  Los valores negativos significan que los objetos correspondientes probablemente se han colocado en un grupo erroneo.
+
+### Elegir el punto de corte
+
+Como vimos anteriormente yo puedo definir un punto de corte para generar los grupos o puedo decidir cuantos grupos, sin embargo, este procedimiento es subjetivo.  Podemos utilizar alguna información que nos permita tomar decisiones fundamentadas.
 
 
+Podemos utilizar la __silhouette width (anchura de la silueta)__ para medir el grado de pertenencia de un objeto a su agrupación,  basado en la distancia media entre este objeto y todos los objetos de la agrupación a la que se pertenece, en comparación con la misma medida calculada para el siguiente grupo más cercano [@Borcard2011]. Utilizaremos la función `siluette` del paquete __cluster__. La salida de esta función varía entre 1 y -1.  Los valores negativos significan que los objetos correspondientes probablemente se han colocado en un grupo erróneo.
+
+A continuación el proceso utilizado:
+
+
+```{r}
+library(cluster)
+
+#Generamos un vector vacío para colocar los valores 
+# medios de la anchura de la silueta (mas)
+mas <- numeric(nrow(S_BCI))
+
+#Calculamos y ponemos el <mas> en el vector generado
+for( k in 2: (nrow(S_BCI)-1)){
+    sil <- silhouette(cutree(ccom, k=k), dist1)
+  mas[k] <- summary(sil)$avg.width
+}
+
+# Analizamos cual es el mejor punto de corte
+k.best <- which.max(mas)
+
+# Graficamos
+plot(1:nrow(S_BCI), mas, type = "h", main="Número de grupos óptimo", 
+     xlab = "Número de grupos (k)", ylab="Media de la anchura de la silueta")
+axis(1, k.best, paste("Optimo", k.best, sep="\n"  ), 
+     col="red", font=2, col.axis="red")
+points(k.best, max(mas), pch=16, col="red", cex=1.5)
+
+cat("", "Número óptimo de grupos k=", k.best, "\n",
+    "Con un valor medio de anchura de la silueta de", max(mas), "\n")
+
+```
+
+
+A partir de este punto podría utilizar otras herramientas para definir el número de grupos.  Ahora nos interesa saber si los grupos están balanceados y bien delimitados.  Podemos utilizar el gráfico de la silueta
+
+
+```{r}
+k<- 2
+cutg <- cutree(ccom, k=k)
+sil <- silhouette(cutg, dist1)
+sil.o <- sortSilhouette(sil)
+
+rownames(sil.o) <- row.names(S_BCI)[attr(sil.o, "iOrd")]
+
+plot(sil.o, main= "Gráfico de silueta", cex.names = 0.8, 
+     col = cutg+3, nmax.lab=100)
+
+
+
+```
+
+
+Al parecer no ha sido el mejor ejemplo, sin embargo, podemos ver que los 2 grupos han sido consistentes.  Vamos a probar con nuevos datos.
+
+
+## Ejercicio 2: Análisis de clasificación
+
+Con el fin de determinar si existen agrupamientos de herbaceas dentro de una parcela permanente de 9ha en la Reserva Ecológica Arenillas realizaremos un análisis de Agrupamiento (Cluster).
+
+Para esto disponemos de una matriz con datos de la composición de la comunidad que puede ser descargado [aquí](https://github.com/Ciespinosa/AnalisisMultivariante/herbaceas.xlsx).
+
+Los datos corresponden a un levantamiento de la vegetación de herbáceas en 4 tiempos distintos; final de invierno (abril 2012), estación seca (noviembre 2012), inicio del invierno (diciembre 2012), invierno (enero 2013). Se levantaron 4 cuadrantes de 0.5x0.5 m  en cada vértice y centro de la parcela permanente de 9 hectáreas (113 muestras). 
+
+Con estos datos:
+
+1. Calcular una matriz de disimilitud utilizando la distancia de Bray-Curtis.
+
+2. Definir la mejor función de enlace para los tres métodos.
+
+3. Definir usando la función silhouette cuantos grupos deberían generarse.
+
+4. Realizar un gráfico del cluster y mostrar los grupos con la función rect.hclust
+
+5. Evaluar si los grupos obtenidos responden a alguna de las variables de especies leñosas 
+
+6. Graficar las coordenadas __"x"__ y __"y"__ de las parcelas y colorear cada punto de acuerdo al grupo al que pertenece.  Esto nos permitirá identificar si existe un patrón espacial en la generación de los grupos.
 
 

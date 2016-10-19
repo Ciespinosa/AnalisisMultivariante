@@ -114,7 +114,11 @@ code > span.in { color: #008000; } /* Information */
 </ul></li>
 <li class="chapter" data-level="2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><i class="fa fa-check"></i><b>2</b> Análisis multivariado de la composición de la comunidad</a><ul>
 <li class="chapter" data-level="2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#agrupamiento-jerarquico-hierarchic-cluster"><i class="fa fa-check"></i><b>2.1</b> Agrupamiento Jerárquico (Hierarchic Cluster)</a></li>
-<li class="chapter" data-level="2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#interpretando-el-cluster"><i class="fa fa-check"></i><b>2.2</b> Interpretando el cluster</a></li>
+<li class="chapter" data-level="2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#interpretando-el-cluster"><i class="fa fa-check"></i><b>2.2</b> Interpretando el cluster</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-la-funcion-de-enlace"><i class="fa fa-check"></i><b>2.2.1</b> Elegir la función de enlace</a></li>
+<li class="chapter" data-level="2.2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-el-punto-de-corte"><i class="fa fa-check"></i><b>2.2.2</b> Elegir el punto de corte</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#ejercicio-2-analisis-de-clasificacion"><i class="fa fa-check"></i><b>2.3</b> Ejercicio 2: Análisis de clasificación</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="ordenaciones-indirectas.html"><a href="ordenaciones-indirectas.html"><i class="fa fa-check"></i><b>3</b> Ordenaciónes Indirectas</a></li>
 <li class="chapter" data-level="4" data-path="ordenaciones-directas-o-constrenidas.html"><a href="ordenaciones-directas-o-constrenidas.html"><i class="fa fa-check"></i><b>4</b> Ordenaciones Directas o Constreñidas</a></li>
@@ -374,11 +378,18 @@ Figure 2.1: Dendrograma construido a partir de los 3 métodos de agrupación
 Figure 2.2: Dendrograma con número de grupos
 </p>
 </div>
+<p>Ahora podríamos obtener la pertenencia a un grupo y relacionarlo con otra variable explicativa, y analizar si la genración del grupo responde a algún factor.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grupo &lt;-<span class="st"> </span><span class="kw">cutree</span>(ccom, <span class="dv">3</span>)
+grupo</code></pre></div>
+<pre><code>## 1 2 3 4 5 
+## 1 1 2 2 3</code></pre>
 </div>
 <div id="interpretando-el-cluster" class="section level2">
 <h2><span class="header-section-number">2.2</span> Interpretando el cluster</h2>
 <p>El análisis de conglomerados (cluster) no es un test estadístico, y como vimos hay varios factores que pueden afectar la generación de los grupos <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>, por lo que debemos ser consientes de lo que obtenemos como resultado. POdemos usar la función <code>summary()</code> para ver la información que tenemos luego de haber utilizado el <code>hclust</code>, estos datos pueden ser utilizados para interpretar el agrupamiento <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>.</p>
 <p>Como vimos anteriormente el investigador puede decidir, en función de su experiencia y de los arboles generados, cuantos grupos se generan dentro del árbol y que metodo de agrupamiento utilizar, sin embargo, podemos utilizar algunas funciones que nos permitan determinar grupos consistentes.</p>
+<div id="elegir-la-funcion-de-enlace" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Elegir la función de enlace</h3>
 <p>Una forma que podemos utilizar para definir los grupos es la distancia Cofenética. Esta distancia es calculada como la distancia entre dos objetos de un mismo grupo en el dendrograma, la distancia desde el primer objeto al segundo objeto pasando por el nodo de unión de los dos objetos es la distancia Cofenética. Una matriz cofenética es una matriz que representa las distancias cophenéticas entre todos los pares de objetos. Con esta matriz podemos correlacionar con la matriz de disimilitud original. El método con la correlación cofenética más alta puede ser vista como la que produjo el mejor modelo de agrupación para la matriz de distancia.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Calculamos la matriz cofenética para cada método de</span>
 <span class="co">#agrupamiento</span>
@@ -403,7 +414,69 @@ sim_gow; pro_gow; com_gow</code></pre></div>
 <pre><code>## [1] 0.003917673</code></pre>
 <pre><code>## [1] 0.01068659</code></pre>
 <p>En este caso vemos que la decisión usando la distancia de Gower y la Cofenética es la misma, el método promedio produce el mejor agrupamiento. Sin embargo, no siempre el resultado es consistente entre los dos métodos.</p>
-<p>Podemos utilizar la <strong>silhouette width (anchura de la silueta)</strong> para medir el grado de pertenenciade un objeto a su agrupación, basado en la distancia media entre este objeto y todos los objetos de la agrupación a la que se pertenece, en comparación con la misma medida calculada para el siguiente grupo más cercano <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>. Utilizaremos la función <code>siluette</code>del paquete <strong>cluster</strong>. La salidad de esta función varía entre 1 y -1. Los valores negativos significan que los objetos correspondientes probablemente se han colocado en un grupo erroneo.</p>
+<blockquote>
+<p>Este proceso nos ha permitido obtener la mejor función de enlace, sin embargo, para definir cuales son los subconjuntos de datos (tener un punto de corte) se puede utilizar algunas otras herramientas.</p>
+</blockquote>
+</div>
+<div id="elegir-el-punto-de-corte" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Elegir el punto de corte</h3>
+<p>Como vimos anteriormente yo puedo definir un punto de corte para generar los grupos o puedo decidir cuantos grupos, sin embargo, este procedimiento es subjetivo. Podemos utilizar alguna información que nos permita tomar decisiones fundamentadas.</p>
+<p>Podemos utilizar la <strong>silhouette width (anchura de la silueta)</strong> para medir el grado de pertenencia de un objeto a su agrupación, basado en la distancia media entre este objeto y todos los objetos de la agrupación a la que se pertenece, en comparación con la misma medida calculada para el siguiente grupo más cercano <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>. Utilizaremos la función <code>siluette</code> del paquete <strong>cluster</strong>. La salida de esta función varía entre 1 y -1. Los valores negativos significan que los objetos correspondientes probablemente se han colocado en un grupo erróneo.</p>
+<p>A continuación el proceso utilizado:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cluster)
+
+<span class="co">#Generamos un vector vacío para colocar los valores </span>
+<span class="co"># medios de la anchura de la silueta (mas)</span>
+mas &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="kw">nrow</span>(S_BCI))
+
+<span class="co">#Calculamos y ponemos el &lt;mas&gt; en el vector generado</span>
+for( k in <span class="dv">2</span>:<span class="st"> </span>(<span class="kw">nrow</span>(S_BCI)-<span class="dv">1</span>)){
+    sil &lt;-<span class="st"> </span><span class="kw">silhouette</span>(<span class="kw">cutree</span>(ccom, <span class="dt">k=</span>k), dist1)
+  mas[k] &lt;-<span class="st"> </span><span class="kw">summary</span>(sil)$avg.width
+}
+
+<span class="co"># Analizamos cual es el mejor punto de corte</span>
+k.best &lt;-<span class="st"> </span><span class="kw">which.max</span>(mas)
+
+<span class="co"># Graficamos</span>
+<span class="kw">plot</span>(<span class="dv">1</span>:<span class="kw">nrow</span>(S_BCI), mas, <span class="dt">type =</span> <span class="st">&quot;h&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Número de grupos óptimo&quot;</span>, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Número de grupos (k)&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Media de la anchura de la silueta&quot;</span>)
+<span class="kw">axis</span>(<span class="dv">1</span>, k.best, <span class="kw">paste</span>(<span class="st">&quot;Optimo&quot;</span>, k.best, <span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>  ), 
+     <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">font=</span><span class="dv">2</span>, <span class="dt">col.axis=</span><span class="st">&quot;red&quot;</span>)
+<span class="kw">points</span>(k.best, <span class="kw">max</span>(mas), <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">cex=</span><span class="fl">1.5</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Número óptimo de grupos k=&quot;</span>, k.best, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,
+    <span class="st">&quot;Con un valor medio de anchura de la silueta de&quot;</span>, <span class="kw">max</span>(mas), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>##  Número óptimo de grupos k= 2 
+##  Con un valor medio de anchura de la silueta de 0.1130222</code></pre>
+<p>A partir de este punto podría utilizar otras herramientas para definir el número de grupos. Ahora nos interesa saber si los grupos están balanceados y bien delimitados. Podemos utilizar el gráfico de la silueta</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k&lt;-<span class="st"> </span><span class="dv">2</span>
+cutg &lt;-<span class="st"> </span><span class="kw">cutree</span>(ccom, <span class="dt">k=</span>k)
+sil &lt;-<span class="st"> </span><span class="kw">silhouette</span>(cutg, dist1)
+sil.o &lt;-<span class="st"> </span><span class="kw">sortSilhouette</span>(sil)
+
+<span class="kw">rownames</span>(sil.o) &lt;-<span class="st"> </span><span class="kw">row.names</span>(S_BCI)[<span class="kw">attr</span>(sil.o, <span class="st">&quot;iOrd&quot;</span>)]
+
+<span class="kw">plot</span>(sil.o, <span class="dt">main=</span> <span class="st">&quot;Gráfico de silueta&quot;</span>, <span class="dt">cex.names =</span> <span class="fl">0.8</span>, 
+     <span class="dt">col =</span> cutg<span class="dv">+3</span>, <span class="dt">nmax.lab=</span><span class="dv">100</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Al parecer no ha sido el mejor ejemplo, sin embargo, podemos ver que los 2 grupos han sido consistentes. Vamos a probar con nuevos datos.</p>
+</div>
+</div>
+<div id="ejercicio-2-analisis-de-clasificacion" class="section level2">
+<h2><span class="header-section-number">2.3</span> Ejercicio 2: Análisis de clasificación</h2>
+<p>Con el fin de determinar si existen agrupamientos de herbaceas dentro de una parcela permanente de 9ha en la Reserva Ecológica Arenillas realizaremos un análisis de Agrupamiento (Cluster).</p>
+<p>Para esto disponemos de una matriz con datos de la composición de la comunidad que puede ser descargado <a href="https://github.com/Ciespinosa/AnalisisMultivariante/herbaceas.xlsx">aquí</a>.</p>
+<p>Los datos corresponden a un levantamiento de la vegetación de herbáceas en 4 tiempos distintos; final de invierno (abril 2012), estación seca (noviembre 2012), inicio del invierno (diciembre 2012), invierno (enero 2013). Se levantaron 4 cuadrantes de 0.5x0.5 m en cada vértice y centro de la parcela permanente de 9 hectáreas (113 muestras).</p>
+<p>Con estos datos:</p>
+<ol style="list-style-type: decimal">
+<li><p>Calcular una matriz de disimilitud utilizando la distancia de Bray-Curtis.</p></li>
+<li><p>Definir la mejor función de enlace para los tres métodos.</p></li>
+<li><p>Definir usando la función silhouette cuantos grupos deberían generarse.</p></li>
+<li><p>Realizar un gráfico del cluster y mostrar los grupos con la función rect.hclust</p></li>
+<li><p>Evaluar si los grupos obtenidos responden a alguna de las variables de especies leñosas</p></li>
+<li><p>Graficar las coordenadas <strong>“x”</strong> y <strong>“y”</strong> de las parcelas y colorear cada punto de acuerdo al grupo al que pertenece. Esto nos permitirá identificar si existe un patrón espacial en la generación de los grupos.</p></li>
+</ol>
 
 </div>
 </div>

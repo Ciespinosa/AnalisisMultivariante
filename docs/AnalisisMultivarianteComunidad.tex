@@ -1054,6 +1054,22 @@ visualmente con función \textbf{rect.hclust} (Figura \ref{fig:dengr})
 \caption{\label{fig:dengr}Dendrograma con número de grupos}
 \end{figure}
 
+Ahora podríamos obtener la pertenencia a un grupo y relacionarlo con
+otra variable explicativa, y analizar si la genración del grupo responde
+a algún factor.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grupo <-}\StringTok{ }\KeywordTok{cutree}\NormalTok{(ccom, }\DecValTok{3}\NormalTok{)}
+\NormalTok{grupo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 1 2 3 4 5 
+## 1 1 2 2 3
+\end{verbatim}
+
 \section{Interpretando el cluster}\label{interpretando-el-cluster}
 
 El análisis de conglomerados (cluster) no es un test estadístico, y como
@@ -1069,6 +1085,9 @@ experiencia y de los arboles generados, cuantos grupos se generan dentro
 del árbol y que metodo de agrupamiento utilizar, sin embargo, podemos
 utilizar algunas funciones que nos permitan determinar grupos
 consistentes.
+
+\subsection{Elegir la función de
+enlace}\label{elegir-la-funcion-de-enlace}
 
 Una forma que podemos utilizar para definir los grupos es la distancia
 Cofenética. Esta distancia es calculada como la distancia entre dos
@@ -1142,15 +1161,136 @@ Cofenética es la misma, el método promedio produce el mejor
 agrupamiento. Sin embargo, no siempre el resultado es consistente entre
 los dos métodos.
 
+\begin{quote}
+Este proceso nos ha permitido obtener la mejor función de enlace, sin
+embargo, para definir cuales son los subconjuntos de datos (tener un
+punto de corte) se puede utilizar algunas otras herramientas.
+\end{quote}
+
+\subsection{Elegir el punto de corte}\label{elegir-el-punto-de-corte}
+
+Como vimos anteriormente yo puedo definir un punto de corte para generar
+los grupos o puedo decidir cuantos grupos, sin embargo, este
+procedimiento es subjetivo. Podemos utilizar alguna información que nos
+permita tomar decisiones fundamentadas.
+
 Podemos utilizar la \textbf{silhouette width (anchura de la silueta)}
-para medir el grado de pertenenciade un objeto a su agrupación, basado
+para medir el grado de pertenencia de un objeto a su agrupación, basado
 en la distancia media entre este objeto y todos los objetos de la
 agrupación a la que se pertenece, en comparación con la misma medida
 calculada para el siguiente grupo más cercano \citep{Borcard2011}.
-Utilizaremos la función \texttt{siluette}del paquete \textbf{cluster}.
-La salidad de esta función varía entre 1 y -1. Los valores negativos
+Utilizaremos la función \texttt{siluette} del paquete \textbf{cluster}.
+La salida de esta función varía entre 1 y -1. Los valores negativos
 significan que los objetos correspondientes probablemente se han
-colocado en un grupo erroneo.
+colocado en un grupo erróneo.
+
+A continuación el proceso utilizado:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(cluster)}
+
+\CommentTok{#Generamos un vector vacío para colocar los valores }
+\CommentTok{# medios de la anchura de la silueta (mas)}
+\NormalTok{mas <-}\StringTok{ }\KeywordTok{numeric}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(S_BCI))}
+
+\CommentTok{#Calculamos y ponemos el <mas> en el vector generado}
+\NormalTok{for( k in }\DecValTok{2}\NormalTok{:}\StringTok{ }\NormalTok{(}\KeywordTok{nrow}\NormalTok{(S_BCI)-}\DecValTok{1}\NormalTok{))\{}
+    \NormalTok{sil <-}\StringTok{ }\KeywordTok{silhouette}\NormalTok{(}\KeywordTok{cutree}\NormalTok{(ccom, }\DataTypeTok{k=}\NormalTok{k), dist1)}
+  \NormalTok{mas[k] <-}\StringTok{ }\KeywordTok{summary}\NormalTok{(sil)$avg.width}
+\NormalTok{\}}
+
+\CommentTok{# Analizamos cual es el mejor punto de corte}
+\NormalTok{k.best <-}\StringTok{ }\KeywordTok{which.max}\NormalTok{(mas)}
+
+\CommentTok{# Graficamos}
+\KeywordTok{plot}\NormalTok{(}\DecValTok{1}\NormalTok{:}\KeywordTok{nrow}\NormalTok{(S_BCI), mas, }\DataTypeTok{type =} \StringTok{"h"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Número de grupos óptimo"}\NormalTok{, }
+     \DataTypeTok{xlab =} \StringTok{"Número de grupos (k)"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"Media de la anchura de la silueta"}\NormalTok{)}
+\KeywordTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, k.best, }\KeywordTok{paste}\NormalTok{(}\StringTok{"Optimo"}\NormalTok{, k.best, }\DataTypeTok{sep=}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}  \NormalTok{), }
+     \DataTypeTok{col=}\StringTok{"red"}\NormalTok{, }\DataTypeTok{font=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col.axis=}\StringTok{"red"}\NormalTok{)}
+\KeywordTok{points}\NormalTok{(k.best, }\KeywordTok{max}\NormalTok{(mas), }\DataTypeTok{pch=}\DecValTok{16}\NormalTok{, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{1.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"Número óptimo de grupos k="}\NormalTok{, k.best, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+    \StringTok{"Con un valor medio de anchura de la silueta de"}\NormalTok{, }\KeywordTok{max}\NormalTok{(mas), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  Número óptimo de grupos k= 2 
+##  Con un valor medio de anchura de la silueta de 0.1130222
+\end{verbatim}
+
+A partir de este punto podría utilizar otras herramientas para definir
+el número de grupos. Ahora nos interesa saber si los grupos están
+balanceados y bien delimitados. Podemos utilizar el gráfico de la
+silueta
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{k<-}\StringTok{ }\DecValTok{2}
+\NormalTok{cutg <-}\StringTok{ }\KeywordTok{cutree}\NormalTok{(ccom, }\DataTypeTok{k=}\NormalTok{k)}
+\NormalTok{sil <-}\StringTok{ }\KeywordTok{silhouette}\NormalTok{(cutg, dist1)}
+\NormalTok{sil.o <-}\StringTok{ }\KeywordTok{sortSilhouette}\NormalTok{(sil)}
+
+\KeywordTok{rownames}\NormalTok{(sil.o) <-}\StringTok{ }\KeywordTok{row.names}\NormalTok{(S_BCI)[}\KeywordTok{attr}\NormalTok{(sil.o, }\StringTok{"iOrd"}\NormalTok{)]}
+
+\KeywordTok{plot}\NormalTok{(sil.o, }\DataTypeTok{main=} \StringTok{"Gráfico de silueta"}\NormalTok{, }\DataTypeTok{cex.names =} \FloatTok{0.8}\NormalTok{, }
+     \DataTypeTok{col =} \NormalTok{cutg}\DecValTok{+3}\NormalTok{, }\DataTypeTok{nmax.lab=}\DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+Al parecer no ha sido el mejor ejemplo, sin embargo, podemos ver que los
+2 grupos han sido consistentes. Vamos a probar con nuevos datos.
+
+\section{Ejercicio 2: Análisis de
+clasificación}\label{ejercicio-2-analisis-de-clasificacion}
+
+Con el fin de determinar si existen agrupamientos de herbaceas dentro de
+una parcela permanente de 9ha en la Reserva Ecológica Arenillas
+realizaremos un análisis de Agrupamiento (Cluster).
+
+Para esto disponemos de una matriz con datos de la composición de la
+comunidad que puede ser descargado
+\href{https://github.com/Ciespinosa/AnalisisMultivariante/herbaceas.xlsx}{aquí}.
+
+Los datos corresponden a un levantamiento de la vegetación de herbáceas
+en 4 tiempos distintos; final de invierno (abril 2012), estación seca
+(noviembre 2012), inicio del invierno (diciembre 2012), invierno (enero
+2013). Se levantaron 4 cuadrantes de 0.5x0.5 m en cada vértice y centro
+de la parcela permanente de 9 hectáreas (113 muestras).
+
+Con estos datos:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Calcular una matriz de disimilitud utilizando la distancia de
+  Bray-Curtis.
+\item
+  Definir la mejor función de enlace para los tres métodos.
+\item
+  Definir usando la función silhouette cuantos grupos deberían
+  generarse.
+\item
+  Realizar un gráfico del cluster y mostrar los grupos con la función
+  rect.hclust
+\item
+  Evaluar si los grupos obtenidos responden a alguna de las variables de
+  especies leñosas
+\item
+  Graficar las coordenadas \textbf{``x''} y \textbf{``y''} de las
+  parcelas y colorear cada punto de acuerdo al grupo al que pertenece.
+  Esto nos permitirá identificar si existe un patrón espacial en la
+  generación de los grupos.
+\end{enumerate}
 
 \chapter{Ordenaciónes Indirectas}\label{ordenaciones-indirectas}
 
