@@ -1,3 +1,9 @@
-# Ordenaciónes Indirectas
+# Ordenaciónes 
 
+En ecología es bastante normal que dispongamos de un conjunto de datos que estan conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables.  Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.
 
+Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables 
+
+Un conjunto de datos multivariante puede ser visto como una colección de los sitios situados en un espacio donde cada variable define una dimensión. Así pues, hay tantas dimensiones como variables. Para revelar la estructura de los datos, sería interesante para representar las principales tendencias en forma de diagramas de dispersión de los sitios. Puesto que los datos ecológicos contienen generalmente más de dos variables, es tedioso y no muy informativo para dibujar los objetos en una serie de planos definidos por todos los posibles pares de descriptores.
+
+El objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos de la disminución. Estas tendencias pueden ser interpretados visualmente o en asociación con otros métodos, tales como la agrupación o regresión. Aquí, nos ocuparemos de cuatro técnicas básicas. Todos estos métodos son descriptivos: no se proporciona ninguna prueba estadística para evaluar la importancia de las estructuras detectadas.
