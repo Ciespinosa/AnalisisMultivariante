@@ -256,6 +256,7 @@ plot(sil.o, main= "Gráfico de silueta", cex.names = 0.8,
 
 Al parecer no ha sido el mejor ejemplo, sin embargo, podemos ver que los 2 grupos han sido consistentes.  Vamos a probar con nuevos datos.
 
+##ANOSIM...Incluir
 
 ## Ejercicio 2: Análisis de clasificación
 

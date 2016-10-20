@@ -1250,6 +1250,8 @@ silueta
 Al parecer no ha sido el mejor ejemplo, sin embargo, podemos ver que los
 2 grupos han sido consistentes. Vamos a probar con nuevos datos.
 
+\section{ANOSIM\ldots{}Incluir}\label{anosimincluir}
+
 \section{Ejercicio 2: Análisis de
 clasificación}\label{ejercicio-2-analisis-de-clasificacion}
 
@@ -1292,10 +1294,10 @@ Con estos datos:
   generación de los grupos.
 \end{enumerate}
 
-\chapter{Ordenaciónes}\label{ordenaciones}
+\chapter{Ordenaciones}\label{ordenaciones}
 
 En ecología es bastante normal que dispongamos de un conjunto de datos
-que estan conformados por una serie de sitios o localidades, para los
+que están conformados por una serie de sitios o localidades, para los
 cuales tenemos una serie de variables. Estas variables puede ser cada
 especie o cada condición que levantemos de este sitio, de esta forma un
 sitio va a tener tantas variables como especies o factores levantados.
@@ -1325,7 +1327,7 @@ Cuando trabajamos con datos multivariantes cabe la posibilidad de que
 los datos dentro de esta matriz tengan diferencias de medidas
 importantes.
 
-Imaginemos que estamos trabajando con la comunidad de herbaceas y
+Imaginemos que estamos trabajando con la comunidad de herbáceas y
 existan especies con abundancias máximas de 500, mientras otras especies
 no alcanzan 10 individuos, o en comunidades de insectos donde ciertas
 especies puedan tener valores de miles y otros de decenas. Si no
@@ -1339,22 +1341,22 @@ especies subordinadas en el modelo resultante.
 Existen varias posibilidades para transformar los datos, por lo que
 definir que función utilizar para transformar los datos es importante.
 Cada tipo de transformación produce resultados distintos por lo que
-debemos utilizarlas con precausión.
+debemos utilizarlas con precaución.
 
-Las transformaciones más sencilla o menos intensa es la raiz cuadrada,
+Las transformaciones más sencilla o menos intensa es la raíz cuadrada,
 mientras que el logaritmo es la transformación más intensa, podríamos
 utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la
 utilizaríamos cuando tenemos diferencias como en el caso de las aves con
 variaciones de una magnitud de diferencia (entre decenas y centenas),
 mientras que la transformación logarítmica la haríamos con la comunidad
-de insectos donde hay mas de una magnitud de diferencia (entre decenas y
+de insectos donde hay más de una magnitud de diferencia (entre decenas y
 miles).
 
 Aunque hay muchos autores que aconsejan realizar transformaciones hay
-que ser consientes de lo que estamos haciendo, transformaciones muy
+que ser conscientes de lo que estamos haciendo, transformaciones muy
 fuertes en una matriz con pocas diferencias pueden hacer que, por
 ejemplo, las especies raras tengan igual peso que las dominantes, esto
-es lo que queremos?.
+es lo que queremos?
 
 Veamos un ejemplo:
 
@@ -1365,7 +1367,7 @@ Veamos un ejemplo:
 
 \NormalTok{insectos<-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{sp1=} \KeywordTok{sample}\NormalTok{(}\DecValTok{5}\NormalTok{:}\DecValTok{99}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DataTypeTok{sp2=} \KeywordTok{sample}\NormalTok{(}\DecValTok{1000}\NormalTok{:}\DecValTok{2500}\NormalTok{, }\DecValTok{10}\NormalTok{))}
 
-\NormalTok{##¿Que pasa cuando transformamos?}
+\NormalTok{##¿Qué pasa cuando transformamos?}
 \KeywordTok{cbind}\NormalTok{(aves, }\KeywordTok{sqrt}\NormalTok{(aves),}\KeywordTok{log}\NormalTok{(aves))}
 \end{Highlighting}
 \end{Shaded}
@@ -1405,12 +1407,12 @@ Veamos un ejemplo:
 \end{verbatim}
 
 La estandarización de los datos permite modificar las variables
-transformandolas en unidades de desviación típica, lo que nos permite
+transformándolas en unidades de desviación típica, lo que nos permite
 comparar entre valores de distribuciones normales diferentes, o de
 valores diferentes.
 
 La estandarización o tipificación se lo realiza restando a cada valor el
-valor medio de la variable y dividiendo para la desviación estandar.
+valor medio de la variable y dividiendo para la desviación estándar.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1439,7 +1441,7 @@ valor medio de la variable y dividiendo para la desviación estandar.
 \end{verbatim}
 
 Como vemos las variables estandarizadas tienen como propiedad que la
-desviación estandar es 1 y la media es 0.
+desviación estándar es 1 y la media es 0.
 
 \section{Ordenación indirecta o no
 constreñida}\label{ordenacion-indirecta-o-no-constrenida}
@@ -1449,9 +1451,9 @@ ordenación debo utilizar. Una posibilidad es ver el tipo de respuesta
 que tenemos, si es una respuesta linear o monotónica o una respuesta
 unimodal.
 
-Para determinar que tipo de respuesta usamos la desviación estandar. Si
+Para determinar que tipo de respuesta usamos la desviación estándar. Si
 asumimos una distribución normal, datos con menos de tres desviaciones
-estandar tendrán una respuesta lineal, mientras que si tiene más de tres
+estándar tendrán una respuesta lineal, mientras que si tiene más de tres
 desviaciones se asumirá una respuesta unimodal. Para cada una de estas
 respuestas existe un análisis que se puede ejecutar
 \ref{tab:ordenacion}.
@@ -1478,7 +1480,7 @@ Algunos comentarios sobre los métodos de ordenación.
 Fortalezas
 
 Es sencillo de interpretar ya que las distancias entre las muestras son
-interpretadas directamente como distancias euclideanas.
+interpretadas directamente como distancias euclidianas.
 
 Apropiado para análisis multivariantes de variables ambientales. El PCA
 es fuertemente afectado por ceros algo que es bastante común en datos
@@ -1490,7 +1492,7 @@ Debilidades
 Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa
 la similitud entre muestras.
 
-La proyeccion de las distancias euclideas en un plano puede distorsionar
+La proyección de las distancias euclidias en un plano puede distorsionar
 algunas distancias en otros planos.
 
 \textbf{\emph{Principal Coordinates Análisis (PCoA)}}
@@ -1498,10 +1500,10 @@ algunas distancias en otros planos.
 Fortalezas
 
 Es una extensión del PCA, permite una definición más amplia de las
-disimilitudes entre muestras que la distancia Euclidea.
+disimilitudes entre muestras que la distancia Euclidia.
 
 Es capaz de convertir otras medidas de disimilitud (además de la
-euclídea) en distancias entre muestras.
+euclidia) en distancias entre muestras.
 
 Debilidades
 
@@ -1526,7 +1528,7 @@ especies a un gradiente ambiental.
 
 Es una extensión del CA
 
-Fortalezas Corrige el ``Efecto arco'' del CA, realizando una ordenacion
+Fortalezas Corrige el ``Efecto arco'' del CA, realizando una ordenación
 por segmentos y se realinean los segmentos para evitar la curvatura
 
 Debilidades Excesiva manipulación de los datos (Pielou 1984) Hay quien
@@ -1556,11 +1558,11 @@ Este es el primer paso para poder realizar el análisis de ordenación.
 Como lo hemos visto podemos usar información para poder determinar que
 análisis realizar. El tipo de datos que tenemos y por tanto la distancia
 a utilizar, si tenemos datos con muchos ceros no podremos utilizar una
-medida de distancia Euclideana y deberíamos trabajar con distancia de
+medida de distancia Euclidiana y deberíamos trabajar con distancia de
 Bray-Curtis, por tanto es posible que esto nos defina el trabajar con
 Escalado Multidimensional (Multidimensional Scaling). Si estamos
 utilizando otras distancias podríamos definir la cantidad de
-desviaciones estandar para decidir el tipo de análisis a realizar
+desviaciones estándar para decidir el tipo de análisis a realizar
 (\ref{tab:ordenacion}).
 
 Para ver la longitud de la gradiente (cantidad de desviaciones estándar)
@@ -1733,14 +1735,14 @@ ver si existen algunos patrones.
 \caption{Representación gráfica del NMDS}\label{fig:plotnmds}
 \end{figure}
 
-Podemos ver en la figura \ref{fig:plotnmds} que ciertas especies estan
+Podemos ver en la figura \ref{fig:plotnmds} que ciertas especies están
 asociadas con ciertas localidades esto nos podría servir para explorar
 los datos.
 
 \chapter{Ordenaciones Directas o
 Constreñidas}\label{ordenaciones-directas-o-constrenidas}
 
-Si bien las técnicas de ordenación indirecta nos permite descubrir
+Si bien las técnicas de ordenación indirecta nos permiten descubrir
 ciertos patrones, no nos permite testar hipótesis y ver las relaciones
 de esta matriz con otras variables.
 
@@ -1773,7 +1775,7 @@ Una interesante propiedad de los análisis de ordenación constreñidos es
 que puedo hacer una ordenación parcial. Esta propiedad me permite
 evaluar como un grupo de variables pueden influir en mi matriz de
 respuesta. Podría dividir la información, por ejemplo, en variables
-ambientales y variables bióticas y ver cuanto explica cada una y cuanto
+ambientales y variables bióticas y ver cuánto explica cada una y cuanto
 explican en conjunto.
 
 \section{Realizando una ordenación
@@ -1882,7 +1884,7 @@ se asocian significativamente con la ordenación.
 ## Number of permutations: 999
 \end{verbatim}
 
-Podemos utilizar el \emph{Goodness of fit} para ver cuales son las
+Podemos utilizar el \emph{Goodness of fit} para ver cuáles son las
 variables que ajustan la ordenación y utilizar estas para hacer el
 modelo constreñido. En este caso utilizaremos Manure y Management.
 
@@ -2018,7 +2020,7 @@ a realizar un análisis de ordenación constreñida.
 \def\labelenumi{\alph{enumi}.}
 \item
   Defina que tipo de ordenación constreñida debe realizar para explicar
-  la variación de los datos de herbaceas.
+  la variación de los datos de herbáceas.
 \item
   Realice un análisis para definir las variables que se debería utilizar
   en el análisis

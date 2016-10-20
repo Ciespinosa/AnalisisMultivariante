@@ -1,6 +1,6 @@
 # Ordenaciones Directas o Constreñidas
 
-Si bien las técnicas de ordenación indirecta nos permite descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.
+Si bien las técnicas de ordenación indirecta nos permiten descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.
 
 Si disponemos de una matriz de variables explicativas es posible utilizar análisis de ordenación constreñidos. De esta forma, esta matriz representa la información que tenemos sobre cada una de las muestras y podemos usarla para predecir los valores de las variables respuesta (la composición de especies).
 
@@ -15,7 +15,7 @@ knitr::kable(
 )
 ```
 
-Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial.  Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta.  Podría dividir  la información, por ejemplo, en variables ambientales y variables bióticas y ver cuanto explica cada una y cuanto explican en conjunto.
+Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial.  Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta.  Podría dividir  la información, por ejemplo, en variables ambientales y variables bióticas y ver cuánto explica cada una y cuanto explican en conjunto.
 
 ##Realizando una ordenación constreñida
 
@@ -41,7 +41,7 @@ fitVar <- envfit(ord.ca, dune.env)
 fitVar
 ```
 
-Podemos utilizar el _Goodness of fit_ para ver cuales son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.
+Podemos utilizar el _Goodness of fit_ para ver cuáles son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.
 
 ```{r}
 ord.ccafit <- cca(dune~Manure+Management, data=dune.env)
@@ -92,7 +92,7 @@ Nota: para realizar un permanova debemos utilizar la función adonis. El procedi
 
 Con los datos utilizados para realizar el análisis de aglomerados, vamos a realizar un análisis de ordenación constreñida.
 
-a. Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbaceas.
+a. Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbáceas.
 
 b. Realice un análisis para definir las variables que se debería utilizar en el análisis
 

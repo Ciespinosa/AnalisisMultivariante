@@ -1,6 +1,6 @@
-# Ordenaciónes 
+# Ordenaciones 
 
-En ecología es bastante normal que dispongamos de un conjunto de datos que estan conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables.  Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.
+En ecología es bastante normal que dispongamos de un conjunto de datos que están conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables.  Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.
 
 Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables (especies), con más de tres variables es imposible poder graficarlo.
 
@@ -15,15 +15,15 @@ En este capítulo nos centraremos en las Ordenaciones indirectas.
 
 Cuando trabajamos con datos multivariantes cabe la posibilidad de que los datos dentro de esta matriz tengan diferencias de medidas importantes.
 
-Imaginemos que estamos trabajando con la comunidad de herbaceas y existan especies con abundancias máximas de 500, mientras otras especies no alcanzan 10 individuos, o en comunidades de insectos donde ciertas especies puedan tener valores de miles y otros de decenas. Si no transformamos la ordenación estará determinada básicamente por esta especie.
+Imaginemos que estamos trabajando con la comunidad de herbáceas y existan especies con abundancias máximas de 500, mientras otras especies no alcanzan 10 individuos, o en comunidades de insectos donde ciertas especies puedan tener valores de miles y otros de decenas. Si no transformamos la ordenación estará determinada básicamente por esta especie.
 
 Al transformar los datos evitamos que las especies más comunes dominen en el resultado final de la ordenación y aumentamos la influencia de las especies subordinadas  en el modelo resultante.
 
-Existen varias posibilidades para transformar los datos, por lo que definir que función utilizar para transformar los datos es importante.  Cada tipo de transformación produce resultados distintos por lo que debemos utilizarlas con precausión.
+Existen varias posibilidades para transformar los datos, por lo que definir que función utilizar para transformar los datos es importante.  Cada tipo de transformación produce resultados distintos por lo que debemos utilizarlas con precaución.
 
-Las transformaciones más sencilla o menos intensa es la raiz cuadrada, mientras que el logaritmo es la transformación más intensa, podríamos utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la utilizaríamos cuando tenemos diferencias como en el caso de las aves con variaciones de una magnitud de diferencia (entre decenas y centenas), mientras que la transformación logarítmica la haríamos con la comunidad de insectos donde hay mas de una magnitud de diferencia (entre decenas y miles).
+Las transformaciones más sencilla o menos intensa es la raíz cuadrada, mientras que el logaritmo es la transformación más intensa, podríamos utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la utilizaríamos cuando tenemos diferencias como en el caso de las aves con variaciones de una magnitud de diferencia (entre decenas y centenas), mientras que la transformación logarítmica la haríamos con la comunidad de insectos donde hay más de una magnitud de diferencia (entre decenas y miles).
 
-Aunque hay muchos autores que aconsejan realizar transformaciones hay que ser consientes de lo que estamos haciendo, transformaciones muy fuertes en una matriz con pocas diferencias pueden hacer que, por ejemplo, las especies raras tengan igual peso que las dominantes, esto es lo que queremos?.
+Aunque hay muchos autores que aconsejan realizar transformaciones hay que ser conscientes de lo que estamos haciendo, transformaciones muy fuertes en una matriz con pocas diferencias pueden hacer que, por ejemplo, las especies raras tengan igual peso que las dominantes, esto es lo que queremos?
 
 Veamos un ejemplo:
 
@@ -33,7 +33,7 @@ aves<- data.frame(sp1= sample(1:90, 10), sp2= sample(100:250, 10))
 
 insectos<- data.frame(sp1= sample(5:99, 10), sp2= sample(1000:2500, 10))
 
-##¿Que pasa cuando transformamos?
+##¿Qué pasa cuando transformamos?
 cbind(aves, sqrt(aves),log(aves))
 
 cbind(insectos, sqrt(insectos),log(insectos))
@@ -42,10 +42,9 @@ cbind(insectos, sqrt(insectos),log(insectos))
 ```
 
 
-La estandarización de los datos permite modificar las variables transformandolas en unidades de desviación típica, lo que nos permite comparar entre  valores de distribuciones
-normales diferentes, o de valores diferentes.
+La estandarización de los datos permite modificar las variables transformándolas en unidades de desviación típica, lo que nos permite comparar entre  valores de distribuciones normales diferentes, o de valores diferentes.
 
-La estandarización o tipificación se lo realiza restando a cada valor el valor medio de la variable y dividiendo para la desviación estandar.
+La estandarización o tipificación se lo realiza restando a cada valor el valor medio de la variable y dividiendo para la desviación estándar.
 
 
 ```{r}
@@ -55,14 +54,14 @@ avesE
 round(mean(avesE),1);sd(avesE) 
 
 ```
-Como vemos las variables estandarizadas tienen como propiedad que la desviación estandar es 1 y la media es 0.
+Como vemos las variables estandarizadas tienen como propiedad que la desviación estándar es 1 y la media es 0.
 
 
 ##Ordenación indirecta o no constreñida
 
 Existen muchos tipos de ordenaciones indirectas como saber que ordenación debo utilizar.  Una posibilidad es ver el tipo de respuesta que tenemos, si es una respuesta linear o monotónica o una respuesta unimodal.
 
-Para determinar que tipo de respuesta usamos la desviación estandar.  Si asumimos una distribución normal, datos con menos de tres desviaciones estandar tendrán una respuesta lineal, mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal. Para cada una de estas respuestas existe un análisis que se puede ejecutar \@ref(tab:ordenacion). 
+Para determinar que tipo de respuesta usamos la desviación estándar.  Si asumimos una distribución normal, datos con menos de tres desviaciones estándar tendrán una respuesta lineal, mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal. Para cada una de estas respuestas existe un análisis que se puede ejecutar \@ref(tab:ordenacion). 
 
 ```{r ordenacion, echo=FALSE}
 Ordenacion<- data.frame(`Medidas de Similitud` = c("Respuesta lineal", "Respuesta Unimodal", "Bray-Curtis"), `Tipo de Ordenación` = c("PCA", "CA/DCA", "PcoA/mMDS/nmMDS"))
@@ -80,7 +79,7 @@ __*Principal Component Analysis (PCA)*__
 
 Fortalezas 
 
-Es sencillo de interpretar ya que las distancias entre las muestras son interpretadas directamente como distancias euclideanas.
+Es sencillo de interpretar ya que las distancias entre las muestras son interpretadas directamente como distancias euclidianas.
 
 Apropiado para análisis multivariantes de variables ambientales.  El PCA es fuertemente afectado por ceros algo que es bastante común en datos biológicos, al contrario de datos ambientales donde la cantidad de ceros es menor.
 
@@ -88,15 +87,15 @@ Debilidades
 
 Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa la similitud entre muestras.
 
-La proyeccion de las distancias euclideas en un plano puede distorsionar algunas distancias en otros planos.
+La proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.
 
 __*Principal Coordinates Análisis (PCoA)*__ 
 
 Fortalezas
 
-Es una extensión del PCA, permite una definición más amplia de las disimilitudes entre muestras que la distancia Euclidea.
+Es una extensión del PCA, permite una definición más amplia de las disimilitudes entre muestras que la distancia Euclidia.
 
-Es capaz de convertir otras medidas de disimilitud (además de la euclídea) en distancias entre muestras.
+Es capaz de convertir otras medidas de disimilitud (además de la euclidia) en distancias entre muestras.
 
 Debilidades
 
@@ -120,7 +119,7 @@ __*Detrended Correspondence Analysis (DCA, DECORANA)*__
 Es una extensión del CA
 
 Fortalezas
-Corrige el “Efecto arco” del CA, realizando una ordenacion por segmentos y se realinean los segmentos para evitar la curvatura 
+Corrige el “Efecto arco” del CA, realizando una ordenación por segmentos y se realinean los segmentos para evitar la curvatura 
 
 Debilidades
 Excesiva manipulación de los datos (Pielou 1984)
@@ -141,7 +140,7 @@ pretende satisfacer las condiciones impuestas por el “rango” de similitudes.
 
 __1. Decidir que ordenación realizar__
 
-Este es el primer paso para poder realizar el análisis de ordenación. Como lo hemos visto podemos usar información para poder determinar que análisis realizar.  El tipo de datos que tenemos y por tanto la distancia a utilizar, si tenemos datos con muchos ceros no podremos utilizar una medida de distancia Euclideana y deberíamos trabajar con distancia de Bray-Curtis, por tanto es posible que esto nos defina el trabajar con Escalado Multidimensional (Multidimensional Scaling).  Si estamos utilizando otras distancias podríamos definir la cantidad de desviaciones estandar para decidir el tipo de análisis a realizar (\@ref(tab:ordenacion)).
+Este es el primer paso para poder realizar el análisis de ordenación. Como lo hemos visto podemos usar información para poder determinar que análisis realizar.  El tipo de datos que tenemos y por tanto la distancia a utilizar, si tenemos datos con muchos ceros no podremos utilizar una medida de distancia Euclidiana y deberíamos trabajar con distancia de Bray-Curtis, por tanto es posible que esto nos defina el trabajar con Escalado Multidimensional (Multidimensional Scaling).  Si estamos utilizando otras distancias podríamos definir la cantidad de desviaciones estándar para decidir el tipo de análisis a realizar (\@ref(tab:ordenacion)).
 
 Para ver la longitud de la gradiente (cantidad de desviaciones estándar) podríamos utilizar la función decorana.
 
@@ -226,4 +225,4 @@ points(ord.nmds, display="sites", cex=0.8, pch=21, col="black", bg="yellow")
 text(ord.nmds, display= "spec", cex=0.5, col="blue") 
 
 ```
-Podemos ver en la figura \@ref(fig:plotnmds) que ciertas especies estan asociadas con ciertas localidades esto nos podría servir para explorar los datos.
+Podemos ver en la figura \@ref(fig:plotnmds) que ciertas especies están asociadas con ciertas localidades esto nos podría servir para explorar los datos.

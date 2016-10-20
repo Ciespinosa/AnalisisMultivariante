@@ -118,9 +118,10 @@ code > span.in { color: #008000; } /* Information */
 <li class="chapter" data-level="2.2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-la-funcion-de-enlace"><i class="fa fa-check"></i><b>2.2.1</b> Elegir la función de enlace</a></li>
 <li class="chapter" data-level="2.2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-el-punto-de-corte"><i class="fa fa-check"></i><b>2.2.2</b> Elegir el punto de corte</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#ejercicio-2-analisis-de-clasificacion"><i class="fa fa-check"></i><b>2.3</b> Ejercicio 2: Análisis de clasificación</a></li>
+<li class="chapter" data-level="2.3" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#anosimincluir"><i class="fa fa-check"></i><b>2.3</b> ANOSIM…Incluir</a></li>
+<li class="chapter" data-level="2.4" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#ejercicio-2-analisis-de-clasificacion"><i class="fa fa-check"></i><b>2.4</b> Ejercicio 2: Análisis de clasificación</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="ordenaciones.html"><a href="ordenaciones.html"><i class="fa fa-check"></i><b>3</b> Ordenaciónes</a><ul>
+<li class="chapter" data-level="3" data-path="ordenaciones.html"><a href="ordenaciones.html"><i class="fa fa-check"></i><b>3</b> Ordenaciones</a><ul>
 <li class="chapter" data-level="3.1" data-path="ordenaciones.html"><a href="ordenaciones.html#pasos-previos-transformacion-y-estandarizacion-de-datos"><i class="fa fa-check"></i><b>3.1</b> Pasos previos: Transformación y Estandarización de datos</a></li>
 <li class="chapter" data-level="3.2" data-path="ordenaciones.html"><a href="ordenaciones.html#ordenacion-indirecta-o-no-constrenida"><i class="fa fa-check"></i><b>3.2</b> Ordenación indirecta o no constreñida</a></li>
 <li class="chapter" data-level="3.3" data-path="ordenaciones.html"><a href="ordenaciones.html#pasos-para-el-analisis-de-ordenacion"><i class="fa fa-check"></i><b>3.3</b> Pasos para el análisis de Ordenación</a></li>
@@ -152,7 +153,7 @@ code > span.in { color: #008000; } /* Information */
             <section class="normal" id="section-">
 <div id="ordenaciones-directas-o-constrenidas" class="section level1">
 <h1><span class="header-section-number">Capítulo 4</span> Ordenaciones Directas o Constreñidas</h1>
-<p>Si bien las técnicas de ordenación indirecta nos permite descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.</p>
+<p>Si bien las técnicas de ordenación indirecta nos permiten descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.</p>
 <p>Si disponemos de una matriz de variables explicativas es posible utilizar análisis de ordenación constreñidos. De esta forma, esta matriz representa la información que tenemos sobre cada una de las muestras y podemos usarla para predecir los valores de las variables respuesta (la composición de especies).</p>
 <p>Al igual que para los análisis de ordenaciones no constreñidas el tipo de ordenación depende de la respuesta que tenemos en las variables (Tabla <a href="ordenaciones-directas-o-constrenidas.html#tab:ordenacion1">4.1</a> )</p>
 <table>
@@ -182,7 +183,7 @@ code > span.in { color: #008000; } /* Information */
 </tr>
 </tbody>
 </table>
-<p>Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial. Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta. Podría dividir la información, por ejemplo, en variables ambientales y variables bióticas y ver cuanto explica cada una y cuanto explican en conjunto.</p>
+<p>Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial. Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta. Podría dividir la información, por ejemplo, en variables ambientales y variables bióticas y ver cuánto explica cada una y cuanto explican en conjunto.</p>
 <div id="realizando-una-ordenacion-constrenida" class="section level2">
 <h2><span class="header-section-number">4.1</span> Realizando una ordenación constreñida</h2>
 <p>Al igual que en el caso de la ordenación no constreñida debemos decidir el tipo de ordenación constreñida que vamos hacer. En el caso de los datos de <em>Dune</em> sabemos que la respuesta es unimodal por lo que escogeremos un análisis canónico de correspondencias (CCA) para nuestra ordenación constreñida.</p>
@@ -254,7 +255,7 @@ fitVar</code></pre></div>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## Permutation: free
 ## Number of permutations: 999</code></pre>
-<p>Podemos utilizar el <em>Goodness of fit</em> para ver cuales son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.</p>
+<p>Podemos utilizar el <em>Goodness of fit</em> para ver cuáles son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.ccafit &lt;-<span class="st"> </span><span class="kw">cca</span>(dune~Manure+Management, <span class="dt">data=</span>dune.env)
 ord.ccafit</code></pre></div>
 <pre><code>## Call: cca(formula = dune ~ Manure + Management, data = dune.env)
@@ -322,7 +323,7 @@ short</code></pre></div>
 <h2><span class="header-section-number">4.2</span> Ejercicio 3: Análisis de Ordenación</h2>
 <p>Con los datos utilizados para realizar el análisis de aglomerados, vamos a realizar un análisis de ordenación constreñida.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbaceas.</p></li>
+<li><p>Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbáceas.</p></li>
 <li><p>Realice un análisis para definir las variables que se debería utilizar en el análisis</p></li>
 <li><p>Ajuste un modelo y defina el porcentaje de variación explicado.</p></li>
 <li><p>Compara los resultados de la ordenación directa si en vez de transformar los datos corremos los modelos con los datos brutos.</p></li>
@@ -367,7 +368,7 @@ gitbook.start({
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/05-OrdDirectas.Rmd",
 "text": "Edit"
 },
-"download": ["AnalisisMultivarianteComunidad.pdf", "AnalisisMultivarianteComunidad.epub"],
+"download": null,
 "toc": {
 "collapse": "subsection"
 }
