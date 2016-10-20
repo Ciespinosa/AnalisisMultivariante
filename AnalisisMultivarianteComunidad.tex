@@ -1259,7 +1259,7 @@ realizaremos un análisis de Agrupamiento (Cluster).
 
 Para esto disponemos de una matriz con datos de la composición de la
 comunidad que puede ser descargado
-\href{https://github.com/Ciespinosa/AnalisisMultivariante/herbaceas.xlsx}{aquí}.
+\href{https://github.com/Ciespinosa/datos_practicas/blob/master/herbaceas.xlsx}{aquí}.
 
 Los datos corresponden a un levantamiento de la vegetación de herbáceas
 en 4 tiempos distintos; final de invierno (abril 2012), estación seca
@@ -1292,10 +1292,744 @@ Con estos datos:
   generación de los grupos.
 \end{enumerate}
 
-\chapter{Ordenaciónes Indirectas}\label{ordenaciones-indirectas}
+\chapter{Ordenaciónes}\label{ordenaciones}
+
+En ecología es bastante normal que dispongamos de un conjunto de datos
+que estan conformados por una serie de sitios o localidades, para los
+cuales tenemos una serie de variables. Estas variables puede ser cada
+especie o cada condición que levantemos de este sitio, de esta forma un
+sitio va a tener tantas variables como especies o factores levantados.
+
+Aunque como vimos un diagrama de dispersión es una buena herramienta
+para representar las tendencias del conjunto de grupos, existe la
+limitante de que esto es factible con dos o máximo tres variables
+(especies), con más de tres variables es imposible poder graficarlo.
+
+De esta forma, el objetivo de los métodos de ordenación es representar
+los datos a lo largo de un número reducido de ejes ortogonales,
+construidos de tal manera que representan, en orden, las principales
+tendencias de los datos \citep{Borcard2011}.
+
+Las ordenaciones pueden ser indirectas y directas (constreñidas). Las
+ordenaciones indirectas pueden ser utilizadas para interpretarse
+visualmente o asociadas a otros métodos como regresión. Mientras que las
+ordenaciones directas permiten hacer asociaciones con variables
+explicativas, generar un orden constreñido por otras variables.
+
+En este capítulo nos centraremos en las Ordenaciones indirectas.
+
+\section{Pasos previos: Transformación y Estandarización de
+datos}\label{pasos-previos-transformacion-y-estandarizacion-de-datos}
+
+Cuando trabajamos con datos multivariantes cabe la posibilidad de que
+los datos dentro de esta matriz tengan diferencias de medidas
+importantes.
+
+Imaginemos que estamos trabajando con la comunidad de herbaceas y
+existan especies con abundancias máximas de 500, mientras otras especies
+no alcanzan 10 individuos, o en comunidades de insectos donde ciertas
+especies puedan tener valores de miles y otros de decenas. Si no
+transformamos la ordenación estará determinada básicamente por esta
+especie.
+
+Al transformar los datos evitamos que las especies más comunes dominen
+en el resultado final de la ordenación y aumentamos la influencia de las
+especies subordinadas en el modelo resultante.
+
+Existen varias posibilidades para transformar los datos, por lo que
+definir que función utilizar para transformar los datos es importante.
+Cada tipo de transformación produce resultados distintos por lo que
+debemos utilizarlas con precausión.
+
+Las transformaciones más sencilla o menos intensa es la raiz cuadrada,
+mientras que el logaritmo es la transformación más intensa, podríamos
+utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la
+utilizaríamos cuando tenemos diferencias como en el caso de las aves con
+variaciones de una magnitud de diferencia (entre decenas y centenas),
+mientras que la transformación logarítmica la haríamos con la comunidad
+de insectos donde hay mas de una magnitud de diferencia (entre decenas y
+miles).
+
+Aunque hay muchos autores que aconsejan realizar transformaciones hay
+que ser consientes de lo que estamos haciendo, transformaciones muy
+fuertes en una matriz con pocas diferencias pueden hacer que, por
+ejemplo, las especies raras tengan igual peso que las dominantes, esto
+es lo que queremos?.
+
+Veamos un ejemplo:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{4}\NormalTok{)}
+\NormalTok{aves<-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{sp1=} \KeywordTok{sample}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{90}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DataTypeTok{sp2=} \KeywordTok{sample}\NormalTok{(}\DecValTok{100}\NormalTok{:}\DecValTok{250}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+
+\NormalTok{insectos<-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{sp1=} \KeywordTok{sample}\NormalTok{(}\DecValTok{5}\NormalTok{:}\DecValTok{99}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DataTypeTok{sp2=} \KeywordTok{sample}\NormalTok{(}\DecValTok{1000}\NormalTok{:}\DecValTok{2500}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+
+\NormalTok{##¿Que pasa cuando transformamos?}
+\KeywordTok{cbind}\NormalTok{(aves, }\KeywordTok{sqrt}\NormalTok{(aves),}\KeywordTok{log}\NormalTok{(aves))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    sp1 sp2      sp1      sp2      sp1      sp2
+## 1   53 213 7.280110 14.59452 3.970292 5.361292
+## 2    1 142 1.000000 11.91638 0.000000 4.955827
+## 3   26 114 5.099020 10.67708 3.258097 4.736198
+## 4   25 241 5.000000 15.52417 3.218876 5.484797
+## 5   70 161 8.366600 12.68858 4.248495 5.081404
+## 6   23 166 4.795832 12.88410 3.135494 5.111988
+## 7   61 240 7.810250 15.49193 4.110874 5.480639
+## 8   76 184 8.717798 13.56466 4.330733 5.214936
+## 9   78 237 8.831761 15.39480 4.356709 5.468060
+## 10   6 208 2.449490 14.42221 1.791759 5.337538
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cbind}\NormalTok{(insectos, }\KeywordTok{sqrt}\NormalTok{(insectos),}\KeywordTok{log}\NormalTok{(insectos))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    sp1  sp2      sp1      sp2      sp1      sp2
+## 1   72 1851 8.485281 43.02325 4.276666 7.523481
+## 2   98 1358 9.899495 36.85105 4.584967 7.213768
+## 3   52 2316 7.211103 48.12484 3.951244 7.747597
+## 4   50 1980 7.071068 44.49719 3.912023 7.590852
+## 5   64 1722 8.000000 41.49699 4.158883 7.451242
+## 6   79 2452 8.888194 49.51767 4.369448 7.804659
+## 7   47 1687 6.855655 41.07311 3.850148 7.430707
+## 8   94 1929 9.695360 43.92038 4.543295 7.564757
+## 9   49 1579 7.000000 39.73663 3.891820 7.364547
+## 10  96 1009 9.797959 31.76476 4.564348 6.916715
+\end{verbatim}
+
+La estandarización de los datos permite modificar las variables
+transformandolas en unidades de desviación típica, lo que nos permite
+comparar entre valores de distribuciones normales diferentes, o de
+valores diferentes.
+
+La estandarización o tipificación se lo realiza restando a cada valor el
+valor medio de la variable y dividiendo para la desviación estandar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avesE <-}\StringTok{ }\NormalTok{(aves[,}\DecValTok{1}\NormalTok{]-}\KeywordTok{mean}\NormalTok{(aves[,}\DecValTok{1}\NormalTok{]))/}\KeywordTok{sd}\NormalTok{(aves[,}\DecValTok{1}\NormalTok{])}
+\NormalTok{avesE}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  0.3819546 -1.4073822 -0.5471241 -0.5815345  0.9669301 -0.6503551
+##  [7]  0.6572372  1.1733920  1.2422126 -1.2353306
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(avesE),}\DecValTok{1}\NormalTok{);}\KeywordTok{sd}\NormalTok{(avesE) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+Como vemos las variables estandarizadas tienen como propiedad que la
+desviación estandar es 1 y la media es 0.
+
+\section{Ordenación indirecta o no
+constreñida}\label{ordenacion-indirecta-o-no-constrenida}
+
+Existen muchos tipos de ordenaciones indirectas como saber que
+ordenación debo utilizar. Una posibilidad es ver el tipo de respuesta
+que tenemos, si es una respuesta linear o monotónica o una respuesta
+unimodal.
+
+Para determinar que tipo de respuesta usamos la desviación estandar. Si
+asumimos una distribución normal, datos con menos de tres desviaciones
+estandar tendrán una respuesta lineal, mientras que si tiene más de tres
+desviaciones se asumirá una respuesta unimodal. Para cada una de estas
+respuestas existe un análisis que se puede ejecutar
+\ref{tab:ordenacion}.
+
+\begin{table}
+
+\caption{\label{tab:ordenacion}Relación entre el tipo de variable y el método de ordenación a utilizar}
+\centering
+\begin{tabular}[t]{ll}
+\toprule
+Medidas.de.Similitud & Tipo.de.Ordenación\\
+\midrule
+Respuesta lineal & PCA\\
+Respuesta Unimodal & CA/DCA\\
+Bray-Curtis & PcoA/mMDS/nmMDS\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Algunos comentarios sobre los métodos de ordenación.
+
+\textbf{\emph{Principal Component Analysis (PCA)}}
+
+Fortalezas
+
+Es sencillo de interpretar ya que las distancias entre las muestras son
+interpretadas directamente como distancias euclideanas.
+
+Apropiado para análisis multivariantes de variables ambientales. El PCA
+es fuertemente afectado por ceros algo que es bastante común en datos
+biológicos, al contrario de datos ambientales donde la cantidad de ceros
+es menor.
+
+Debilidades
+
+Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa
+la similitud entre muestras.
+
+La proyeccion de las distancias euclideas en un plano puede distorsionar
+algunas distancias en otros planos.
+
+\textbf{\emph{Principal Coordinates Análisis (PCoA)}}
+
+Fortalezas
+
+Es una extensión del PCA, permite una definición más amplia de las
+disimilitudes entre muestras que la distancia Euclidea.
+
+Es capaz de convertir otras medidas de disimilitud (además de la
+euclídea) en distancias entre muestras.
+
+Debilidades
+
+La proyección de las distancias en un plano también sufre importantes
+distorsiones como en el caso del PCA.
+
+\textbf{\emph{Correspondence Analysis}}
+
+Fortalezas
+
+Implícitamente se generan distancias de Chi-cuadrado entre las muestras.
+
+Se basa en un modelo de respuesta unimodal de las especies a los
+gradientes ambientales subyacentes.
+
+Debilidades
+
+``Efecto arco'' Causado por la respuesta unimodal de la abundancia de
+especies a un gradiente ambiental.
+
+\textbf{\emph{Detrended Correspondence Analysis (DCA, DECORANA)}}
+
+Es una extensión del CA
+
+Fortalezas Corrige el ``Efecto arco'' del CA, realizando una ordenacion
+por segmentos y se realinean los segmentos para evitar la curvatura
+
+Debilidades Excesiva manipulación de los datos (Pielou 1984) Hay quien
+opina que es demasiado parecido a cortar y pegar los datos con tijeras y
+pegamento.
+
+\textbf{\emph{Multidimensional Scaling (MDS)}}
+
+Se puede construir una matriz de semejansas con el coeficiente de
+semejanza que se considere biológicamente relevante para los datos.
+
+La ordenación de las muestras utiliza el orden relativo de las
+distancias entre muestras y no los valores absolutos de los coeficientes
+de similitud. Por eso la representación gráfica del MDS sufre menos
+distorsiones respecto a las distancias reales.
+
+pretende satisfacer las condiciones impuestas por el ``rango'' de
+similitudes. p.ej.: Si la muestra 1 es más parecida a la 2 que a la 3
+entonces se localizará más cercana a la muestra 2 que a la 3.
+
+\section{Pasos para el análisis de
+Ordenación}\label{pasos-para-el-analisis-de-ordenacion}
+
+\textbf{1. Decidir que ordenación realizar}
+
+Este es el primer paso para poder realizar el análisis de ordenación.
+Como lo hemos visto podemos usar información para poder determinar que
+análisis realizar. El tipo de datos que tenemos y por tanto la distancia
+a utilizar, si tenemos datos con muchos ceros no podremos utilizar una
+medida de distancia Euclideana y deberíamos trabajar con distancia de
+Bray-Curtis, por tanto es posible que esto nos defina el trabajar con
+Escalado Multidimensional (Multidimensional Scaling). Si estamos
+utilizando otras distancias podríamos definir la cantidad de
+desviaciones estandar para decidir el tipo de análisis a realizar
+(\ref{tab:ordenacion}).
+
+Para ver la longitud de la gradiente (cantidad de desviaciones estándar)
+podríamos utilizar la función decorana.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(vegan)}
+\KeywordTok{data}\NormalTok{(dune)}
+
+\CommentTok{#str(dune) revisa los datos}
+
+\NormalTok{ord.dca <-}\StringTok{ }\KeywordTok{decorana}\NormalTok{(dune)}
+\end{Highlighting}
+\end{Shaded}
+
+En el primer eje (DCA1) podemos ver la longitud de este eje, el cual
+esta expresado en Unidades de desviación, en este caso 3.7. Esta
+información ya nos dice que el análisis que debemos hacer será un CA o
+un DCA.
+
+\textbf{2. Transformación de los datos}
+
+Lo siguiente que debemos decidir es si es necesario transformar. Siempre
+lo mejor es no transformar los datos, sin embargo, como vimos antes si
+los datos son muy distintos es necesario realizar esta transformación.
+Revisa los datos de Dune, como ven no existen diferencias importantes
+entre los datos por tanto no transformaremos.
+
+\begin{quote}
+Recuerde para transformar los datos definimos la variación entre
+variables. Variables con más de tres magnitudes de diferencia logaritmo
+y con dos raíz cuadrada.
+\end{quote}
+
+Aunque no es necesario transformar, la función \texttt{decostand} del
+paquete vegan se puede utilizar para la estandarización y transformar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dsRaiz <-}\StringTok{ }\KeywordTok{decostand}\NormalTok{(dune, }\StringTok{"standardize"}\NormalTok{, }\StringTok{"hellinger"}\NormalTok{) }
+\CommentTok{#Estandarizado y transformado raíz cuadrada (hellinger)}
+
+\NormalTok{dslog <-}\StringTok{ }\KeywordTok{decostand}\NormalTok{(dune, }\StringTok{"standardize"}\NormalTok{, }\StringTok{"log"}\NormalTok{) }
+\CommentTok{#Estandarizado y transformado logaritmo (log)}
+
+\NormalTok{dsSta <-}\StringTok{ }\KeywordTok{decostand}\NormalTok{(dune, }\StringTok{"standardize"}\NormalTok{)}
+\CommentTok{#Estandarizado}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{3. Desarrollar el análisis}
+
+Realizamos el análisis Decorana y Análisis Canónico (CA) y graficamos
+los datos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.dca <-}\StringTok{ }\KeywordTok{decorana}\NormalTok{(dune)}
+\NormalTok{ord.dca}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## decorana(veg = dune) 
+## 
+## Detrended correspondence analysis with 26 segments.
+## Rescaling of axes with 4 iterations.
+## 
+##                   DCA1   DCA2    DCA3    DCA4
+## Eigenvalues     0.5117 0.3036 0.12125 0.14267
+## Decorana values 0.5360 0.2869 0.08136 0.04814
+## Axis lengths    3.7004 3.1166 1.30055 1.47888
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.ca <-}\StringTok{ }\KeywordTok{cca}\NormalTok{(dune)}
+\NormalTok{ord.ca}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call: cca(X = dune)
+## 
+##               Inertia Rank
+## Total           2.115     
+## Unconstrained   2.115   19
+## Inertia is mean squared contingency coefficient 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8 
+## 0.5360 0.4001 0.2598 0.1760 0.1448 0.1079 0.0925 0.0809 
+## (Showed only 8 of all 19 unconstrained eigenvalues)
+\end{verbatim}
+
+Realizamos el análisis de escalado multidimensional (MDS) usando la
+función \texttt{metaMDS}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.nmds <-}\StringTok{ }\KeywordTok{metaMDS}\NormalTok{(dune,}\DataTypeTok{distance=}\StringTok{"bray"}\NormalTok{, }\DataTypeTok{k=}\DecValTok{2}\NormalTok{, }\DataTypeTok{trymax=}\DecValTok{50}\NormalTok{)   }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.nmds }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## metaMDS(comm = dune, distance = "bray", k = 2, trymax = 50) 
+## 
+## global Multidimensional Scaling using monoMDS
+## 
+## Data:     dune 
+## Distance: bray 
+## 
+## Dimensions: 2 
+## Stress:     0.1183186 
+## Stress type 1, weak ties
+## Two convergent solutions found after 20 tries
+## Scaling: centring, PC rotation, halfchange scaling 
+## Species: expanded scores based on 'dune'
+\end{verbatim}
+
+\textbf{4. Interpretar los resultados}
+
+Para el DCA y CA
+
+Eigenvalue: es la medida de la importancia de un eje, la cantidad de
+varianza que explica ese eje. En este caso, el primer eje tanto el DCA
+como el CA explican el 53\% de la variación
+
+Axis length: es la longitud del eje principal. Nos da una estima de qué
+tipo de respuesta tienen nuestros datos.
+
+Para el MDS
+
+El valor de estrés (stress) nos indica la cantidad de varianza que
+\textbf{NO} se ajustó, mientras más bajo es el estrés mayor varianza
+explica. Algunos autores plantean que bajo 0.2 es aceptable, mientras
+que valores superiores hay un ajuste pobre. En el caso del ejemplo el
+ajuste es bueno.
+
+\textbf{5. Graficar los resultados}
+
+Lo siguiente que debemos hacer es graficar los resultados con el fin de
+ver si existen algunos patrones.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(ord.nmds, }\DataTypeTok{type=}\StringTok{"n"}\NormalTok{)  }\CommentTok{# para dibujar un plot vacío}
+\KeywordTok{points}\NormalTok{(ord.nmds, }\DataTypeTok{display=}\StringTok{"sites"}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.8}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{21}\NormalTok{, }\DataTypeTok{col=}\StringTok{"black"}\NormalTok{, }\DataTypeTok{bg=}\StringTok{"yellow"}\NormalTok{)  }
+\KeywordTok{text}\NormalTok{(ord.nmds, }\DataTypeTok{display=} \StringTok{"spec"}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/plotnmds-1} 
+
+}
+
+\caption{Representación gráfica del NMDS}\label{fig:plotnmds}
+\end{figure}
+
+Podemos ver en la figura \ref{fig:plotnmds} que ciertas especies estan
+asociadas con ciertas localidades esto nos podría servir para explorar
+los datos.
 
 \chapter{Ordenaciones Directas o
 Constreñidas}\label{ordenaciones-directas-o-constrenidas}
+
+Si bien las técnicas de ordenación indirecta nos permite descubrir
+ciertos patrones, no nos permite testar hipótesis y ver las relaciones
+de esta matriz con otras variables.
+
+Si disponemos de una matriz de variables explicativas es posible
+utilizar análisis de ordenación constreñidos. De esta forma, esta matriz
+representa la información que tenemos sobre cada una de las muestras y
+podemos usarla para predecir los valores de las variables respuesta (la
+composición de especies).
+
+Al igual que para los análisis de ordenaciones no constreñidas el tipo
+de ordenación depende de la respuesta que tenemos en las variables
+(Tabla \ref{tab:ordenacion1} )
+
+\begin{table}
+
+\caption{\label{tab:ordenacion1}Relación entre el tipo de variable y el método de ordenación a utilizar}
+\centering
+\begin{tabular}[t]{lll}
+\toprule
+Medidas.de.Similitud & Tipo.de.Ordenación & Tipo.Ordenación.Constreñida\\
+\midrule
+Respuesta lineal & PCA & RDA (Redundancy Analysis)\\
+Respuesta Unimodal & CA/DCA & CCA (Canonical Correspondence Analysis)\\
+Bray-Curtis & PcoA/mMDS/nmMDS & PERMANOVA\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Una interesante propiedad de los análisis de ordenación constreñidos es
+que puedo hacer una ordenación parcial. Esta propiedad me permite
+evaluar como un grupo de variables pueden influir en mi matriz de
+respuesta. Podría dividir la información, por ejemplo, en variables
+ambientales y variables bióticas y ver cuanto explica cada una y cuanto
+explican en conjunto.
+
+\section{Realizando una ordenación
+constreñida}\label{realizando-una-ordenacion-constrenida}
+
+Al igual que en el caso de la ordenación no constreñida debemos decidir
+el tipo de ordenación constreñida que vamos hacer. En el caso de los
+datos de \emph{Dune} sabemos que la respuesta es unimodal por lo que
+escogeremos un análisis canónico de correspondencias (CCA) para nuestra
+ordenación constreñida.
+
+Para hacer la ordenación constreñida necesitamos una matriz con
+variables explicativas, utilizaremos las variables provistas en el
+paquete vegan denominadas env.env.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(}\StringTok{"dune.env"}\NormalTok{) }\CommentTok{#Llamamos a los datos}
+
+\NormalTok{ord.cca <-}\StringTok{ }\KeywordTok{cca}\NormalTok{(dune~}\StringTok{ }\NormalTok{A1 +}\StringTok{ }\NormalTok{Use, }\DataTypeTok{data=}\NormalTok{dune.env)}
+\NormalTok{ord.cca}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call: cca(formula = dune ~ A1 + Use, data = dune.env)
+## 
+##               Inertia Proportion Rank
+## Total          2.1153     1.0000     
+## Constrained    0.4724     0.2233    3
+## Unconstrained  1.6429     0.7767   16
+## Inertia is mean squared contingency coefficient 
+## 
+## Eigenvalues for constrained axes:
+##    CCA1    CCA2    CCA3 
+## 0.27630 0.14929 0.04683 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8    CA9   CA10 
+## 0.3792 0.3091 0.2093 0.1629 0.1308 0.0965 0.0758 0.0731 0.0483 0.0456 
+##   CA11   CA12   CA13   CA14   CA15   CA16 
+## 0.0431 0.0237 0.0163 0.0141 0.0108 0.0042
+\end{verbatim}
+
+Lo que podemos ver es que la variable A1 más Use explican el 22.33\% de
+la variación en los datos.
+
+La decisión de que modelos deberían generar debe responder a una lógica
+ecológica, así podemos probar como algunas variables juegan o no un rol
+en la estructura de la comunidad.
+
+Una herramienta que podríamos utilizar para analizar la importancia de
+cada variable es utilizar la función \texttt{envfit}, esta función
+permite relacionar la ordenación no constreñida con las variables
+explicativas y mediante un test de permutación mostrarnos que variables
+se asocian significativamente con la ordenación.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitVar <-}\StringTok{ }\KeywordTok{envfit}\NormalTok{(ord.ca, dune.env)}
+\NormalTok{fitVar}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ***VECTORS
+## 
+##         CA1      CA2     r2 Pr(>r)  
+## A1 0.998160 0.060614 0.3104  0.055 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Permutation: free
+## Number of permutations: 999
+## 
+## ***FACTORS:
+## 
+## Centroids:
+##                  CA1     CA2
+## Moisture1    -0.7484 -0.1423
+## Moisture2    -0.4652 -0.2156
+## Moisture4     0.1827 -0.7315
+## Moisture5     1.1143  0.5708
+## ManagementBF -0.7258 -0.1413
+## ManagementHF -0.3867 -0.2960
+## ManagementNM  0.6517  1.4405
+## ManagementSF  0.3376 -0.6761
+## UseHayfield  -0.2861  0.6488
+## UseHaypastu  -0.0735 -0.5602
+## UsePasture    0.5163  0.0508
+## Manure0       0.6517  1.4405
+## Manure1      -0.4639 -0.1738
+## Manure2      -0.5872 -0.3600
+## Manure3       0.5187 -0.3172
+## Manure4      -0.2059 -0.8775
+## 
+## Goodness of fit:
+##                r2 Pr(>r)    
+## Moisture   0.4113  0.005 ** 
+## Management 0.4441  0.001 ***
+## Use        0.1845  0.087 .  
+## Manure     0.4552  0.010 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Permutation: free
+## Number of permutations: 999
+\end{verbatim}
+
+Podemos utilizar el \emph{Goodness of fit} para ver cuales son las
+variables que ajustan la ordenación y utilizar estas para hacer el
+modelo constreñido. En este caso utilizaremos Manure y Management.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.ccafit <-}\StringTok{ }\KeywordTok{cca}\NormalTok{(dune~Manure+Management, }\DataTypeTok{data=}\NormalTok{dune.env)}
+\NormalTok{ord.ccafit}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Call: cca(formula = dune ~ Manure + Management, data = dune.env)
+## 
+##               Inertia Proportion Rank
+## Total          2.1153     1.0000     
+## Constrained    0.8766     0.4144    6
+## Unconstrained  1.2386     0.5856   13
+## Inertia is mean squared contingency coefficient 
+## Some constraints were aliased because they were collinear (redundant)
+## 
+## Eigenvalues for constrained axes:
+##   CCA1   CCA2   CCA3   CCA4   CCA5   CCA6 
+## 0.3617 0.2271 0.1454 0.0655 0.0418 0.0353 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8    CA9   CA10 
+## 0.4082 0.1592 0.1493 0.1252 0.0962 0.0774 0.0649 0.0424 0.0382 0.0312 
+##   CA11   CA12   CA13 
+## 0.0251 0.0121 0.0090
+\end{verbatim}
+
+Como vemos con este procedimiento subimos al 41\% de la varianza
+explicada.
+
+Podemos utilizar la función anova para evaluar la significancia de cada
+variable dentro del modelo, de forma separada.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ord.ccaT <-}\StringTok{ }\KeywordTok{cca}\NormalTok{(dune~}\StringTok{ }\NormalTok{., }\DataTypeTok{data=}\NormalTok{dune.env)}
+\KeywordTok{anova}\NormalTok{(ord.ccaT, }\DataTypeTok{by=}\StringTok{"term"}\NormalTok{, }\DataTypeTok{permu=}\DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Permutation test for cca under reduced model
+## Terms added sequentially (first to last)
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: cca(formula = dune ~ A1 + Moisture + Management + Use + Manure, data = dune.env)
+##            Df ChiSquare      F Pr(>F)  
+## A1          1   0.22476 2.5704  0.012 *
+## Moisture    3   0.51898 1.9783  0.012 *
+## Management  3   0.39543 1.5074  0.047 *
+## Use         2   0.10910 0.6238  0.906  
+## Manure      3   0.25490 0.9717  0.519  
+## Residual    7   0.61210                
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+Como vemos esto cambia lo que inicialmente habíamos decidido, esto es
+debido a que algunas de las variables pueden estar correlacionadas entre
+ellas.
+
+Bien ahora necesitamos graficar los resultados. Podemos utilizar la
+función plot e ir graficando cada uno de los componentes (Figura
+\ref{fig:plotcca}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(ord.cca, }\DataTypeTok{dis=}\StringTok{"sp"}\NormalTok{, }\DataTypeTok{type=}\StringTok{"n"}\NormalTok{)}
+\KeywordTok{points}\NormalTok{(ord.cca, }\DataTypeTok{dis=}\StringTok{"sites"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{col=}\StringTok{"grey"}\NormalTok{)}
+\KeywordTok{points}\NormalTok{(ord.cca, }\DataTypeTok{display=}\StringTok{"cn"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(ord.cca, }\DataTypeTok{dis=}\StringTok{"sp"}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.6}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(ord.cca, }\DataTypeTok{display =} \StringTok{"cn"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/plotcca-1} 
+
+}
+
+\caption{Representación gráfica del CCA}\label{fig:plotcca}
+\end{figure}
+
+Muchas veces uno de los problemas que tenemos para graficar los datos es
+que los nombres de las especies son muy largos, en estos casos podemos
+utilizar una función que se denomina \texttt{make.cepnames} la cual
+permite acortar los nombres.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(BCI)}
+\KeywordTok{names}\NormalTok{(BCI[}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Abarema.macradenia"    "Vachellia.melanoceras" "Acalypha.diversifolia"
+## [4] "Acalypha.macrostachya" "Adelia.triloba"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{short <-}\StringTok{ }\KeywordTok{make.cepnames}\NormalTok{(}\KeywordTok{names}\NormalTok{(BCI[}\DecValTok{1}\NormalTok{:}\DecValTok{5}\NormalTok{]))}
+\NormalTok{short}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Abarmacr" "Vachmela" "Acaldive" "Acalmacr" "Adeltril"
+\end{verbatim}
+
+Existen procedimientos para construir modelos que ahora no tocaremos,
+puede encontrar más información en
+\href{http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf}{Oksanen
+2015}
+
+Nota: para realizar un permanova debemos utilizar la función adonis. El
+procedimiento es similar al desarrollo del cca.
+
+\section{Ejercicio 3: Análisis de
+Ordenación}\label{ejercicio-3-analisis-de-ordenacion}
+
+Con los datos utilizados para realizar el análisis de aglomerados, vamos
+a realizar un análisis de ordenación constreñida.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Defina que tipo de ordenación constreñida debe realizar para explicar
+  la variación de los datos de herbaceas.
+\item
+  Realice un análisis para definir las variables que se debería utilizar
+  en el análisis
+\item
+  Ajuste un modelo y defina el porcentaje de variación explicado.
+\item
+  Compara los resultados de la ordenación directa si en vez de
+  transformar los datos corremos los modelos con los datos brutos.
+\item
+  Realice un gráfico del modelo desarrollado.
+\end{enumerate}
 
 \bibliography{packages}
 

@@ -1,1 +1,104 @@
 # Ordenaciones Directas o Constreñidas
+
+Si bien las técnicas de ordenación indirecta nos permite descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.
+
+Si disponemos de una matriz de variables explicativas es posible utilizar análisis de ordenación constreñidos. De esta forma, esta matriz representa la información que tenemos sobre cada una de las muestras y podemos usarla para predecir los valores de las variables respuesta (la composición de especies).
+
+Al igual que para los análisis de ordenaciones no constreñidas el tipo de ordenación depende de la respuesta que tenemos en las variables (Tabla \@ref(tab:ordenacion1) )
+
+```{r ordenacion1, echo=FALSE}
+Ordenacion1<- data.frame(`Medidas de Similitud` = c("Respuesta lineal", "Respuesta Unimodal", "Bray-Curtis"), `Tipo de Ordenación` = c("PCA", "CA/DCA", "PcoA/mMDS/nmMDS"), `Tipo Ordenación Constreñida` = c("RDA (Redundancy Analysis)", "CCA (Canonical Correspondence Analysis)", "PERMANOVA"))
+
+knitr::kable(
+  Ordenacion1, booktabs = TRUE,
+  caption = 'Relación entre el tipo de variable y el método de ordenación a utilizar'
+)
+```
+
+Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial.  Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta.  Podría dividir  la información, por ejemplo, en variables ambientales y variables bióticas y ver cuanto explica cada una y cuanto explican en conjunto.
+
+##Realizando una ordenación constreñida
+
+Al igual que en el caso de la ordenación no constreñida debemos decidir el tipo de ordenación constreñida que vamos hacer.  En el caso de los datos de _Dune_ sabemos que la respuesta es unimodal por lo que escogeremos un análisis canónico de correspondencias (CCA) para nuestra ordenación constreñida.
+
+Para hacer la ordenación constreñida necesitamos una matriz con variables explicativas, utilizaremos las variables provistas en el paquete vegan denominadas env.env.
+
+```{r}
+data("dune.env") #Llamamos a los datos
+
+ord.cca <- cca(dune~ A1 + Use, data=dune.env)
+ord.cca
+```
+Lo que podemos ver es que la variable A1 más Use explican el 22.33% de la variación en los datos.
+
+La decisión de que modelos deberían generar debe responder a una lógica ecológica, así podemos probar como algunas variables juegan o no un rol en la estructura de la comunidad.
+
+Una herramienta que podríamos utilizar para analizar la importancia de cada variable es utilizar la función `envfit`, esta función permite relacionar la ordenación no constreñida con las variables explicativas y mediante un test de permutación mostrarnos que variables se asocian significativamente con la ordenación.
+
+
+```{r}
+fitVar <- envfit(ord.ca, dune.env)
+fitVar
+```
+
+Podemos utilizar el _Goodness of fit_ para ver cuales son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.
+
+```{r}
+ord.ccafit <- cca(dune~Manure+Management, data=dune.env)
+ord.ccafit
+```
+
+Como vemos con este procedimiento subimos al 41% de la varianza explicada.
+
+Podemos utilizar la función anova para evaluar la significancia de cada variable dentro del modelo, de forma separada.
+
+```{r}
+ord.ccaT <- cca(dune~ ., data=dune.env)
+anova(ord.ccaT, by="term", permu=1000)
+```
+
+
+Como vemos esto cambia lo que inicialmente habíamos decidido, esto es debido a que algunas de las variables pueden estar correlacionadas entre ellas.  
+
+Bien ahora necesitamos graficar los resultados. Podemos utilizar la función plot e ir graficando cada uno de los componentes (Figura \@ref(fig:plotcca)). 
+
+
+```{r plotcca, fig.align='center', fig.width=4.5, fig.height=4.5, fig.cap= "Representación gráfica del CCA"}
+
+plot(ord.cca, dis="sp", type="n")
+points(ord.cca, dis="sites", pch=19, col="grey")
+points(ord.cca, display="cn", col="blue", pch=19)
+text(ord.cca, dis="sp", cex=0.6)
+text(ord.cca, display = "cn", col="blue", cex=0.7)
+
+```
+
+Muchas veces uno de los problemas que tenemos para graficar los datos es que los nombres de las especies son muy largos, en estos casos podemos utilizar una función que se denomina `make.cepnames` la cual permite acortar los nombres.
+
+```{r}
+data(BCI)
+names(BCI[1:5])
+short <- make.cepnames(names(BCI[1:5]))
+short
+```
+
+
+Existen procedimientos para construir modelos que ahora no tocaremos, puede encontrar más información en [Oksanen 2015](http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf)
+
+
+Nota: para realizar un permanova debemos utilizar la función adonis. El procedimiento es similar al desarrollo del cca. 
+
+##Ejercicio 3: Análisis de Ordenación
+
+Con los datos utilizados para realizar el análisis de aglomerados, vamos a realizar un análisis de ordenación constreñida.
+
+a. Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbaceas.
+
+b. Realice un análisis para definir las variables que se debería utilizar en el análisis
+
+c. Ajuste un modelo y defina el porcentaje de variación explicado.
+
+d.	Compara los resultados de la ordenación directa si en vez de transformar los datos corremos los modelos con los datos brutos.
+
+d. Realice un gráfico del modelo desarrollado.
+

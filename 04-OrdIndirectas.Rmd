@@ -2,8 +2,228 @@
 
 En ecología es bastante normal que dispongamos de un conjunto de datos que estan conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables.  Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.
 
-Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables 
+Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables (especies), con más de tres variables es imposible poder graficarlo.
 
-Un conjunto de datos multivariante puede ser visto como una colección de los sitios situados en un espacio donde cada variable define una dimensión. Así pues, hay tantas dimensiones como variables. Para revelar la estructura de los datos, sería interesante para representar las principales tendencias en forma de diagramas de dispersión de los sitios. Puesto que los datos ecológicos contienen generalmente más de dos variables, es tedioso y no muy informativo para dibujar los objetos en una serie de planos definidos por todos los posibles pares de descriptores.
+De esta forma, el objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos [@Borcard2011]. 
 
-El objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos de la disminución. Estas tendencias pueden ser interpretados visualmente o en asociación con otros métodos, tales como la agrupación o regresión. Aquí, nos ocuparemos de cuatro técnicas básicas. Todos estos métodos son descriptivos: no se proporciona ninguna prueba estadística para evaluar la importancia de las estructuras detectadas.
+Las ordenaciones pueden ser indirectas y directas (constreñidas).  Las ordenaciones indirectas pueden ser utilizadas para interpretarse visualmente o asociadas a otros métodos como regresión. Mientras que las ordenaciones directas permiten hacer asociaciones con variables explicativas, generar un orden constreñido por otras variables. 
+
+En este capítulo nos centraremos en las Ordenaciones indirectas.
+
+
+##Pasos previos: Transformación y Estandarización de datos
+
+Cuando trabajamos con datos multivariantes cabe la posibilidad de que los datos dentro de esta matriz tengan diferencias de medidas importantes.
+
+Imaginemos que estamos trabajando con la comunidad de herbaceas y existan especies con abundancias máximas de 500, mientras otras especies no alcanzan 10 individuos, o en comunidades de insectos donde ciertas especies puedan tener valores de miles y otros de decenas. Si no transformamos la ordenación estará determinada básicamente por esta especie.
+
+Al transformar los datos evitamos que las especies más comunes dominen en el resultado final de la ordenación y aumentamos la influencia de las especies subordinadas  en el modelo resultante.
+
+Existen varias posibilidades para transformar los datos, por lo que definir que función utilizar para transformar los datos es importante.  Cada tipo de transformación produce resultados distintos por lo que debemos utilizarlas con precausión.
+
+Las transformaciones más sencilla o menos intensa es la raiz cuadrada, mientras que el logaritmo es la transformación más intensa, podríamos utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la utilizaríamos cuando tenemos diferencias como en el caso de las aves con variaciones de una magnitud de diferencia (entre decenas y centenas), mientras que la transformación logarítmica la haríamos con la comunidad de insectos donde hay mas de una magnitud de diferencia (entre decenas y miles).
+
+Aunque hay muchos autores que aconsejan realizar transformaciones hay que ser consientes de lo que estamos haciendo, transformaciones muy fuertes en una matriz con pocas diferencias pueden hacer que, por ejemplo, las especies raras tengan igual peso que las dominantes, esto es lo que queremos?.
+
+Veamos un ejemplo:
+
+```{r}
+set.seed(4)
+aves<- data.frame(sp1= sample(1:90, 10), sp2= sample(100:250, 10))
+
+insectos<- data.frame(sp1= sample(5:99, 10), sp2= sample(1000:2500, 10))
+
+##¿Que pasa cuando transformamos?
+cbind(aves, sqrt(aves),log(aves))
+
+cbind(insectos, sqrt(insectos),log(insectos))
+
+
+```
+
+
+La estandarización de los datos permite modificar las variables transformandolas en unidades de desviación típica, lo que nos permite comparar entre  valores de distribuciones
+normales diferentes, o de valores diferentes.
+
+La estandarización o tipificación se lo realiza restando a cada valor el valor medio de la variable y dividiendo para la desviación estandar.
+
+
+```{r}
+avesE <- (aves[,1]-mean(aves[,1]))/sd(aves[,1])
+avesE
+
+round(mean(avesE),1);sd(avesE) 
+
+```
+Como vemos las variables estandarizadas tienen como propiedad que la desviación estandar es 1 y la media es 0.
+
+
+##Ordenación indirecta o no constreñida
+
+Existen muchos tipos de ordenaciones indirectas como saber que ordenación debo utilizar.  Una posibilidad es ver el tipo de respuesta que tenemos, si es una respuesta linear o monotónica o una respuesta unimodal.
+
+Para determinar que tipo de respuesta usamos la desviación estandar.  Si asumimos una distribución normal, datos con menos de tres desviaciones estandar tendrán una respuesta lineal, mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal. Para cada una de estas respuestas existe un análisis que se puede ejecutar \@ref(tab:ordenacion). 
+
+```{r ordenacion, echo=FALSE}
+Ordenacion<- data.frame(`Medidas de Similitud` = c("Respuesta lineal", "Respuesta Unimodal", "Bray-Curtis"), `Tipo de Ordenación` = c("PCA", "CA/DCA", "PcoA/mMDS/nmMDS"))
+
+knitr::kable(
+  Ordenacion, booktabs = TRUE,
+  caption = 'Relación entre el tipo de variable y el método de ordenación a utilizar'
+)
+```
+
+
+Algunos comentarios sobre los métodos de ordenación.
+
+__*Principal Component Analysis (PCA)*__
+
+Fortalezas 
+
+Es sencillo de interpretar ya que las distancias entre las muestras son interpretadas directamente como distancias euclideanas.
+
+Apropiado para análisis multivariantes de variables ambientales.  El PCA es fuertemente afectado por ceros algo que es bastante común en datos biológicos, al contrario de datos ambientales donde la cantidad de ceros es menor.
+
+Debilidades
+
+Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa la similitud entre muestras.
+
+La proyeccion de las distancias euclideas en un plano puede distorsionar algunas distancias en otros planos.
+
+__*Principal Coordinates Análisis (PCoA)*__ 
+
+Fortalezas
+
+Es una extensión del PCA, permite una definición más amplia de las disimilitudes entre muestras que la distancia Euclidea.
+
+Es capaz de convertir otras medidas de disimilitud (además de la euclídea) en distancias entre muestras.
+
+Debilidades
+
+La proyección de las distancias en un plano también sufre importantes distorsiones como en el caso del PCA.
+
+
+__*Correspondence Analysis*__
+
+Fortalezas
+
+Implícitamente se generan distancias de Chi-cuadrado entre las muestras.
+
+Se basa en un modelo de respuesta unimodal de las especies a los gradientes ambientales subyacentes.
+
+Debilidades
+
+“Efecto arco” Causado por la respuesta unimodal de la 	abundancia de especies a un gradiente ambiental.
+
+__*Detrended Correspondence Analysis (DCA, DECORANA)*__ 
+
+Es una extensión del CA
+
+Fortalezas
+Corrige el “Efecto arco” del CA, realizando una ordenacion por segmentos y se realinean los segmentos para evitar la curvatura 
+
+Debilidades
+Excesiva manipulación de los datos (Pielou 1984)
+Hay quien opina que es demasiado parecido a cortar y pegar los 	datos con tijeras y pegamento.
+
+
+__*Multidimensional Scaling (MDS)*__
+
+
+Se puede construir una matriz de semejansas con el coeficiente de semejanza que se considere biológicamente relevante para los datos.
+
+La ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Por eso la representación gráfica del MDS sufre menos distorsiones respecto a las distancias reales.
+
+pretende satisfacer las condiciones impuestas por el “rango” de similitudes.	p.ej.: Si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3.	
+
+
+##Pasos para el análisis de Ordenación
+
+__1. Decidir que ordenación realizar__
+
+Este es el primer paso para poder realizar el análisis de ordenación. Como lo hemos visto podemos usar información para poder determinar que análisis realizar.  El tipo de datos que tenemos y por tanto la distancia a utilizar, si tenemos datos con muchos ceros no podremos utilizar una medida de distancia Euclideana y deberíamos trabajar con distancia de Bray-Curtis, por tanto es posible que esto nos defina el trabajar con Escalado Multidimensional (Multidimensional Scaling).  Si estamos utilizando otras distancias podríamos definir la cantidad de desviaciones estandar para decidir el tipo de análisis a realizar (\@ref(tab:ordenacion)).
+
+Para ver la longitud de la gradiente (cantidad de desviaciones estándar) podríamos utilizar la función decorana.
+
+```{r}
+library(vegan)
+data(dune)
+
+#str(dune) revisa los datos
+
+ord.dca <- decorana(dune)
+
+```
+
+En el primer eje (DCA1) podemos ver la longitud de este eje, el cual esta expresado en Unidades de desviación, en este caso 3.7.  Esta información ya nos dice que el análisis que debemos hacer será un CA o un DCA.
+
+__2. Transformación de los datos__
+
+Lo siguiente que debemos decidir es si es necesario transformar.  Siempre lo mejor es no transformar los datos, sin embargo, como vimos antes si los datos son muy distintos es necesario realizar esta transformación.  Revisa los datos de Dune, como ven no existen diferencias importantes entre los datos por tanto no transformaremos.  
+
+>Recuerde para transformar los datos definimos la variación entre variables.  Variables con más de tres magnitudes de diferencia logaritmo y con dos raíz cuadrada.
+
+Aunque no es necesario transformar, la función `decostand` del paquete vegan se puede utilizar para la estandarización y transformar.
+
+```{r}
+
+dsRaiz <- decostand(dune, "standardize", "hellinger") 
+#Estandarizado y transformado raíz cuadrada (hellinger)
+
+dslog <- decostand(dune, "standardize", "log") 
+#Estandarizado y transformado logaritmo (log)
+
+dsSta <- decostand(dune, "standardize")
+#Estandarizado
+
+```
+
+
+__3. Desarrollar el análisis__
+
+Realizamos el análisis Decorana y Análisis Canónico (CA) y graficamos los datos.
+
+```{r}
+ord.dca <- decorana(dune)
+ord.dca
+
+ord.ca <- cca(dune)
+ord.ca
+```
+
+Realizamos el análisis de escalado multidimensional (MDS) usando la función `metaMDS` 
+
+
+```{r, message=FALSE, cache.comments=FALSE,results='hide'}
+ord.nmds <- metaMDS(dune,distance="bray", k=2, trymax=50)   
+```
+```{r}
+ord.nmds 
+```
+
+
+__4. Interpretar los resultados__
+
+
+Para el DCA y CA
+
+Eigenvalue: es la medida de la importancia de un eje, la cantidad de varianza que explica ese eje.  En este caso, el primer eje tanto el DCA como el CA explican el 53% de la variación
+
+Axis length: es la longitud del eje principal. Nos da una estima de qué tipo de respuesta tienen nuestros datos.
+
+Para el MDS
+
+El valor de estrés (stress) nos indica la cantidad de varianza que  __NO__ se ajustó, mientras más bajo es el estrés mayor varianza explica.  Algunos autores plantean que bajo 0.2 es aceptable, mientras que valores superiores hay un ajuste pobre. En el caso del ejemplo el ajuste es bueno.
+
+
+__5. Graficar los resultados__
+
+Lo siguiente que debemos hacer es graficar los resultados con el fin de ver si existen algunos patrones.
+
+```{r plotnmds, fig.align='center', fig.width=4.5, fig.height=4.5, fig.cap= "Representación gráfica del NMDS"}
+plot(ord.nmds, type="n")  # para dibujar un plot vacío
+points(ord.nmds, display="sites", cex=0.8, pch=21, col="black", bg="yellow")  
+text(ord.nmds, display= "spec", cex=0.5, col="blue") 
+
+```
+Podemos ver en la figura \@ref(fig:plotnmds) que ciertas especies estan asociadas con ciertas localidades esto nos podría servir para explorar los datos.
