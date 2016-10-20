@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Análisis multivariante de la comunidad</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas.">
+  <meta name="generator" content="bookdown 0.1.16 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Análisis multivariante de la comunidad" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Análisis multivariante de la comunidad" />
+  
+  <meta name="twitter:description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas." />
+  
+
+<meta name="author" content="Carlos Iván Espinosa">
+
+  
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="analisis-multivariado-de-la-composicion-de-la-comunidad.html">
+<link rel="next" href="ordenaciones-directas-o-constrenidas.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href=" ">Análisis multivariante de la comunidad</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a></li>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html"><i class="fa fa-check"></i>Objetivos</a></li>
+<li class="chapter" data-level="1" data-path="medidas-de-similitud.html"><a href="medidas-de-similitud.html"><i class="fa fa-check"></i><b>1</b> Medidas de similitud</a><ul>
+<li class="chapter" data-level="1.1" data-path="medidas-de-similitud.html"><a href="medidas-de-similitud.html#medidas-de-abundancia"><i class="fa fa-check"></i><b>1.1</b> Medidas de abundancia</a></li>
+<li class="chapter" data-level="1.2" data-path="medidas-de-similitud.html"><a href="medidas-de-similitud.html#distancias-entre-sitios"><i class="fa fa-check"></i><b>1.2</b> Distancias entre sitios</a></li>
+<li class="chapter" data-level="1.3" data-path="medidas-de-similitud.html"><a href="medidas-de-similitud.html#similitud"><i class="fa fa-check"></i><b>1.3</b> Similitud</a></li>
+<li class="chapter" data-level="1.4" data-path="medidas-de-similitud.html"><a href="medidas-de-similitud.html#ejercicio-analisis-de-similitud"><i class="fa fa-check"></i><b>1.4</b> Ejercicio: Análisis de similitud</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><i class="fa fa-check"></i><b>2</b> Análisis multivariado de la composición de la comunidad</a><ul>
+<li class="chapter" data-level="2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#agrupamiento-jerarquico-hierarchic-cluster"><i class="fa fa-check"></i><b>2.1</b> Agrupamiento Jerárquico (Hierarchic Cluster)</a></li>
+<li class="chapter" data-level="2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#interpretando-el-cluster"><i class="fa fa-check"></i><b>2.2</b> Interpretando el cluster</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-la-funcion-de-enlace"><i class="fa fa-check"></i><b>2.2.1</b> Elegir la función de enlace</a></li>
+<li class="chapter" data-level="2.2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-el-punto-de-corte"><i class="fa fa-check"></i><b>2.2.2</b> Elegir el punto de corte</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#anosimincluir"><i class="fa fa-check"></i><b>2.3</b> ANOSIM…Incluir</a></li>
+<li class="chapter" data-level="2.4" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#ejercicio-2-analisis-de-clasificacion"><i class="fa fa-check"></i><b>2.4</b> Ejercicio 2: Análisis de clasificación</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ordenaciones.html"><a href="ordenaciones.html"><i class="fa fa-check"></i><b>3</b> Ordenaciones</a><ul>
+<li class="chapter" data-level="3.1" data-path="ordenaciones.html"><a href="ordenaciones.html#pasos-previos-transformacion-y-estandarizacion-de-datos"><i class="fa fa-check"></i><b>3.1</b> Pasos previos: Transformación y Estandarización de datos</a></li>
+<li class="chapter" data-level="3.2" data-path="ordenaciones.html"><a href="ordenaciones.html#ordenacion-indirecta-o-no-constrenida"><i class="fa fa-check"></i><b>3.2</b> Ordenación indirecta o no constreñida</a></li>
+<li class="chapter" data-level="3.3" data-path="ordenaciones.html"><a href="ordenaciones.html#pasos-para-el-analisis-de-ordenacion"><i class="fa fa-check"></i><b>3.3</b> Pasos para el análisis de Ordenación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ordenaciones-directas-o-constrenidas.html"><a href="ordenaciones-directas-o-constrenidas.html"><i class="fa fa-check"></i><b>4</b> Ordenaciones Directas o Constreñidas</a><ul>
+<li class="chapter" data-level="4.1" data-path="ordenaciones-directas-o-constrenidas.html"><a href="ordenaciones-directas-o-constrenidas.html#realizando-una-ordenacion-constrenida"><i class="fa fa-check"></i><b>4.1</b> Realizando una ordenación constreñida</a></li>
+<li class="chapter" data-level="4.2" data-path="ordenaciones-directas-o-constrenidas.html"><a href="ordenaciones-directas-o-constrenidas.html#ejercicio-3-analisis-de-ordenacion"><i class="fa fa-check"></i><b>4.2</b> Ejercicio 3: Análisis de Ordenación</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis multivariante de la comunidad</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ordenaciones" class="section level1">
+<h1><span class="header-section-number">Capítulo 3</span> Ordenaciones</h1>
+<p>En ecología es bastante normal que dispongamos de un conjunto de datos que están conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables. Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.</p>
+<p>Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables (especies), con más de tres variables es imposible poder graficarlo.</p>
+<p>De esta forma, el objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>.</p>
+<p>Las ordenaciones pueden ser indirectas y directas (constreñidas). Las ordenaciones indirectas pueden ser utilizadas para interpretarse visualmente o asociadas a otros métodos como regresión. Mientras que las ordenaciones directas permiten hacer asociaciones con variables explicativas, generar un orden constreñido por otras variables.</p>
+<p>En este capítulo nos centraremos en las Ordenaciones indirectas.</p>
+<div id="pasos-previos-transformacion-y-estandarizacion-de-datos" class="section level2">
+<h2><span class="header-section-number">3.1</span> Pasos previos: Transformación y Estandarización de datos</h2>
+<p>Cuando trabajamos con datos multivariantes cabe la posibilidad de que los datos dentro de esta matriz tengan diferencias de medidas importantes.</p>
+<p>Imaginemos que estamos trabajando con la comunidad de herbáceas y existan especies con abundancias máximas de 500, mientras otras especies no alcanzan 10 individuos, o en comunidades de insectos donde ciertas especies puedan tener valores de miles y otros de decenas. Si no transformamos la ordenación estará determinada básicamente por esta especie.</p>
+<p>Al transformar los datos evitamos que las especies más comunes dominen en el resultado final de la ordenación y aumentamos la influencia de las especies subordinadas en el modelo resultante.</p>
+<p>Existen varias posibilidades para transformar los datos, por lo que definir que función utilizar para transformar los datos es importante. Cada tipo de transformación produce resultados distintos por lo que debemos utilizarlas con precaución.</p>
+<p>Las transformaciones más sencilla o menos intensa es la raíz cuadrada, mientras que el logaritmo es la transformación más intensa, podríamos utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la utilizaríamos cuando tenemos diferencias como en el caso de las aves con variaciones de una magnitud de diferencia (entre decenas y centenas), mientras que la transformación logarítmica la haríamos con la comunidad de insectos donde hay más de una magnitud de diferencia (entre decenas y miles).</p>
+<p>Aunque hay muchos autores que aconsejan realizar transformaciones hay que ser conscientes de lo que estamos haciendo, transformaciones muy fuertes en una matriz con pocas diferencias pueden hacer que, por ejemplo, las especies raras tengan igual peso que las dominantes, esto es lo que queremos?</p>
+<p>Veamos un ejemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">4</span>)
+aves&lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">sp1=</span> <span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">90</span>, <span class="dv">10</span>), <span class="dt">sp2=</span> <span class="kw">sample</span>(<span class="dv">100</span>:<span class="dv">250</span>, <span class="dv">10</span>))
+
+insectos&lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">sp1=</span> <span class="kw">sample</span>(<span class="dv">5</span>:<span class="dv">99</span>, <span class="dv">10</span>), <span class="dt">sp2=</span> <span class="kw">sample</span>(<span class="dv">1000</span>:<span class="dv">2500</span>, <span class="dv">10</span>))
+
+##¿Qué pasa cuando transformamos?
+<span class="kw">cbind</span>(aves, <span class="kw">sqrt</span>(aves),<span class="kw">log</span>(aves))</code></pre></div>
+<pre><code>##    sp1 sp2      sp1      sp2      sp1      sp2
+## 1   53 213 7.280110 14.59452 3.970292 5.361292
+## 2    1 142 1.000000 11.91638 0.000000 4.955827
+## 3   26 114 5.099020 10.67708 3.258097 4.736198
+## 4   25 241 5.000000 15.52417 3.218876 5.484797
+## 5   70 161 8.366600 12.68858 4.248495 5.081404
+## 6   23 166 4.795832 12.88410 3.135494 5.111988
+## 7   61 240 7.810250 15.49193 4.110874 5.480639
+## 8   76 184 8.717798 13.56466 4.330733 5.214936
+## 9   78 237 8.831761 15.39480 4.356709 5.468060
+## 10   6 208 2.449490 14.42221 1.791759 5.337538</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(insectos, <span class="kw">sqrt</span>(insectos),<span class="kw">log</span>(insectos))</code></pre></div>
+<pre><code>##    sp1  sp2      sp1      sp2      sp1      sp2
+## 1   72 1851 8.485281 43.02325 4.276666 7.523481
+## 2   98 1358 9.899495 36.85105 4.584967 7.213768
+## 3   52 2316 7.211103 48.12484 3.951244 7.747597
+## 4   50 1980 7.071068 44.49719 3.912023 7.590852
+## 5   64 1722 8.000000 41.49699 4.158883 7.451242
+## 6   79 2452 8.888194 49.51767 4.369448 7.804659
+## 7   47 1687 6.855655 41.07311 3.850148 7.430707
+## 8   94 1929 9.695360 43.92038 4.543295 7.564757
+## 9   49 1579 7.000000 39.73663 3.891820 7.364547
+## 10  96 1009 9.797959 31.76476 4.564348 6.916715</code></pre>
+<p>La estandarización de los datos permite modificar las variables transformándolas en unidades de desviación típica, lo que nos permite comparar entre valores de distribuciones normales diferentes, o de valores diferentes.</p>
+<p>La estandarización o tipificación se lo realiza restando a cada valor el valor medio de la variable y dividiendo para la desviación estándar.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">avesE &lt;-<span class="st"> </span>(aves[,<span class="dv">1</span>]-<span class="kw">mean</span>(aves[,<span class="dv">1</span>]))/<span class="kw">sd</span>(aves[,<span class="dv">1</span>])
+avesE</code></pre></div>
+<pre><code>##  [1]  0.3819546 -1.4073822 -0.5471241 -0.5815345  0.9669301 -0.6503551
+##  [7]  0.6572372  1.1733920  1.2422126 -1.2353306</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">round</span>(<span class="kw">mean</span>(avesE),<span class="dv">1</span>);<span class="kw">sd</span>(avesE) </code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>Como vemos las variables estandarizadas tienen como propiedad que la desviación estándar es 1 y la media es 0.</p>
+</div>
+<div id="ordenacion-indirecta-o-no-constrenida" class="section level2">
+<h2><span class="header-section-number">3.2</span> Ordenación indirecta o no constreñida</h2>
+<p>Existen muchos tipos de ordenaciones indirectas como saber que ordenación debo utilizar. Una posibilidad es ver el tipo de respuesta que tenemos, si es una respuesta linear o monotónica o una respuesta unimodal.</p>
+<p>Para determinar que tipo de respuesta usamos la desviación estándar. Si asumimos una distribución normal, datos con menos de tres desviaciones estándar tendrán una respuesta lineal, mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal. Para cada una de estas respuestas existe un análisis que se puede ejecutar <a href="ordenaciones.html#tab:ordenacion">3.1</a>.</p>
+<table>
+<caption><span id="tab:ordenacion">Table 3.1: </span>Relación entre el tipo de variable y el método de ordenación a utilizar</caption>
+<thead>
+<tr class="header">
+<th align="left">Medidas.de.Similitud</th>
+<th align="left">Tipo.de.Ordenación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Respuesta lineal</td>
+<td align="left">PCA</td>
+</tr>
+<tr class="even">
+<td align="left">Respuesta Unimodal</td>
+<td align="left">CA/DCA</td>
+</tr>
+<tr class="odd">
+<td align="left">Bray-Curtis</td>
+<td align="left">PcoA/mMDS/nmMDS</td>
+</tr>
+</tbody>
+</table>
+<p>Algunos comentarios sobre los métodos de ordenación.</p>
+<p><strong><em>Principal Component Analysis (PCA)</em></strong></p>
+<p>Fortalezas</p>
+<p>Es sencillo de interpretar ya que las distancias entre las muestras son interpretadas directamente como distancias euclidianas.</p>
+<p>Apropiado para análisis multivariantes de variables ambientales. El PCA es fuertemente afectado por ceros algo que es bastante común en datos biológicos, al contrario de datos ambientales donde la cantidad de ceros es menor.</p>
+<p>Debilidades</p>
+<p>Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa la similitud entre muestras.</p>
+<p>La proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.</p>
+<p><strong><em>Principal Coordinates Análisis (PCoA)</em></strong></p>
+<p>Fortalezas</p>
+<p>Es una extensión del PCA, permite una definición más amplia de las disimilitudes entre muestras que la distancia Euclidia.</p>
+<p>Es capaz de convertir otras medidas de disimilitud (además de la euclidia) en distancias entre muestras.</p>
+<p>Debilidades</p>
+<p>La proyección de las distancias en un plano también sufre importantes distorsiones como en el caso del PCA.</p>
+<p><strong><em>Correspondence Analysis</em></strong></p>
+<p>Fortalezas</p>
+<p>Implícitamente se generan distancias de Chi-cuadrado entre las muestras.</p>
+<p>Se basa en un modelo de respuesta unimodal de las especies a los gradientes ambientales subyacentes.</p>
+<p>Debilidades</p>
+<p>“Efecto arco” Causado por la respuesta unimodal de la abundancia de especies a un gradiente ambiental.</p>
+<p><strong><em>Detrended Correspondence Analysis (DCA, DECORANA)</em></strong></p>
+<p>Es una extensión del CA</p>
+<p>Fortalezas Corrige el “Efecto arco” del CA, realizando una ordenación por segmentos y se realinean los segmentos para evitar la curvatura</p>
+<p>Debilidades Excesiva manipulación de los datos (Pielou 1984) Hay quien opina que es demasiado parecido a cortar y pegar los datos con tijeras y pegamento.</p>
+<p><strong><em>Multidimensional Scaling (MDS)</em></strong></p>
+<p>Se puede construir una matriz de semejansas con el coeficiente de semejanza que se considere biológicamente relevante para los datos.</p>
+<p>La ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Por eso la representación gráfica del MDS sufre menos distorsiones respecto a las distancias reales.</p>
+<p>pretende satisfacer las condiciones impuestas por el “rango” de similitudes. p.ej.: Si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3.</p>
+</div>
+<div id="pasos-para-el-analisis-de-ordenacion" class="section level2">
+<h2><span class="header-section-number">3.3</span> Pasos para el análisis de Ordenación</h2>
+<p><strong>1. Decidir que ordenación realizar</strong></p>
+<p>Este es el primer paso para poder realizar el análisis de ordenación. Como lo hemos visto podemos usar información para poder determinar que análisis realizar. El tipo de datos que tenemos y por tanto la distancia a utilizar, si tenemos datos con muchos ceros no podremos utilizar una medida de distancia Euclidiana y deberíamos trabajar con distancia de Bray-Curtis, por tanto es posible que esto nos defina el trabajar con Escalado Multidimensional (Multidimensional Scaling). Si estamos utilizando otras distancias podríamos definir la cantidad de desviaciones estándar para decidir el tipo de análisis a realizar (<a href="ordenaciones.html#tab:ordenacion">3.1</a>).</p>
+<p>Para ver la longitud de la gradiente (cantidad de desviaciones estándar) podríamos utilizar la función decorana.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vegan)
+<span class="kw">data</span>(dune)
+
+<span class="co">#str(dune) revisa los datos</span>
+
+ord.dca &lt;-<span class="st"> </span><span class="kw">decorana</span>(dune)</code></pre></div>
+<p>En el primer eje (DCA1) podemos ver la longitud de este eje, el cual esta expresado en Unidades de desviación, en este caso 3.7. Esta información ya nos dice que el análisis que debemos hacer será un CA o un DCA.</p>
+<p><strong>2. Transformación de los datos</strong></p>
+<p>Lo siguiente que debemos decidir es si es necesario transformar. Siempre lo mejor es no transformar los datos, sin embargo, como vimos antes si los datos son muy distintos es necesario realizar esta transformación. Revisa los datos de Dune, como ven no existen diferencias importantes entre los datos por tanto no transformaremos.</p>
+<blockquote>
+<p>Recuerde para transformar los datos definimos la variación entre variables. Variables con más de tres magnitudes de diferencia logaritmo y con dos raíz cuadrada.</p>
+</blockquote>
+<p>Aunque no es necesario transformar, la función <code>decostand</code> del paquete vegan se puede utilizar para la estandarización y transformar.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dsRaiz &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>, <span class="st">&quot;hellinger&quot;</span>) 
+<span class="co">#Estandarizado y transformado raíz cuadrada (hellinger)</span>
+
+dslog &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>, <span class="st">&quot;log&quot;</span>) 
+<span class="co">#Estandarizado y transformado logaritmo (log)</span>
+
+dsSta &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>)
+<span class="co">#Estandarizado</span></code></pre></div>
+<p><strong>3. Desarrollar el análisis</strong></p>
+<p>Realizamos el análisis Decorana y Análisis Canónico (CA) y graficamos los datos.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.dca &lt;-<span class="st"> </span><span class="kw">decorana</span>(dune)
+ord.dca</code></pre></div>
+<pre><code>## 
+## Call:
+## decorana(veg = dune) 
+## 
+## Detrended correspondence analysis with 26 segments.
+## Rescaling of axes with 4 iterations.
+## 
+##                   DCA1   DCA2    DCA3    DCA4
+## Eigenvalues     0.5117 0.3036 0.12125 0.14267
+## Decorana values 0.5360 0.2869 0.08136 0.04814
+## Axis lengths    3.7004 3.1166 1.30055 1.47888</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.ca &lt;-<span class="st"> </span><span class="kw">cca</span>(dune)
+ord.ca</code></pre></div>
+<pre><code>## Call: cca(X = dune)
+## 
+##               Inertia Rank
+## Total           2.115     
+## Unconstrained   2.115   19
+## Inertia is mean squared contingency coefficient 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8 
+## 0.5360 0.4001 0.2598 0.1760 0.1448 0.1079 0.0925 0.0809 
+## (Showed only 8 of all 19 unconstrained eigenvalues)</code></pre>
+<p>Realizamos el análisis de escalado multidimensional (MDS) usando la función <code>metaMDS</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.nmds &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(dune,<span class="dt">distance=</span><span class="st">&quot;bray&quot;</span>, <span class="dt">k=</span><span class="dv">2</span>, <span class="dt">trymax=</span><span class="dv">50</span>)   </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.nmds </code></pre></div>
+<pre><code>## 
+## Call:
+## metaMDS(comm = dune, distance = &quot;bray&quot;, k = 2, trymax = 50) 
+## 
+## global Multidimensional Scaling using monoMDS
+## 
+## Data:     dune 
+## Distance: bray 
+## 
+## Dimensions: 2 
+## Stress:     0.1183186 
+## Stress type 1, weak ties
+## Two convergent solutions found after 20 tries
+## Scaling: centring, PC rotation, halfchange scaling 
+## Species: expanded scores based on &#39;dune&#39;</code></pre>
+<p><strong>4. Interpretar los resultados</strong></p>
+<p>Para el DCA y CA</p>
+<p>Eigenvalue: es la medida de la importancia de un eje, la cantidad de varianza que explica ese eje. En este caso, el primer eje tanto el DCA como el CA explican el 53% de la variación</p>
+<p>Axis length: es la longitud del eje principal. Nos da una estima de qué tipo de respuesta tienen nuestros datos.</p>
+<p>Para el MDS</p>
+<p>El valor de estrés (stress) nos indica la cantidad de varianza que <strong>NO</strong> se ajustó, mientras más bajo es el estrés mayor varianza explica. Algunos autores plantean que bajo 0.2 es aceptable, mientras que valores superiores hay un ajuste pobre. En el caso del ejemplo el ajuste es bueno.</p>
+<p><strong>5. Graficar los resultados</strong></p>
+<p>Lo siguiente que debemos hacer es graficar los resultados con el fin de ver si existen algunos patrones.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(ord.nmds, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)  <span class="co"># para dibujar un plot vacío</span>
+<span class="kw">points</span>(ord.nmds, <span class="dt">display=</span><span class="st">&quot;sites&quot;</span>, <span class="dt">cex=</span><span class="fl">0.8</span>, <span class="dt">pch=</span><span class="dv">21</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">bg=</span><span class="st">&quot;yellow&quot;</span>)  
+<span class="kw">text</span>(ord.nmds, <span class="dt">display=</span> <span class="st">&quot;spec&quot;</span>, <span class="dt">cex=</span><span class="fl">0.5</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>) </code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:plotnmds"></span>
+<img src="AnalisisMultivarianteComunidad_files/figure-html/plotnmds-1.png" alt="Representación gráfica del NMDS" width="432" />
+<p class="caption">
+Figure 3.1: Representación gráfica del NMDS
+</p>
+</div>
+<p>Podemos ver en la figura <a href="ordenaciones.html#fig:plotnmds">3.1</a> que ciertas especies están asociadas con ciertas localidades esto nos podría servir para explorar los datos.</p>
+
+</div>
+</div>
+<h3>Bibliografia</h3>
+<div id="refs" class="references">
+<div id="ref-Borcard2011">
+<p>Borcard, Daniel, Francois Gillet, and Pierre Legendre. 2011. <em>Numerical Ecology with R</em>. doi:<a href="https://doi.org/10.1007/978-0-387-78171-6">10.1007/978-0-387-78171-6</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ordenaciones-directas-o-constrenidas.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-OrdIndirectas.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
