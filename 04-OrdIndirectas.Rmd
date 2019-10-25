@@ -186,7 +186,7 @@ A diferencia de los otros metodos que hemos visto hasta aquí el NMDS, el stress
 plot(nmds.dune, main="NMDS de los datos de Dune")
 ```
 
-#Graficar los resultados
+###Graficar los resultados
 
 Como hemos visto existen diferentes formas de graficar los resultados de la ordenación. A continuación mostramos una forma de personalización del gráfico de ordenación que se aplica a la mayor parte de ordenaciones.
 
@@ -199,7 +199,7 @@ text(nmds.dune, display= "spec", cex=0.5, col="blue")
 Podemos ver en la figura \@ref(fig:plotnmds) que ciertas especies están asociadas con ciertas localidades esto nos podría servir para explorar los datos.
 
 
-#Interpretación ambiental
+###Interpretación ambiental
 
 Como lo mencionamos previamente las ordenaciones indirectas no sirven para testar hipótesis, este método nos permite organizar nuestras variables en un espacio dimensional más reducido.  Sin embargo, podríamos usar estos ejes y relacionarlos con variables ambientales. Vamos a usar el paquete vegan para ajustar un modelo que permita evaluar el efecto de las variables ambientales a la ordenación.
 
@@ -230,7 +230,7 @@ plot(ca.dune, display = "sites", type = "p")
 with(dune.env, ordiellipse(ca.dune, Management, kind = "se", conf = 0.95, label= TRUE))
 ```
 
-#Ejercicio
+###Ejercicio
 
 Los datos que se presentan [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/TraitsVege.csv") corresponden a rasgos asociados a procesos de dispersión de semillas, incluyendo los potenciales grupos de dispersores. Colectamos información de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron seis rasgos de frutos; tipo, color, peso, largo, ancho y número de semillas. Para semillas se registraron tres rasgos; peso, longitud y ancho. Adicionalmente se asignó un síndrome de dispersión a cada especie.
 
