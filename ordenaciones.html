@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Análisis multivariante de la comunidad</title>
+  <meta name="description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Análisis multivariante de la comunidad" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Análisis multivariante de la comunidad" />
+  
+  <meta name="twitter:description" content="Este documento presenta una introducción al análisis multivariante de comunidades bióticas." />
+  
+
+<meta name="author" content="Carlos Iván Espinosa">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="analisis-multivariado-de-la-composicion-de-la-comunidad.html">
+<link rel="next" href="bibliografia.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href=" ">Análisis multivariante de la comunidad</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a></li>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html"><i class="fa fa-check"></i>Objetivos</a></li>
+<li class="chapter" data-level="1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><i class="fa fa-check"></i><b>1</b> Análisis multivariado de la composición de la comunidad</a><ul>
+<li class="chapter" data-level="1.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#agrupamiento-jerarquico-hierarchic-cluster"><i class="fa fa-check"></i><b>1.1</b> Agrupamiento Jerárquico (Hierarchic Cluster)</a></li>
+<li class="chapter" data-level="1.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#interpretando-el-cluster"><i class="fa fa-check"></i><b>1.2</b> Interpretando el cluster</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-la-funcion-de-enlace"><i class="fa fa-check"></i><b>1.2.1</b> Elegir la función de enlace</a></li>
+<li class="chapter" data-level="1.2.2" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#elegir-el-punto-de-corte"><i class="fa fa-check"></i><b>1.2.2</b> Elegir el punto de corte</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#anosimincluir"><i class="fa fa-check"></i><b>1.3</b> ANOSIM…Incluir</a></li>
+<li class="chapter" data-level="1.4" data-path="analisis-multivariado-de-la-composicion-de-la-comunidad.html"><a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html#ejercicio-2-analisis-de-clasificacion"><i class="fa fa-check"></i><b>1.4</b> Ejercicio 2: Análisis de clasificación</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ordenaciones.html"><a href="ordenaciones.html"><i class="fa fa-check"></i><b>2</b> Ordenaciones</a><ul>
+<li class="chapter" data-level="2.1" data-path="ordenaciones.html"><a href="ordenaciones.html#pasos-previos-a-la-ordenacion"><i class="fa fa-check"></i><b>2.1</b> Pasos previos a la Ordenación</a></li>
+<li class="chapter" data-level="2.2" data-path="ordenaciones.html"><a href="ordenaciones.html#ordenacion-indirecta-o-no-constrenida"><i class="fa fa-check"></i><b>2.2</b> Ordenación indirecta o no constreñida</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="ordenaciones.html"><a href="ordenaciones.html#metodos-de-ordenacion."><i class="fa fa-check"></i><b>2.2.1</b> Métodos de ordenación.</a></li>
+<li class="chapter" data-level="2.2.2" data-path="ordenaciones.html"><a href="ordenaciones.html#graficar-los-resultados"><i class="fa fa-check"></i><b>2.2.2</b> Graficar los resultados</a></li>
+<li class="chapter" data-level="2.2.3" data-path="ordenaciones.html"><a href="ordenaciones.html#interpretacion-ambiental"><i class="fa fa-check"></i><b>2.2.3</b> Interpretación ambiental</a></li>
+<li class="chapter" data-level="2.2.4" data-path="ordenaciones.html"><a href="ordenaciones.html#ejercicio"><i class="fa fa-check"></i><b>2.2.4</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="ordenaciones.html"><a href="ordenaciones.html#ordenaciones-directas-o-constrenidas"><i class="fa fa-check"></i><b>2.3</b> Ordenaciones directas o constreñidas</a></li>
+<li class="chapter" data-level="2.4" data-path="ordenaciones.html"><a href="ordenaciones.html#realizando-una-ordenacion-constrenida"><i class="fa fa-check"></i><b>2.4</b> Realizando una ordenación constreñida</a></li>
+<li class="chapter" data-level="2.5" data-path="ordenaciones.html"><a href="ordenaciones.html#ejercicio-3-analisis-de-ordenacion"><i class="fa fa-check"></i><b>2.5</b> Ejercicio 3: Análisis de Ordenación</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis multivariante de la comunidad</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ordenaciones" class="section level1">
+<h1><span class="header-section-number">Capítulo 2</span> Ordenaciones</h1>
+<p>En ecología es bastante normal que dispongamos de datos que están conformados por un conjunto de sitios o localidades, para los cuales tenemos una serie de variables. Estas variables puede ser cada especie o cada condición que levantemos en el sitio, de esta forma, un sitio va a tener tantas variables como especies o factores ambientales se registren.</p>
+<p>En el capítulo de <a href="https://ciespinosa.github.io/Similitud/index.html">similitud</a> ordenamos las parcelas en función de la cantidad de individuos de dos especies, de esta forma la distancia a la que se encontraba cada comunidad nos daba información sobre cuanto se parecían. Aunque esta es una forma fácil de <strong>ordenar</strong> nuestras comunidades, esta forma de graficar es solo posible con dos o máximo tres especies, pero pocas comunidades tienen únicamente tres especies, cuando tenemos más de tres especies es necesario buscar otras formas de ordenación que nos permitan rescatar el gradiente ambiental.</p>
+<p>De esta forma, el objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos <span class="citation">(Borcard, Gillet, and Legendre <a href="#ref-Borcard2011">2011</a>)</span>.</p>
+<p>Las ordenaciones pueden ser indirectas y directas (constreñidas). Las ordenaciones indirectas pueden ser utilizadas para interpretarse visualmente o asociadas a otros métodos, como regresión. Por su parte, las ordenaciones directas permiten hacer asociaciones con variables explicativas, generando un orden constreñido pobasado en unas variables explicativas.</p>
+<div id="pasos-previos-a-la-ordenacion" class="section level2">
+<h2><span class="header-section-number">2.1</span> Pasos previos a la Ordenación</h2>
+<p><strong>1. Decidir qué ordenación realizar</strong></p>
+<p>Dentro de las ordenaciones directas e indirectas, existen muchos tipos de ordenaciones ¿Cómo saber qué ordenación debo utilizar? Una posibilidad es ver el tipo de respuesta de nuestros datos, si es una respuesta lineal (monotónica) o una respuesta unimodal (distribución en campana).</p>
+<p>Una forma para determinar el tipo de respuesta de nuestros datos, es asumir una distribución normal y usar la desviación estándar como una medida del tipo de respuesta. Si nuestros datos tienen una dispersión con menos de tres desviaciones estándar, podremos asumir que nuestros datos tendrán una respuesta lineal (Figura <a href="ordenaciones.html#fig:resp">2.1</a>a), mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal (Figura <a href="ordenaciones.html#fig:resp">2.1</a>b).</p>
+<div class="figure"><span id="fig:resp"></span>
+<img src="AnalisisMultivarianteComunidad_files/figure-html/resp-1.png" alt="Definición del tipo de respuesta de la ordenación. El área sombreada en verde y los números marcan la cantidad de desviaciones y por lo tanto el tipo de respuesta esperado" width="672" />
+<p class="caption">
+Figure 2.1: Definición del tipo de respuesta de la ordenación. El área sombreada en verde y los números marcan la cantidad de desviaciones y por lo tanto el tipo de respuesta esperado
+</p>
+</div>
+<p>Una vez que sabemos que tipo de respuesta tiene nuestros datos podemos decidir el tipo de ordenación, puesto que para cada una de estas respuestas cabe un análisis de ordenación, más adelante propondremos los análisis de ordenación constreñida y no constreñida para cada tipo de respuesta.</p>
+<p>La función <em>decorana</em> del paquete <strong>vegan</strong> nos permite evaluar la longitud del gradiente (cantidad de desviaciones estándar). El uso de la función <em>decorana</em> necesitamos una matriz de datos con los casos en las filas y las especies en las columnas.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vegan)
+
+<span class="co">#Cargamos los datos de Dune para usar como ejemplo</span>
+<span class="kw">data</span>(dune)
+
+<span class="co">#Realizamos la ordenación</span>
+ord.dca &lt;-<span class="st"> </span><span class="kw">decorana</span>(dune)
+
+<span class="co">#vemos el resultado de la ordenación</span>
+ord.dca</code></pre></div>
+<pre><code>## 
+## Call:
+## decorana(veg = dune) 
+## 
+## Detrended correspondence analysis with 26 segments.
+## Rescaling of axes with 4 iterations.
+## 
+##                   DCA1   DCA2    DCA3    DCA4
+## Eigenvalues     0.5117 0.3036 0.12125 0.14267
+## Decorana values 0.5360 0.2869 0.08136 0.04814
+## Axis lengths    3.7004 3.1166 1.30055 1.47888</code></pre>
+<p>Como vemos cuando ejecutamos el objeto de salida de la ordenación nos brinda alguna información, por ahora el que nos interesa es ver las unidades de desviación del eje 1 (DCA1). La longitud de este primer eje (axis lengths), muestra la cantidad de desviaciones, en el ejemplo de Dune, el eje DCA1 tiene una longitud de 3.7 unidades de desviación, con lo cual asumimos una respuesta unimodal. Al conocer el tipo de respuesta ya podemos decidir el tipo de ordenación (ver Tabla <a href="ordenaciones.html#tab:ordenacion">2.1</a>.</p>
+<p>Algunas veces nuestros datos tienen restricciones sobre el tipo de distancias que se pueden usar para la ordenación. Por ejemplo, en los datos con muchos ceros no deberíamos utilizar una medida de distancia Euclidiana, deberíamos trabajar con distancia de Bray-Curtis (Ver ejercicio de <a href="https://ciespinosa.github.io/Similitud/index.html">Similitud</a>. De esta forma, es posible que el tipo de distancia que hemos decidido usar defina el tipo de ordenación. En el caso del ejemplo, deberíamos usar el Escalado Multidimensional (Multidimensional Scaling).</p>
+<p><strong>2. Transformación y estandarización de los datos</strong></p>
+<p>Lo siguiente que debemos decidir es si es necesario transformar o estandarizar los datos (Ver ejercicio de <a href="https://ciespinosa.github.io/Similitud/index.html">Similitud</a>). Muchos autores aconsejan que en medida de lo posible los datos no deberían ser transformados, sin embargo, si los datos son muy distintos es necesario realizar la transformación. Si revisan los datos de Dune verán que no existen diferencias importantes entre las abundancias de cada especie, por tanto, no se requiere hacer una transformación.</p>
+<blockquote>
+<p>Recuerden, para transformar los datos definimos la variación entre variables. En variables con más de tres magnitudes de diferencia usamos logaritmo y con dos magnitudes de diferencia usamos raíz cuadrada.</p>
+</blockquote>
+<p>Aunque no es necesario transformar, vamos hacer el ejercicio para entender cómo funciona este proceso. Usaremos la función <code>decostand</code> del paquete vegan, que se puede utilizar para la estandarización y para la transformación.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dsRaiz &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>, <span class="st">&quot;hellinger&quot;</span>) 
+<span class="co">#Estandarizado y transformado raíz cuadrada (hellinger)</span>
+
+dslog &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>, <span class="st">&quot;log&quot;</span>) 
+<span class="co">#Estandarizado y transformado logaritmo (log)</span>
+
+dsSta &lt;-<span class="st"> </span><span class="kw">decostand</span>(dune, <span class="st">&quot;standardize&quot;</span>)</code></pre></div>
+<p>Ahora que sabemos que tipo de ordenación debería realizar y mis datos estan listos para trabajar podemos iniciar los análisis de ordenación.</p>
+
+</div>
+<div id="ordenacion-indirecta-o-no-constrenida" class="section level2">
+<h2><span class="header-section-number">2.2</span> Ordenación indirecta o no constreñida</h2>
+<p>Las diferentes técnicas de ordenación, a excepción de los NMDS, se basan en la extracción de eigenvectors asociados con la matriz de datos. Los diferentes métodos de ordenación se pueden clasificar según la distancia preservada entre sitios y el tipo de variables que se usan.</p>
+<p>Los métodos de ordenación como lo habíamos comentado intentan obtener información sobre la heterogeneidad que tienen los datos. En terminos sencillos la ordenación genera una nuve de puntos basado en todas las variables (especies) que tiene nuestra comunidad, tendríamos un espacio multidimensional. Normalmente, esa nube de puntos será más alargada en ciertas direcciones y más aplanada en otras direcciones. La dirección donde la nube de puntos es más aplanada se corresponde con la dirección de mayor variabilidad de nuestros datos, donde el gradiente es más claro. Este es el primer eje de ordenación que se deberá extraer. A partir de aquí se buscarán otras direcciones que vayan en forma decreciente la cantidad de variación explicada (menos alargada). Cada eje extraído es ortogonal a los otros ejes, eso quiere decir que son linearmente independientes y no correlacionados.</p>
+<p>Cuando en los datos hay estructuras claras (gradientes o grupos) y el método ha sido eficiente para extraerlas, entonces los primeros ejes contienen la mayor parte de la información útil, es decir, han extraído la mayor parte de la varianza de los datos. En ese caso, las distancias entre sitios en la proyección en un espacio reducido (con mayor frecuencia bidimensional) son relativamente similares a las distancias entre objetos en el espacio multidimensional.</p>
+<p>Como lo comentamos anteriormente el decidir que ordenación usar depende del tipo de respuesta que tienen los datos y de la distancia que se utilizará. De esta forma, si los datos muestran una respuesta lineal se puede usar un análisis de componentes principales (PCA), mientras que si es unimodal podemos ajustar un análisis de correspondiente (CA) o análisis de correspondencia sin tendencia (DCA) (Tabla <a href="ordenaciones.html#tab:ordenacion">2.1</a>)</p>
+<table>
+<caption><span id="tab:ordenacion">Table 2.1: </span>Relación entre el tipo de variable y el método de ordenación no constreñida a utilizar</caption>
+<thead>
+<tr class="header">
+<th align="left">Medidas.de.Similitud</th>
+<th align="left">Tipo.de.Ordenación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Respuesta lineal</td>
+<td align="left">PCA</td>
+</tr>
+<tr class="even">
+<td align="left">Respuesta Unimodal</td>
+<td align="left">CA/DCA</td>
+</tr>
+<tr class="odd">
+<td align="left">Bray-Curtis</td>
+<td align="left">PcoA/mMDS/nmMDS</td>
+</tr>
+</tbody>
+</table>
+<div id="metodos-de-ordenacion." class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Métodos de ordenación.</h3>
+<p><strong><em>1. Principal Component Analysis (PCA)</em></strong></p>
+<p>Esta técnica de ordenación es sencilla de interpretar, las distancias entre las muestras son interpretadas directamente como distancias euclidianas. Este método de ordenación es ampliamente usado con datos ambientales, donde el valor de cero es informativo, aunque se puede usar en datos biológicos previo una transformación. El PCA al usar distancias euclideanas es fuertemente afectado por ceros, y detecta relaciones lineares de los datos.</p>
+<p>Además de las limitantes de los dobles ceros, otro inconveniete que puede tener esta ordenación, es que la proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.</p>
+<p>Los gráficos de dispersión de la ordenación PCA, los objetos (las comunidades) se representan como puntos y las variables se muestran como flechas.</p>
+<p>Ahora vamos hacer un ejercicio rápido y ajustar un PCA a datos de arrestos en Estados Unidos. Estos datos que se encuentran en el paquete base de R contiene el porcentaje de asaltos (Assault), asesinatos (Murder) y secuestros (Rape) por cada 100,000 habitantes para cada uno de los 50 estados de USA (1973). Además, también incluye el porcentaje de la población de cada estado que vive en zonas rurales (UrbanPoP).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vegan)
+<span class="kw">data</span>(<span class="st">&quot;USArrests&quot;</span>)
+<span class="kw">head</span>(USArrests, <span class="dv">4</span>)</code></pre></div>
+<pre><code>##          Murder Assault UrbanPop Rape
+## Alabama    13.2     236       58 21.2
+## Alaska     10.0     263       48 44.5
+## Arizona     8.1     294       80 31.0
+## Arkansas    8.8     190       50 19.5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#usaremos la función rda para ajustar un pca</span>
+pca.Arr &lt;-<span class="st"> </span><span class="kw">rda</span>(USArrests, <span class="dt">scale =</span> <span class="ot">TRUE</span>)
+
+<span class="co">#el argumento scale = TRUE nos permite estandarizar los datos </span>
+<span class="co">#los arrestos como vemos son mucho más altos que las otras variables</span>
+
+<span class="co">#Vemos el resultado del ajuste</span>
+pca.summ &lt;-<span class="st"> </span><span class="kw">summary</span>(pca.Arr)
+
+<span class="co">#Eigenvalues</span>
+<span class="co">#para obtener los eignvalues le pedimos que del objeto que contiene el resumen del</span>
+<span class="co">#análisis (pca.summ) el elemento cont </span>
+pca.summ$cont</code></pre></div>
+<pre><code>## $importance
+## Importance of components:
+##                          PC1    PC2     PC3     PC4
+## Eigenvalue            2.4802 0.9898 0.35656 0.17343
+## Proportion Explained  0.6201 0.2474 0.08914 0.04336
+## Cumulative Proportion 0.6201 0.8675 0.95664 1.00000</code></pre>
+<p>Los <em>eigenvalores</em> son medidas de la importancia (varianza) de los ejes. Pueden expresarse como proporciones explicadas, o proporciones de variación explicadas, dividiéndolas por la inercia total. En el caso del ejemplo vemos que el componente 1 (PC1) explica el 62% de la varianza de nuestros datos, y el segundo componente (PC2) el 24% en conjunto estos dos componentes explican el 86% de la variación de los datos.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#puntuación de las especies </span>
+pca.summ$species</code></pre></div>
+<pre><code>##                 PC1        PC2        PC3         PC4
+## Murder   -1.5789353  0.7783309 -0.3812000  0.50581692
+## Assault  -1.7182500  0.3498845 -0.2995557 -0.57919282
+## UrbanPop -0.8196414 -1.6244933 -0.4222914  0.10430487
+## Rape     -1.6011289 -0.3114185  0.9135612  0.06935934</code></pre>
+<p>La puntuación de las especies nos muestra como se asocia el primer componente a esa variable y el peso de esa variable. De esta forma, en el ejemplo, en el primer componente las variables Assault, Murder y Rape son aproximadamente iguales entre ellas y bastante superiores al asignado a UrbanPoP y tienen una asociación negativa. En el caso del componente dos UrbanPop tiene un peso más importante en ese eje y su realación es negativa. Cuando usamos <em>vegan</em> para ajustar una ordenación las variables siempre serán mostradas como especies.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Sitios</span>
+<span class="co">#Usamos la función head para que se despligue únicamente los 6 primeros sitios</span>
+<span class="kw">head</span>(pca.summ$sites)</code></pre></div>
+<pre><code>##                    PC1        PC2         PC3         PC4
+## Alabama    -0.33114461  0.6028277 -0.39369198  0.19855667
+## Alaska     -0.65523534  0.5708197  1.80776363 -0.55727431
+## Arizona    -0.59241305 -0.3967588  0.04854442 -1.06052940
+## Arkansas    0.04751642  0.5955965  0.10153030 -0.23228377
+## California -0.84804316 -0.8206544  0.53041541 -0.43454867
+## Colorado   -0.50888462 -0.5252599  0.97034832  0.00186132</code></pre>
+<p>Sitios se refiere al valor que recibe cada uno de los sitios (observaciones)en cada uno de los componentes, en un grafico de doble entrada serían las coordenadas.</p>
+<p>Finalmente, cuando queremos mostrar nuestra ordenación en un biplot o gráfico de dispersión, la forma en que se muestran los resultados pueden estar definidos de dos formas distintas. Scaling 1 es usado normalmente cuando nos interesa ver las diferencias entre los sitios. Mientras que scaling 2 es usado si lo que nos interesa es evaluar la relación entre las variables. Veamos la diferencia en la representación gráfica.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+
+<span class="kw">biplot</span>(pca.Arr, <span class="dt">scaling=</span><span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;Scaling 1&quot;</span>)
+<span class="kw">biplot</span>(pca.Arr, <span class="dt">scaling=</span><span class="dv">2</span>, <span class="dt">main =</span> <span class="st">&quot;Scaling 2&quot;</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><strong><em>2. Principal Coordinates Análisis (PCoA)</em></strong></p>
+<p>PCoA, conocido tambien como scalado métrico multidimensional (MDS) es conceptualmente similar a PCA y análisis de correspondencia (CA) que preservan distancias Eudlicean y chi-cuadrado entre objetos, respectivamente, la diferencia con estos métodos de ordenación es que el PCoA puede preservar las distancias generadas a partir de cualquier medida de similitud o disimilitud permitiendo un manejo más flexible de datos ecológicos complejos. PCA se usa comúnmente para similitudes y PCoA para diferencias.</p>
+<p>Una ventaja importante es que el PCoA metrime manejar matrices de disimilitud calculadas a partir de variables cuantitativas, semicuantitativas, cualitativas y mixtas. En este caso la elección de la medida de similitud o disimilitud es crítica y debe ser adecuada para los datos con los que se esta trabajando.</p>
+<p>Aunque, este método presenta varias ventajas hay que recordad que el PCoA representa en el plano los componentes euclidianos de la matriz, incluso si la matriz contiene distancias no euclidianas.</p>
+<p>Usaremos el paquete <strong>ape</strong> para implementar el PCoA y la función <em>pcoa</em> que computa la ordenación, para esto necesitamos una matriz de distancias o similitudes como entrada, usaremos el paquete <strong>cluster</strong> y la función <em>daisy</em> para calcular la distancia de gower.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#cargamos datos de ejemplo</span>
+<span class="kw">library</span>(vegan)
+<span class="kw">data</span>(<span class="st">&quot;dune.env&quot;</span>)
+
+<span class="co">#calculamos la distancia de gower con datos mixtos</span>
+<span class="co">#variables numéricas y categóricas</span>
+<span class="kw">library</span>(cluster)
+disGow &lt;-<span class="st"> </span><span class="kw">daisy</span>(dune.env, <span class="st">&quot;gower&quot;</span>)
+
+<span class="co">#realizamos la ordenación y graficamos</span>
+<span class="kw">library</span>(ape)
+pcoaDun &lt;-<span class="st"> </span><span class="kw">pcoa</span>(disGow)
+
+<span class="co">#vemos los eigenvalores</span>
+<span class="kw">head</span>(pcoaDun$values)</code></pre></div>
+<pre><code>##   Eigenvalues Relative_eig Rel_corr_eig Broken_stick Cum_corr_eig
+## 1  1.19219411   0.48682576   0.23125629   0.19417267    0.2312563
+## 2  0.82108733   0.33528639   0.16891396   0.13861712    0.4001702
+## 3  0.43337263   0.17696527   0.10378167   0.11083934    0.5039519
+## 4  0.29088374   0.11878074   0.07984492   0.09232082    0.5837968
+## 5  0.16285907   0.06650258   0.05833802   0.07843193    0.6421349
+## 6  0.09522366   0.03888405   0.04697593   0.06732082    0.6891108
+##   Cumul_br_stick
+## 1      0.1941727
+## 2      0.3327898
+## 3      0.4436291
+## 4      0.5359499
+## 5      0.6143819
+## 6      0.6817027</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Estos nos muestran la importancia de cada variable para cada sitio</span>
+
+<span class="co">#Vemos los eigenvectores</span>
+<span class="kw">head</span>(pcoaDun$vectors)</code></pre></div>
+<pre><code>##       Axis.1       Axis.2      Axis.3       Axis.4       Axis.5
+## 1 -0.3443117 -0.006165232 -0.17924745  0.064288860  0.074076828
+## 2 -0.1739767 -0.186573785 -0.01909423  0.139208775 -0.031395356
+## 3 -0.2427457  0.082399005 -0.19564033  0.005128101 -0.001429953
+## 4 -0.2431447  0.080725620 -0.19479484  0.004387051 -0.009284373
+## 5 -0.1023988 -0.237047606  0.07382832 -0.197239144  0.090734919
+## 6 -0.1898342 -0.136476269  0.09302420 -0.081997169  0.120775554
+##        Axis.6      Axis.7      Axis.8       Axis.9
+## 1 -0.05466493  0.07969362 -0.01353679  0.003088923
+## 2  0.14465676  0.01811985 -0.04251420 -0.001681605
+## 3 -0.06254740 -0.06382868 -0.01038631 -0.007311375
+## 4 -0.06626271 -0.06479374 -0.01775386  0.005158402
+## 5  0.03100643  0.06066075  0.04952928 -0.005193289
+## 6  0.08378295 -0.06217703 -0.02778954  0.002705063</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#son los vectores que se usan para la ordenación </span></code></pre></div>
+<p>Muy bien ahora podemos graficar los datos y ver como se organizan en el espacio.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pcoaDun$vectors[,<span class="dv">1</span>], pcoaDun$vectors[,<span class="dv">2</span>], <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;PCoA1&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;PCoA2&quot;</span>,
+ <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">&quot;PCoA dune.env data&quot;</span>)
+
+<span class="kw">text</span>(pcoaDun$vectors[,<span class="dv">1</span>], pcoaDun$vectors[,<span class="dv">2</span>], <span class="kw">labels</span>(disGow), 
+ <span class="dt">cex =</span> <span class="fl">0.9</span>, <span class="dt">xpd =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><strong><em>3. Correspondence Analysis (CA)</em></strong></p>
+<p>Implícitamente se generan distancias de Chi-cuadrado entre las muestras por lo que no es afectado por matrices con dobles ceros. Se basa en un modelo de respuesta unimodal de las especies a los gradientes ambientales subyacentes. Uno de los principales problemas de este análisis es que la ordenación genera un “Efecto arco” causado por la respuesta unimodal de la abundancia de especies a un gradiente ambiental.</p>
+<p>Este análisis es implementado dentro del paquete <strong>vegan</strong>, para ajustar un CA usamos la función <em>cca</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(dune)
+
+<span class="co">#ajustamos el ca</span>
+ca.dune &lt;-<span class="st"> </span><span class="kw">cca</span>(dune)
+
+<span class="co">#extraemos los datos</span>
+caSum &lt;-<span class="st"> </span><span class="kw">summary</span>(ca.dune)
+
+<span class="co">#Eigenvalores</span>
+caSum$cont</code></pre></div>
+<pre><code>## $importance
+## Importance of components:
+##                          CA1    CA2    CA3     CA4     CA5     CA6     CA7
+## Eigenvalue            0.5360 0.4001 0.2598 0.17598 0.14476 0.10791 0.09247
+## Proportion Explained  0.2534 0.1892 0.1228 0.08319 0.06844 0.05102 0.04372
+## Cumulative Proportion 0.2534 0.4426 0.5654 0.64858 0.71702 0.76804 0.81175
+##                           CA8     CA9    CA10    CA11    CA12    CA13
+## Eigenvalue            0.08091 0.07332 0.05630 0.04826 0.04125 0.03523
+## Proportion Explained  0.03825 0.03466 0.02661 0.02282 0.01950 0.01665
+## Cumulative Proportion 0.85000 0.88467 0.91128 0.93410 0.95360 0.97025
+##                           CA14     CA15     CA16     CA17     CA18
+## Eigenvalue            0.020529 0.014911 0.009074 0.007938 0.007002
+## Proportion Explained  0.009705 0.007049 0.004290 0.003753 0.003310
+## Cumulative Proportion 0.979955 0.987004 0.991293 0.995046 0.998356
+##                           CA19
+## Eigenvalue            0.003477
+## Proportion Explained  0.001644
+## Cumulative Proportion 1.000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#el primer componente explica el 25% de la variación</span>
+
+<span class="co">#Ahora graficamos</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(ca.dune, <span class="dt">scaling =</span> <span class="dv">1</span>, <span class="dt">main=</span><span class="st">&quot;CA scaling 1&quot;</span>)
+<span class="kw">plot</span>(ca.dune, <span class="dt">scaling =</span> <span class="dv">2</span>, <span class="dt">main=</span><span class="st">&quot;CA scaling 2&quot;</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><strong>Recuerde:</strong> Al igual que en el PCA usamos <em>scaling 1</em> cuando lo que nos interesa es evaluar la relación entre sitios, mientras que <em>scaling 2</em> usamos cuando nos interesa evaluar la relación entre especies.</p>
+<p><strong><em>4. Detrended Correspondence Analysis (DCA, DECORANA)</em></strong></p>
+<p>Es una extensión del CA que corrige el efecto arco. Este método realiza una ordenación por segmentos y luego los alinea con el fin de evitar la curvatura. Muchos autores proponen que este tipo de análisis implica una excesiva manipulación de los datos (Pielou 1984).</p>
+<p>Este análisis es implementado dentro del paquete <strong>vegan</strong>, para ajustar un CA usamos la función <em>dca</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ajustamos el dca</span>
+dca.dune &lt;-<span class="st"> </span><span class="kw">decorana</span>(dune)
+dca.dune</code></pre></div>
+<pre><code>## 
+## Call:
+## decorana(veg = dune) 
+## 
+## Detrended correspondence analysis with 26 segments.
+## Rescaling of axes with 4 iterations.
+## 
+##                   DCA1   DCA2    DCA3    DCA4
+## Eigenvalues     0.5117 0.3036 0.12125 0.14267
+## Decorana values 0.5360 0.2869 0.08136 0.04814
+## Axis lengths    3.7004 3.1166 1.30055 1.47888</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Ahora graficamos</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(dca.dune)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-17-1.png" width="672" /> <strong><em>5. Nonmetric Multidimensional Scaling (NMDS)</em></strong></p>
+<p>Una de las principales característias de este método es que permite ajustar la ordenación con cualquier método de distancias. De esta forma se pueden usar distancias que sean biológicamente relevantes. Un problema de este método es que la ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Esto significa que si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3, sin embargo, esa diferencias entre distancias no necesariamente tendra la dimensión exacta. Por eso la representación gráfica del nMDS sufre menos distorsiones respecto a las distancias reales.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nmds.dune &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(dune,<span class="dt">distance=</span><span class="st">&quot;bray&quot;</span>, <span class="dt">k=</span><span class="dv">2</span>, <span class="dt">trymax=</span><span class="dv">50</span>)   
+nmds.dune </code></pre></div>
+<p>A diferencia de los otros metodos que hemos visto hasta aquí el NMDS, el stress es el que nos muestra que tan efectiva ha sido la ordenación. El valor de estrés (stress) nos indica la cantidad de varianza que <strong>NO</strong> se ajustó, mientras más bajo es el estrés mayor varianza explica. Una regla general, aunque discutida, es que las ordenaciones con estrés &gt;0.05 proporciona una representación <em>excelente</em> en las dimensiones reducidas, &gt;0.1 es <em>muy bueno</em>, &gt;0.2 es <em>bueno</em> con valores de estrés &gt;0.3 se dice que la ordenación proporciona una pobre representación de la variación de los datos. En nuestro ejemplo el estres podría considerarse muy bueno.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#graficamos la ordenación</span>
+
+<span class="kw">plot</span>(nmds.dune, <span class="dt">main=</span><span class="st">&quot;NMDS de los datos de Dune&quot;</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="graficar-los-resultados" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Graficar los resultados</h3>
+<p>Como hemos visto existen diferentes formas de graficar los resultados de la ordenación. A continuación mostramos una forma de personalización del gráfico de ordenación que se aplica a la mayor parte de ordenaciones.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(nmds.dune, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)  <span class="co"># para dibujar un plot vacío</span>
+<span class="kw">points</span>(nmds.dune, <span class="dt">display=</span><span class="st">&quot;sites&quot;</span>, <span class="dt">cex=</span><span class="fl">0.8</span>, <span class="dt">pch=</span><span class="dv">21</span>, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">bg=</span><span class="st">&quot;yellow&quot;</span>)  
+<span class="kw">text</span>(nmds.dune, <span class="dt">display=</span> <span class="st">&quot;spec&quot;</span>, <span class="dt">cex=</span><span class="fl">0.5</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>) </code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:plotnmds"></span>
+<img src="AnalisisMultivarianteComunidad_files/figure-html/plotnmds-1.png" alt="Representación gráfica del NMDS" width="432" />
+<p class="caption">
+Figure 2.2: Representación gráfica del NMDS
+</p>
+</div>
+<p>Podemos ver en la figura <a href="ordenaciones.html#fig:plotnmds">2.2</a> que ciertas especies están asociadas con ciertas localidades esto nos podría servir para explorar los datos.</p>
+</div>
+<div id="interpretacion-ambiental" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Interpretación ambiental</h3>
+<p>Como lo mencionamos previamente las ordenaciones indirectas no sirven para testar hipótesis, este método nos permite organizar nuestras variables en un espacio dimensional más reducido. Sin embargo, podríamos usar estos ejes y relacionarlos con variables ambientales. Vamos a usar el paquete vegan para ajustar un modelo que permita evaluar el efecto de las variables ambientales a la ordenación.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(varechem)
+<span class="kw">data</span>(varespec)
+vare.mds &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(varespec, <span class="dt">trace =</span> <span class="ot">FALSE</span>)
+ef &lt;-<span class="st"> </span><span class="kw">envfit</span>(vare.mds, varechem, <span class="dt">permu =</span> <span class="dv">999</span>)
+ef</code></pre></div>
+<pre><code>## 
+## ***VECTORS
+## 
+##             NMDS1    NMDS2     r2 Pr(&gt;r)    
+## N        -0.05733 -0.99836 0.2536  0.049 *  
+## P         0.61971  0.78483 0.1938  0.091 .  
+## K         0.76644  0.64231 0.1809  0.125    
+## Ca        0.68520  0.72836 0.4119  0.004 ** 
+## Mg        0.63252  0.77454 0.4270  0.003 ** 
+## S         0.19139  0.98151 0.1752  0.145    
+## Al       -0.87161  0.49021 0.5269  0.001 ***
+## Fe       -0.93601  0.35197 0.4451  0.003 ** 
+## Mn        0.79874 -0.60167 0.5231  0.001 ***
+## Zn        0.61754  0.78654 0.1879  0.104    
+## Mo       -0.90311  0.42942 0.0609  0.518    
+## Baresoil  0.92488 -0.38025 0.2508  0.063 .  
+## Humdepth  0.93284 -0.36028 0.5201  0.001 ***
+## pH       -0.64803  0.76162 0.2308  0.072 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## Permutation: free
+## Number of permutations: 999</code></pre>
+<p>Ahora podemos ver las variables que son significativas para explicar la ordenación de los datos.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(vare.mds, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>)
+<span class="kw">plot</span>(ef, <span class="dt">p.max =</span> <span class="fl">0.05</span>)</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Con variables categóricas podríamos hacer el mismo procedimiento pero tener una grafica de salida un poco diferente.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ef &lt;-<span class="st"> </span><span class="kw">envfit</span>(ca.dune, dune.env, <span class="dt">permutations =</span> <span class="dv">999</span>)
+ef</code></pre></div>
+<pre><code>## 
+## ***VECTORS
+## 
+##         CA1      CA2     r2 Pr(&gt;r)  
+## A1 0.998160 0.060614 0.3104  0.041 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## Permutation: free
+## Number of permutations: 999
+## 
+## ***FACTORS:
+## 
+## Centroids:
+##                  CA1     CA2
+## Moisture1    -0.7484 -0.1423
+## Moisture2    -0.4652 -0.2156
+## Moisture4     0.1827 -0.7315
+## Moisture5     1.1143  0.5708
+## ManagementBF -0.7258 -0.1413
+## ManagementHF -0.3867 -0.2960
+## ManagementNM  0.6517  1.4405
+## ManagementSF  0.3376 -0.6761
+## UseHayfield  -0.2861  0.6488
+## UseHaypastu  -0.0735 -0.5602
+## UsePasture    0.5163  0.0508
+## Manure0       0.6517  1.4405
+## Manure1      -0.4639 -0.1738
+## Manure2      -0.5872 -0.3600
+## Manure3       0.5187 -0.3172
+## Manure4      -0.2059 -0.8775
+## 
+## Goodness of fit:
+##                r2 Pr(&gt;r)   
+## Moisture   0.4113  0.005 **
+## Management 0.4441  0.003 **
+## Use        0.1845  0.099 . 
+## Manure     0.4552  0.007 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## Permutation: free
+## Number of permutations: 999</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(ca.dune, <span class="dt">display =</span> <span class="st">&quot;sites&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>)
+<span class="kw">with</span>(dune.env, <span class="kw">ordiellipse</span>(ca.dune, Management, <span class="dt">kind =</span> <span class="st">&quot;se&quot;</span>, <span class="dt">conf =</span> <span class="fl">0.95</span>, <span class="dt">label=</span> <span class="ot">TRUE</span>))</code></pre></div>
+<p><img src="AnalisisMultivarianteComunidad_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="ejercicio" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Ejercicio</h3>
+<p>Los datos que se presentan <a href="%22https://github.com/Ciespinosa/AnalisisMultivariante/TraitsVege.csv%22">aquí</a> corresponden a rasgos asociados a procesos de dispersión de semillas, incluyendo los potenciales grupos de dispersores. Colectamos información de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron seis rasgos de frutos; tipo, color, peso, largo, ancho y número de semillas. Para semillas se registraron tres rasgos; peso, longitud y ancho. Adicionalmente se asignó un síndrome de dispersión a cada especie.</p>
+<p>Los rasgos de frutos y semillas colectados en este trabajo, han sido asociados con la habilidad de las plantas para lidiar con el estrés. Muller-Landau (2010) sugiere que las especies con semillas pequeñas tienen una ventaja en fertilidad y dispersión, por producir más semillas y facilitar su desplazamiento a grandes distancias. Por otro lado, las semillas grandes tienen la ventaja tolerancia al estrés, porque estas proveen energía y material para el crecimiento de las plántulas. Una mayor contribución de nutrientes en semillas grandes facilita la sobrevivencia bajo ambientes más estresantes, ya sea por sombra, humedad, herbivoría o perturbaciones.</p>
+<p>En este contexto, esperamos que los ambientes menos estresantes estén dominados por especies con semillas pequeñas, pero un amplio rango de tamaños de semillas. En ambientes de mayor estrés, se espera encontrar un subconjunto de especies con semillas grandes y baja capacidad de dispersión.</p>
+<p>Para analizar el impacto del disturbio sobre la estructura de la comunidad en términos de rasgos funcionales usaremos tres variables que han mostrado ser un subrogado de perturbaciones antrópicas; (1) distancia al centro poblado más cercano, (2) peso de excretas de ganado, (3) número de árboles con DBH &gt; 20 cm, donde un bajo número de árboles grandes implica una alta perturbación. Puede obtener los datos de <a href="%22https://github.com/Ciespinosa/AnalisisMultivariante/Parcelas.csv%22">aquí</a></p>
+<p>Vamos a analizar por separado los rasgos cualitativos y los cuantitativos.</p>
+<p>Para analizar los efectos de la perturbación sobre los rasgos cualitativos de los frutos vamos a ajustar un PCA para cada rasgo; tipo de fruto, síndrome de dispersión y color del fruto. Utilizaremos la matriz de datos morfológicos cualitativos. Realizamos un modelo lineal usando el primer eje del PCA como variable de respuesta y cada una de las tres variables de perturbación como variables explicativas. Usaremos la función “rda” del paquete “vegan” para ajustar el PCA, y la función “lm” del paquete “stats” para el modelo lineal.</p>
+
+</div>
+</div>
+<div id="ordenaciones-directas-o-constrenidas" class="section level2">
+<h2><span class="header-section-number">2.3</span> Ordenaciones directas o constreñidas</h2>
+<p>Si bien las técnicas de ordenación indirecta nos permiten descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.</p>
+<p>Si disponemos de una matriz de variables explicativas es posible utilizar análisis de ordenación constreñidos. De esta forma, esta matriz representa la información que tenemos sobre cada una de las muestras y podemos usarla para predecir los valores de las variables respuesta (la composición de especies).</p>
+<p>Al igual que para los análisis de ordenaciones no constreñidas el tipo de ordenación depende de la respuesta que tenemos en las variables (Tabla <a href="ordenaciones.html#tab:ordenacion1">2.2</a> )</p>
+<table>
+<caption><span id="tab:ordenacion1">Table 2.2: </span>Relación entre el tipo de variable y el método de ordenación a utilizar</caption>
+<thead>
+<tr class="header">
+<th align="left">Medidas.de.Similitud</th>
+<th align="left">Tipo.de.Ordenación</th>
+<th align="left">Tipo.Ordenación.Constreñida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Respuesta lineal</td>
+<td align="left">PCA</td>
+<td align="left">RDA (Redundancy Analysis)</td>
+</tr>
+<tr class="even">
+<td align="left">Respuesta Unimodal</td>
+<td align="left">CA/DCA</td>
+<td align="left">CCA (Canonical Correspondence Analysis)</td>
+</tr>
+<tr class="odd">
+<td align="left">Bray-Curtis</td>
+<td align="left">PcoA/mMDS/nmMDS</td>
+<td align="left">PERMANOVA</td>
+</tr>
+</tbody>
+</table>
+<p>Una interesante propiedad de los análisis de ordenación constreñidos es que puedo hacer una ordenación parcial. Esta propiedad me permite evaluar como un grupo de variables pueden influir en mi matriz de respuesta. Podría dividir la información, por ejemplo, en variables ambientales y variables bióticas y ver cuánto explica cada una y cuanto explican en conjunto.</p>
+</div>
+<div id="realizando-una-ordenacion-constrenida" class="section level2">
+<h2><span class="header-section-number">2.4</span> Realizando una ordenación constreñida</h2>
+<p>Al igual que en el caso de la ordenación no constreñida debemos decidir el tipo de ordenación constreñida que vamos hacer. En el caso de los datos de <em>Dune</em> sabemos que la respuesta es unimodal por lo que escogeremos un análisis canónico de correspondencias (CCA) para nuestra ordenación constreñida.</p>
+<p>Para hacer la ordenación constreñida necesitamos una matriz con variables explicativas, utilizaremos las variables provistas en el paquete vegan denominadas env.env.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;dune.env&quot;</span>) <span class="co">#Llamamos a los datos</span>
+
+ord.cca &lt;-<span class="st"> </span><span class="kw">cca</span>(dune~<span class="st"> </span>A1 +<span class="st"> </span>Use, <span class="dt">data=</span>dune.env)
+ord.cca</code></pre></div>
+<pre><code>## Call: cca(formula = dune ~ A1 + Use, data = dune.env)
+## 
+##               Inertia Proportion Rank
+## Total          2.1153     1.0000     
+## Constrained    0.4724     0.2233    3
+## Unconstrained  1.6429     0.7767   16
+## Inertia is scaled Chi-square 
+## 
+## Eigenvalues for constrained axes:
+##    CCA1    CCA2    CCA3 
+## 0.27630 0.14929 0.04683 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8    CA9   CA10 
+## 0.3792 0.3091 0.2093 0.1629 0.1308 0.0965 0.0758 0.0731 0.0483 0.0456 
+##   CA11   CA12   CA13   CA14   CA15   CA16 
+## 0.0431 0.0237 0.0163 0.0141 0.0108 0.0042</code></pre>
+<p>Lo que podemos ver es que la variable A1 más Use explican el 22.33% de la variación en los datos.</p>
+<p>La decisión de que modelos deberían generar debe responder a una lógica ecológica, así podemos probar como algunas variables juegan o no un rol en la estructura de la comunidad.</p>
+<p>Una herramienta que podríamos utilizar para analizar la importancia de cada variable es utilizar la función <code>envfit</code>, esta función permite relacionar la ordenación no constreñida con las variables explicativas y mediante un test de permutación mostrarnos que variables se asocian significativamente con la ordenación.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitVar &lt;-<span class="st"> </span><span class="kw">envfit</span>(ord.cca, dune.env)
+fitVar</code></pre></div>
+<pre><code>## 
+## ***VECTORS
+## 
+##         CCA1      CCA2     r2 Pr(&gt;r)  
+## A1  0.996690 -0.081278 0.4812  0.011 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## Permutation: free
+## Number of permutations: 999
+## 
+## ***FACTORS:
+## 
+## Centroids:
+##                 CCA1    CCA2
+## Moisture1    -0.7841  0.1023
+## Moisture2    -0.7047 -0.3941
+## Moisture4    -0.0690 -1.1244
+## Moisture5     1.4052  0.5459
+## ManagementBF -0.8428  0.0317
+## ManagementHF -0.3461 -0.1831
+## ManagementNM  0.9747  2.0835
+## ManagementSF  0.1233 -1.3692
+## UseHayfield  -0.3809  1.2869
+## UseHaypastu  -0.1953 -1.0131
+## UsePasture    0.8511 -0.0640
+## Manure0       0.9747  2.0835
+## Manure1      -0.5822  0.0043
+## Manure2      -0.5826 -0.3399
+## Manure3       0.6233 -0.6456
+## Manure4      -0.7009 -1.5898
+## 
+## Goodness of fit:
+##                r2 Pr(&gt;r)    
+## Moisture   0.3176  0.035 *  
+## Management 0.4941  0.001 ***
+## Use        0.3204  0.005 ** 
+## Manure     0.5105  0.001 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## Permutation: free
+## Number of permutations: 999</code></pre>
+<p>Podemos utilizar el <em>Goodness of fit</em> para ver cuáles son las variables que ajustan la ordenación y utilizar estas para hacer el modelo constreñido. En este caso utilizaremos Manure y Management.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.ccafit &lt;-<span class="st"> </span><span class="kw">cca</span>(dune~Manure+Management, <span class="dt">data=</span>dune.env)
+ord.ccafit</code></pre></div>
+<pre><code>## Call: cca(formula = dune ~ Manure + Management, data = dune.env)
+## 
+##               Inertia Proportion Rank
+## Total          2.1153     1.0000     
+## Constrained    0.8766     0.4144    6
+## Unconstrained  1.2386     0.5856   13
+## Inertia is scaled Chi-square 
+## Some constraints were aliased because they were collinear (redundant)
+## 
+## Eigenvalues for constrained axes:
+##   CCA1   CCA2   CCA3   CCA4   CCA5   CCA6 
+## 0.3617 0.2271 0.1454 0.0655 0.0418 0.0353 
+## 
+## Eigenvalues for unconstrained axes:
+##    CA1    CA2    CA3    CA4    CA5    CA6    CA7    CA8    CA9   CA10 
+## 0.4082 0.1592 0.1493 0.1252 0.0962 0.0774 0.0649 0.0424 0.0382 0.0312 
+##   CA11   CA12   CA13 
+## 0.0251 0.0121 0.0090</code></pre>
+<p>Como vemos con este procedimiento subimos al 41% de la varianza explicada.</p>
+<p>Podemos utilizar la función anova para evaluar la significancia de cada variable dentro del modelo, de forma separada.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ord.ccaT &lt;-<span class="st"> </span><span class="kw">cca</span>(dune~<span class="st"> </span>., <span class="dt">data=</span>dune.env)
+<span class="kw">anova</span>(ord.ccaT, <span class="dt">by=</span><span class="st">&quot;term&quot;</span>, <span class="dt">permu=</span><span class="dv">1000</span>)</code></pre></div>
+<pre><code>## Permutation test for cca under reduced model
+## Terms added sequentially (first to last)
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: cca(formula = dune ~ A1 + Moisture + Management + Use + Manure, data = dune.env)
+##            Df ChiSquare      F Pr(&gt;F)  
+## A1          1   0.22476 2.5704  0.014 *
+## Moisture    3   0.51898 1.9783  0.014 *
+## Management  3   0.39543 1.5074  0.072 .
+## Use         2   0.10910 0.6238  0.926  
+## Manure      3   0.25490 0.9717  0.528  
+## Residual    7   0.61210                
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Como vemos esto cambia lo que inicialmente habíamos decidido, esto es debido a que algunas de las variables pueden estar correlacionadas entre ellas.</p>
+<p>Bien ahora necesitamos graficar los resultados. Podemos utilizar la función plot e ir graficando cada uno de los componentes (Figura <a href="ordenaciones.html#fig:plotcca">2.3</a>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(ord.cca, <span class="dt">dis=</span><span class="st">&quot;sp&quot;</span>, <span class="dt">type=</span><span class="st">&quot;n&quot;</span>)
+<span class="kw">points</span>(ord.cca, <span class="dt">dis=</span><span class="st">&quot;sites&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>)
+<span class="kw">points</span>(ord.cca, <span class="dt">display=</span><span class="st">&quot;cn&quot;</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>)
+<span class="kw">text</span>(ord.cca, <span class="dt">dis=</span><span class="st">&quot;sp&quot;</span>, <span class="dt">cex=</span><span class="fl">0.6</span>)
+<span class="kw">text</span>(ord.cca, <span class="dt">display =</span> <span class="st">&quot;cn&quot;</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex=</span><span class="fl">0.7</span>)</code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:plotcca"></span>
+<img src="AnalisisMultivarianteComunidad_files/figure-html/plotcca-1.png" alt="Representación gráfica del CCA" width="432" />
+<p class="caption">
+Figure 2.3: Representación gráfica del CCA
+</p>
+</div>
+<p>Muchas veces uno de los problemas que tenemos para graficar los datos es que los nombres de las especies son muy largos, en estos casos podemos utilizar una función que se denomina <code>make.cepnames</code> la cual permite acortar los nombres.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(BCI)
+<span class="kw">names</span>(BCI[<span class="dv">1</span>:<span class="dv">5</span>])</code></pre></div>
+<pre><code>## [1] &quot;Abarema.macradenia&quot;    &quot;Vachellia.melanoceras&quot; &quot;Acalypha.diversifolia&quot;
+## [4] &quot;Acalypha.macrostachya&quot; &quot;Adelia.triloba&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">short &lt;-<span class="st"> </span><span class="kw">make.cepnames</span>(<span class="kw">names</span>(BCI[<span class="dv">1</span>:<span class="dv">5</span>]))
+short</code></pre></div>
+<pre><code>## [1] &quot;Abarmacr&quot; &quot;Vachmela&quot; &quot;Acaldive&quot; &quot;Acalmacr&quot; &quot;Adeltril&quot;</code></pre>
+<p>Existen procedimientos para construir modelos que ahora no tocaremos, puede encontrar más información en <a href="http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf">Oksanen 2015</a></p>
+<p>Nota: para realizar un permanova debemos utilizar la función adonis. El procedimiento es similar al desarrollo del cca.</p>
+</div>
+<div id="ejercicio-3-analisis-de-ordenacion" class="section level2">
+<h2><span class="header-section-number">2.5</span> Ejercicio 3: Análisis de Ordenación</h2>
+<p>Con los datos utilizados para realizar el análisis de aglomerados, vamos a realizar un análisis de ordenación constreñida.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Defina que tipo de ordenación constreñida debe realizar para explicar la variación de los datos de herbáceas.</p></li>
+<li><p>Realice un análisis para definir las variables que se debería utilizar en el análisis</p></li>
+<li><p>Ajuste un modelo y defina el porcentaje de variación explicado.</p></li>
+<li><p>Compara los resultados de la ordenación directa si en vez de transformar los datos corremos los modelos con los datos brutos.</p></li>
+<li><p>Realice un gráfico del modelo desarrollado.</p></li>
+</ol>
+
+</div>
+</div>
+<h3>Bibliografia</h3>
+<div id="refs" class="references">
+<div id="ref-Borcard2011">
+<p>Borcard, Daniel, Francois Gillet, and Pierre Legendre. 2011. <em>Numerical Ecology with R</em>. doi:<a href="https://doi.org/10.1007/978-0-387-78171-6">10.1007/978-0-387-78171-6</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="analisis-multivariado-de-la-composicion-de-la-comunidad.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bibliografia.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-Ordenaciones.Rmd",
+"text": "Edit"
+},
+"download": ["AnalisisMultivarianteComunidad.pdf", "AnalisisMultivarianteComunidad.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
