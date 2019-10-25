@@ -1,4 +1,4 @@
-# Ordenaciones Directas o Constreñidas
+## Ordenaciones directas o constreñidas
 
 Si bien las técnicas de ordenación indirecta nos permiten descubrir ciertos patrones, no nos permite testar hipótesis y ver las relaciones de esta matriz con otras variables.
 
@@ -37,7 +37,7 @@ Una herramienta que podríamos utilizar para analizar la importancia de cada var
 
 
 ```{r}
-fitVar <- envfit(ord.ca, dune.env)
+fitVar <- envfit(ord.cca, dune.env)
 fitVar
 ```
 

@@ -1,228 +1,246 @@
-# Ordenaciones 
-
-En ecología es bastante normal que dispongamos de un conjunto de datos que están conformados por una serie de sitios o localidades, para los cuales tenemos una serie de variables.  Estas variables puede ser cada especie o cada condición que levantemos de este sitio, de esta forma un sitio va a tener tantas variables como especies o factores levantados.
-
-Aunque como vimos un diagrama de dispersión es una buena herramienta para representar las tendencias del conjunto de grupos, existe la limitante de que esto es factible con dos o máximo tres variables (especies), con más de tres variables es imposible poder graficarlo.
-
-De esta forma, el objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos [@Borcard2011]. 
-
-Las ordenaciones pueden ser indirectas y directas (constreñidas).  Las ordenaciones indirectas pueden ser utilizadas para interpretarse visualmente o asociadas a otros métodos como regresión. Mientras que las ordenaciones directas permiten hacer asociaciones con variables explicativas, generar un orden constreñido por otras variables. 
-
-En este capítulo nos centraremos en las Ordenaciones indirectas.
-
-
-##Pasos previos: Transformación y Estandarización de datos
-
-Cuando trabajamos con datos multivariantes cabe la posibilidad de que los datos dentro de esta matriz tengan diferencias de medidas importantes.
-
-Imaginemos que estamos trabajando con la comunidad de herbáceas y existan especies con abundancias máximas de 500, mientras otras especies no alcanzan 10 individuos, o en comunidades de insectos donde ciertas especies puedan tener valores de miles y otros de decenas. Si no transformamos la ordenación estará determinada básicamente por esta especie.
-
-Al transformar los datos evitamos que las especies más comunes dominen en el resultado final de la ordenación y aumentamos la influencia de las especies subordinadas  en el modelo resultante.
-
-Existen varias posibilidades para transformar los datos, por lo que definir que función utilizar para transformar los datos es importante.  Cada tipo de transformación produce resultados distintos por lo que debemos utilizarlas con precaución.
-
-Las transformaciones más sencilla o menos intensa es la raíz cuadrada, mientras que el logaritmo es la transformación más intensa, podríamos utilizar la raíz cuarta como una función intermedia. La raíz cuadrada la utilizaríamos cuando tenemos diferencias como en el caso de las aves con variaciones de una magnitud de diferencia (entre decenas y centenas), mientras que la transformación logarítmica la haríamos con la comunidad de insectos donde hay más de una magnitud de diferencia (entre decenas y miles).
-
-Aunque hay muchos autores que aconsejan realizar transformaciones hay que ser conscientes de lo que estamos haciendo, transformaciones muy fuertes en una matriz con pocas diferencias pueden hacer que, por ejemplo, las especies raras tengan igual peso que las dominantes, esto es lo que queremos?
-
-Veamos un ejemplo:
-
-```{r}
-set.seed(4)
-aves<- data.frame(sp1= sample(1:90, 10), sp2= sample(100:250, 10))
-
-insectos<- data.frame(sp1= sample(5:99, 10), sp2= sample(1000:2500, 10))
-
-##¿Qué pasa cuando transformamos?
-cbind(aves, sqrt(aves),log(aves))
-
-cbind(insectos, sqrt(insectos),log(insectos))
-
-
-```
-
-
-La estandarización de los datos permite modificar las variables transformándolas en unidades de desviación típica, lo que nos permite comparar entre  valores de distribuciones normales diferentes, o de valores diferentes.
-
-La estandarización o tipificación se lo realiza restando a cada valor el valor medio de la variable y dividiendo para la desviación estándar.
-
-
-```{r}
-avesE <- (aves[,1]-mean(aves[,1]))/sd(aves[,1])
-avesE
-
-round(mean(avesE),1);sd(avesE) 
-
-```
-Como vemos las variables estandarizadas tienen como propiedad que la desviación estándar es 1 y la media es 0.
-
-
 ##Ordenación indirecta o no constreñida
 
-Existen muchos tipos de ordenaciones indirectas como saber que ordenación debo utilizar.  Una posibilidad es ver el tipo de respuesta que tenemos, si es una respuesta linear o monotónica o una respuesta unimodal.
+Las diferentes técnicas de ordenación, a excepción de los NMDS, se basan en la extracción de eigenvectors asociados con la matriz de datos. Los diferentes métodos de ordenación se pueden clasificar según la distancia preservada entre sitios y el tipo de variables que se usan.
 
-Para determinar que tipo de respuesta usamos la desviación estándar.  Si asumimos una distribución normal, datos con menos de tres desviaciones estándar tendrán una respuesta lineal, mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal. Para cada una de estas respuestas existe un análisis que se puede ejecutar \@ref(tab:ordenacion). 
+Los métodos de  ordenación como lo habíamos comentado intentan obtener información sobre la heterogeneidad que tienen los datos. En terminos sencillos la ordenación genera una nuve de puntos basado en todas las variables (especies) que tiene nuestra comunidad, tendríamos un espacio multidimensional. Normalmente, esa nube de puntos será más alargada en ciertas direcciones y más aplanada en otras direcciones. La dirección donde la nube de puntos es más aplanada se corresponde con la dirección de mayor variabilidad de nuestros datos, donde el gradiente es más claro. Este es el primer eje de ordenación que se deberá extraer. A partir de aquí se buscarán otras direcciones que vayan en forma decreciente la cantidad de variación explicada (menos alargada). Cada eje extraído es ortogonal a los otros ejes, eso quiere decir que son linearmente independientes y no correlacionados.
+
+Cuando en los datos hay estructuras claras (gradientes o grupos) y el método ha sido eficiente para extraerlas, entonces los primeros ejes contienen la mayor parte de la información útil, es decir, han extraído la mayor parte de la varianza de los datos. En ese caso, las distancias entre sitios en la proyección en un espacio reducido (con mayor frecuencia bidimensional) son relativamente similares a las distancias entre objetos en el espacio multidimensional.
+
+Como lo comentamos anteriormente el decidir que ordenación usar depende del tipo de respuesta que tienen los datos y de la distancia que se utilizará. De esta forma, si los datos muestran una respuesta lineal se puede usar un análisis de componentes principales (PCA), mientras que si es unimodal podemos ajustar un análisis de correspondiente (CA) o análisis de correspondencia sin tendencia (DCA) (Tabla \@ref(tab:ordenacion))
 
 ```{r ordenacion, echo=FALSE}
 Ordenacion<- data.frame(`Medidas de Similitud` = c("Respuesta lineal", "Respuesta Unimodal", "Bray-Curtis"), `Tipo de Ordenación` = c("PCA", "CA/DCA", "PcoA/mMDS/nmMDS"))
 
 knitr::kable(
   Ordenacion, booktabs = TRUE,
-  caption = 'Relación entre el tipo de variable y el método de ordenación a utilizar'
+  caption = 'Relación entre el tipo de variable y el método de ordenación no constreñida a utilizar'
 )
 ```
 
+###Métodos de ordenación.
 
-Algunos comentarios sobre los métodos de ordenación.
+__*1. Principal Component Analysis (PCA)*__
 
-__*Principal Component Analysis (PCA)*__
+Esta técnica de ordenación es sencilla de interpretar, las distancias entre las muestras son interpretadas directamente como distancias euclidianas. Este método de ordenación es ampliamente usado con datos ambientales, donde el valor de cero es informativo, aunque se puede usar en datos biológicos previo una transformación. El PCA al usar distancias euclideanas es fuertemente afectado por ceros, y detecta relaciones lineares de los datos.
 
-Fortalezas 
+Además de las limitantes de los dobles ceros, otro inconveniete que puede tener esta ordenación, es que la proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.
 
-Es sencillo de interpretar ya que las distancias entre las muestras son interpretadas directamente como distancias euclidianas.
+Los gráficos de dispersión de la ordenación PCA, los objetos (las comunidades) se representan como puntos y las variables se muestran como flechas.
 
-Apropiado para análisis multivariantes de variables ambientales.  El PCA es fuertemente afectado por ceros algo que es bastante común en datos biológicos, al contrario de datos ambientales donde la cantidad de ceros es menor.
-
-Debilidades
-
-Si dos muestras coinciden en celdas con ceros (dobles ceros) incrementa la similitud entre muestras.
-
-La proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.
-
-__*Principal Coordinates Análisis (PCoA)*__ 
-
-Fortalezas
-
-Es una extensión del PCA, permite una definición más amplia de las disimilitudes entre muestras que la distancia Euclidia.
-
-Es capaz de convertir otras medidas de disimilitud (además de la euclidia) en distancias entre muestras.
-
-Debilidades
-
-La proyección de las distancias en un plano también sufre importantes distorsiones como en el caso del PCA.
-
-
-__*Correspondence Analysis*__
-
-Fortalezas
-
-Implícitamente se generan distancias de Chi-cuadrado entre las muestras.
-
-Se basa en un modelo de respuesta unimodal de las especies a los gradientes ambientales subyacentes.
-
-Debilidades
-
-“Efecto arco” Causado por la respuesta unimodal de la 	abundancia de especies a un gradiente ambiental.
-
-__*Detrended Correspondence Analysis (DCA, DECORANA)*__ 
-
-Es una extensión del CA
-
-Fortalezas
-Corrige el “Efecto arco” del CA, realizando una ordenación por segmentos y se realinean los segmentos para evitar la curvatura 
-
-Debilidades
-Excesiva manipulación de los datos (Pielou 1984)
-Hay quien opina que es demasiado parecido a cortar y pegar los 	datos con tijeras y pegamento.
-
-
-__*Multidimensional Scaling (MDS)*__
-
-
-Se puede construir una matriz de semejansas con el coeficiente de semejanza que se considere biológicamente relevante para los datos.
-
-La ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Por eso la representación gráfica del MDS sufre menos distorsiones respecto a las distancias reales.
-
-pretende satisfacer las condiciones impuestas por el “rango” de similitudes.	p.ej.: Si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3.	
-
-
-##Pasos para el análisis de Ordenación
-
-__1. Decidir que ordenación realizar__
-
-Este es el primer paso para poder realizar el análisis de ordenación. Como lo hemos visto podemos usar información para poder determinar que análisis realizar.  El tipo de datos que tenemos y por tanto la distancia a utilizar, si tenemos datos con muchos ceros no podremos utilizar una medida de distancia Euclidiana y deberíamos trabajar con distancia de Bray-Curtis, por tanto es posible que esto nos defina el trabajar con Escalado Multidimensional (Multidimensional Scaling).  Si estamos utilizando otras distancias podríamos definir la cantidad de desviaciones estándar para decidir el tipo de análisis a realizar (\@ref(tab:ordenacion)).
-
-Para ver la longitud de la gradiente (cantidad de desviaciones estándar) podríamos utilizar la función decorana.
+Ahora vamos hacer un ejercicio rápido y ajustar un PCA a datos de arrestos en Estados Unidos. Estos datos que se encuentran en el paquete base de R contiene el porcentaje de asaltos (Assault), asesinatos (Murder) y secuestros (Rape) por cada 100,000 habitantes para cada uno de los 50 estados de USA (1973). Además, también incluye el porcentaje de la población de cada estado que vive en zonas rurales (UrbanPoP).
 
 ```{r}
 library(vegan)
+data("USArrests")
+head(USArrests, 4)
+
+#usaremos la función rda para ajustar un pca
+pca.Arr <- rda(USArrests, scale = TRUE)
+
+#el argumento scale = TRUE nos permite estandarizar los datos 
+#los arrestos como vemos son mucho más altos que las otras variables
+
+#Vemos el resultado del ajuste
+pca.summ <- summary(pca.Arr)
+
+#Eigenvalues
+#para obtener los eignvalues le pedimos que del objeto que contiene el resumen del
+#análisis (pca.summ) el elemento cont 
+pca.summ$cont
+```
+
+Los _eigenvalores_ son medidas de la importancia (varianza) de los ejes. Pueden expresarse como proporciones explicadas, o proporciones de variación explicadas, dividiéndolas por la inercia total. En el caso del ejemplo vemos que el componente 1 (PC1) explica el 62% de la varianza de nuestros datos, y el segundo componente (PC2) el 24% en conjunto estos dos componentes explican el 86% de la variación de los datos.
+
+```{r}
+#puntuación de las especies 
+pca.summ$species
+
+```
+
+La puntuación de las especies nos muestra como se asocia el primer componente a esa variable y el peso de esa variable. De esta forma, en el ejemplo, en el primer componente las variables Assault, Murder y Rape son aproximadamente iguales entre ellas y bastante superiores al asignado a UrbanPoP y tienen una asociación negativa. En el caso del componente dos UrbanPop tiene un peso más importante en ese eje y su realación es negativa. Cuando usamos _vegan_ para ajustar una ordenación las variables siempre serán mostradas como especies.
+
+```{r}
+#Sitios
+#Usamos la función head para que se despligue únicamente los 6 primeros sitios
+head(pca.summ$sites)
+
+```
+
+Sitios se refiere al valor que recibe cada uno de los sitios (observaciones)en cada uno de los componentes, en un grafico de doble entrada serían las coordenadas. 
+
+Finalmente, cuando queremos mostrar nuestra ordenación en un biplot o gráfico de dispersión, la forma en que se muestran los resultados pueden estar definidos de dos formas distintas. Scaling 1 es usado normalmente cuando nos interesa ver las diferencias entre los sitios. Mientras que scaling 2 es usado si lo que nos interesa es evaluar la relación entre las variables.  Veamos la diferencia en la representación gráfica.
+
+```{r, warning=FALSE}
+par(mfcol=c(1,2))
+
+biplot(pca.Arr, scaling=1, main = "Scaling 1")
+biplot(pca.Arr, scaling=2, main = "Scaling 2")
+
+```
+
+__*2. Principal Coordinates Análisis (PCoA)*__ 
+
+PCoA, conocido tambien como scalado métrico multidimensional (MDS) es conceptualmente similar a PCA y análisis de correspondencia (CA) que preservan distancias Eudlicean y chi-cuadrado entre objetos, respectivamente, la diferencia con estos métodos de ordenación es que el PCoA puede preservar las distancias generadas a partir de cualquier medida de  similitud o disimilitud permitiendo un manejo más flexible de datos ecológicos complejos. PCA se usa comúnmente para similitudes y PCoA para diferencias.
+
+Una ventaja importante es que el PCoA metrime manejar matrices de disimilitud calculadas a partir de variables cuantitativas, semicuantitativas, cualitativas y mixtas. En este caso la elección de la medida de similitud o disimilitud es crítica y debe ser adecuada para los datos con los que se esta trabajando. 
+
+Aunque, este método presenta varias ventajas hay que recordad que el PCoA representa en el plano los componentes euclidianos de la matriz, incluso si la matriz contiene distancias no euclidianas. 
+
+Usaremos el paquete __ape__ para implementar el PCoA y la función _pcoa_ que computa la ordenación, para esto necesitamos una matriz de distancias o similitudes como entrada, usaremos el paquete __cluster__ y la función _daisy_ para calcular la distancia de gower.
+
+```{r}
+#cargamos datos de ejemplo
+library(vegan)
+data("dune.env")
+
+#calculamos la distancia de gower con datos mixtos
+#variables numéricas y categóricas
+library(cluster)
+disGow <- daisy(dune.env, "gower")
+
+#realizamos la ordenación y graficamos
+library(ape)
+pcoaDun <- pcoa(disGow)
+
+#vemos los eigenvalores
+head(pcoaDun$values)
+
+#Estos nos muestran la importancia de cada variable para cada sitio
+
+#Vemos los eigenvectores
+head(pcoaDun$vectors)
+#son los vectores que se usan para la ordenación 
+```
+
+Muy bien ahora podemos graficar los datos y ver como se organizan en el espacio.
+
+```{r}
+plot(pcoaDun$vectors[,1], pcoaDun$vectors[,2], type = "n", xlab = "PCoA1", ylab = "PCoA2",
+ axes = TRUE, main = "PCoA dune.env data")
+
+text(pcoaDun$vectors[,1], pcoaDun$vectors[,2], labels(disGow), 
+ cex = 0.9, xpd = TRUE)
+```
+
+
+__*3. Correspondence Analysis (CA)*__
+
+Implícitamente se generan distancias de Chi-cuadrado entre las muestras por lo que no es afectado por matrices con dobles ceros. Se basa en un modelo de respuesta unimodal de las especies a los gradientes ambientales subyacentes. Uno de los principales problemas de este análisis es que la ordenación genera un “Efecto arco” causado por la respuesta unimodal de la abundancia de especies a un gradiente ambiental.
+
+Este análisis es implementado dentro del paquete __vegan__, para ajustar un CA usamos la función _cca_ 
+
+```{r}
 data(dune)
 
-#str(dune) revisa los datos
+#ajustamos el ca
+ca.dune <- cca(dune)
 
-ord.dca <- decorana(dune)
+#extraemos los datos
+caSum <- summary(ca.dune)
+
+#Eigenvalores
+caSum$cont
+#el primer componente explica el 25% de la variación
+
+#Ahora graficamos
+par(mfcol=c(1,2))
+plot(ca.dune, scaling = 1, main="CA scaling 1")
+plot(ca.dune, scaling = 2, main="CA scaling 2")
 
 ```
 
-En el primer eje (DCA1) podemos ver la longitud de este eje, el cual esta expresado en Unidades de desviación, en este caso 3.7.  Esta información ya nos dice que el análisis que debemos hacer será un CA o un DCA.
+__Recuerde:__ Al igual que en el PCA usamos _scaling 1_ cuando lo que nos interesa es evaluar la relación entre sitios, mientras que _scaling 2_ usamos cuando nos interesa evaluar la relación entre especies.
 
-__2. Transformación de los datos__
 
-Lo siguiente que debemos decidir es si es necesario transformar.  Siempre lo mejor es no transformar los datos, sin embargo, como vimos antes si los datos son muy distintos es necesario realizar esta transformación.  Revisa los datos de Dune, como ven no existen diferencias importantes entre los datos por tanto no transformaremos.  
+__*4. Detrended Correspondence Analysis (DCA, DECORANA)*__ 
 
->Recuerde para transformar los datos definimos la variación entre variables.  Variables con más de tres magnitudes de diferencia logaritmo y con dos raíz cuadrada.
+Es una extensión del CA que corrige el efecto arco. Este método realiza una ordenación por segmentos y luego los alinea con el fin de evitar la curvatura. Muchos autores proponen que este tipo de análisis implica una excesiva manipulación de los datos (Pielou 1984).
 
-Aunque no es necesario transformar, la función `decostand` del paquete vegan se puede utilizar para la estandarización y transformar.
+Este análisis es implementado dentro del paquete __vegan__, para ajustar un CA usamos la función _dca_ 
 
 ```{r}
+#ajustamos el dca
+dca.dune <- decorana(dune)
+dca.dune
 
-dsRaiz <- decostand(dune, "standardize", "hellinger") 
-#Estandarizado y transformado raíz cuadrada (hellinger)
-
-dslog <- decostand(dune, "standardize", "log") 
-#Estandarizado y transformado logaritmo (log)
-
-dsSta <- decostand(dune, "standardize")
-#Estandarizado
+#Ahora graficamos
+par(mfcol=c(1,2))
+plot(dca.dune)
 
 ```
+__*5. Nonmetric Multidimensional Scaling (NMDS)*__
 
-
-__3. Desarrollar el análisis__
-
-Realizamos el análisis Decorana y Análisis Canónico (CA) y graficamos los datos.
-
-```{r}
-ord.dca <- decorana(dune)
-ord.dca
-
-ord.ca <- cca(dune)
-ord.ca
-```
-
-Realizamos el análisis de escalado multidimensional (MDS) usando la función `metaMDS` 
+Una de las principales característias de este método es que permite ajustar la ordenación con cualquier método de distancias. De esta forma se pueden usar distancias que sean biológicamente relevantes. Un problema de este método es que la ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Esto significa que si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3, sin embargo, esa diferencias entre distancias no necesariamente tendra la dimensión exacta.	Por eso la representación gráfica del nMDS sufre menos distorsiones respecto a las distancias reales.
 
 
 ```{r, message=FALSE, cache.comments=FALSE,results='hide'}
-ord.nmds <- metaMDS(dune,distance="bray", k=2, trymax=50)   
+nmds.dune <- metaMDS(dune,distance="bray", k=2, trymax=50)   
+nmds.dune 
 ```
+
+A diferencia de los otros metodos que hemos visto hasta aquí el NMDS, el stress es el que nos muestra que tan efectiva ha sido la ordenación. El valor de estrés (stress) nos indica la cantidad de varianza que  __NO__ se ajustó, mientras más bajo es el estrés mayor varianza explica. Una regla general, aunque discutida, es que las ordenaciones con estrés >0.05 proporciona una representación _excelente_ en las dimensiones reducidas, >0.1 es _muy bueno_, >0.2 es _bueno_ con valores de estrés >0.3 se dice que la ordenación proporciona una pobre representación de la variación de los datos. En nuestro ejemplo el estres podría considerarse muy bueno.
+
 ```{r}
-ord.nmds 
+#graficamos la ordenación
+
+plot(nmds.dune, main="NMDS de los datos de Dune")
 ```
 
+#Graficar los resultados
 
-__4. Interpretar los resultados__
-
-
-Para el DCA y CA
-
-Eigenvalue: es la medida de la importancia de un eje, la cantidad de varianza que explica ese eje.  En este caso, el primer eje tanto el DCA como el CA explican el 53% de la variación
-
-Axis length: es la longitud del eje principal. Nos da una estima de qué tipo de respuesta tienen nuestros datos.
-
-Para el MDS
-
-El valor de estrés (stress) nos indica la cantidad de varianza que  __NO__ se ajustó, mientras más bajo es el estrés mayor varianza explica.  Algunos autores plantean que bajo 0.2 es aceptable, mientras que valores superiores hay un ajuste pobre. En el caso del ejemplo el ajuste es bueno.
-
-
-__5. Graficar los resultados__
-
-Lo siguiente que debemos hacer es graficar los resultados con el fin de ver si existen algunos patrones.
+Como hemos visto existen diferentes formas de graficar los resultados de la ordenación. A continuación mostramos una forma de personalización del gráfico de ordenación que se aplica a la mayor parte de ordenaciones.
 
 ```{r plotnmds, fig.align='center', fig.width=4.5, fig.height=4.5, fig.cap= "Representación gráfica del NMDS"}
-plot(ord.nmds, type="n")  # para dibujar un plot vacío
-points(ord.nmds, display="sites", cex=0.8, pch=21, col="black", bg="yellow")  
-text(ord.nmds, display= "spec", cex=0.5, col="blue") 
+plot(nmds.dune, type="n")  # para dibujar un plot vacío
+points(nmds.dune, display="sites", cex=0.8, pch=21, col="black", bg="yellow")  
+text(nmds.dune, display= "spec", cex=0.5, col="blue") 
 
 ```
 Podemos ver en la figura \@ref(fig:plotnmds) que ciertas especies están asociadas con ciertas localidades esto nos podría servir para explorar los datos.
+
+
+#Interpretación ambiental
+
+Como lo mencionamos previamente las ordenaciones indirectas no sirven para testar hipótesis, este método nos permite organizar nuestras variables en un espacio dimensional más reducido.  Sin embargo, podríamos usar estos ejes y relacionarlos con variables ambientales. Vamos a usar el paquete vegan para ajustar un modelo que permita evaluar el efecto de las variables ambientales a la ordenación.
+
+
+```{r}
+data(varechem)
+data(varespec)
+vare.mds <- metaMDS(varespec, trace = FALSE)
+ef <- envfit(vare.mds, varechem, permu = 999)
+ef
+```
+
+Ahora podemos ver las variables que son significativas para explicar la ordenación de los datos.
+
+```{r}
+plot(vare.mds, display = "sites")
+plot(ef, p.max = 0.05)
+
+```
+
+Con variables categóricas podríamos hacer el mismo procedimiento pero tener una grafica de salida un poco diferente.
+
+```{r}
+ef <- envfit(ca.dune, dune.env, permutations = 999)
+ef
+
+plot(ca.dune, display = "sites", type = "p")
+with(dune.env, ordiellipse(ca.dune, Management, kind = "se", conf = 0.95, label= TRUE))
+```
+
+#Ejercicio
+
+Los datos que se presentan [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/TraitsVege.csv") corresponden a rasgos asociados a procesos de dispersión de semillas, incluyendo los potenciales grupos de dispersores. Colectamos información de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron seis rasgos de frutos; tipo, color, peso, largo, ancho y número de semillas. Para semillas se registraron tres rasgos; peso, longitud y ancho. Adicionalmente se asignó un síndrome de dispersión a cada especie.
+
+Los rasgos de frutos y semillas colectados en este trabajo, han sido asociados con la habilidad de las plantas para lidiar con el estrés. Muller-Landau (2010) sugiere que las especies con semillas pequeñas tienen una ventaja en fertilidad y dispersión, por producir más semillas y facilitar su desplazamiento a grandes distancias. Por otro lado, las semillas grandes tienen la ventaja tolerancia al estrés, porque estas proveen energía y material para el crecimiento de las plántulas. Una mayor contribución de nutrientes en semillas grandes facilita la sobrevivencia bajo ambientes más estresantes, ya sea por sombra, humedad, herbivoría o perturbaciones.
+
+En este contexto, esperamos que los ambientes menos estresantes estén dominados por especies con semillas pequeñas, pero un amplio rango de tamaños de semillas. En ambientes de mayor estrés, se espera encontrar un subconjunto de especies con semillas grandes y baja capacidad de dispersión.
+
+Para analizar el impacto del disturbio sobre la estructura de la comunidad en términos de rasgos funcionales usaremos tres variables que han mostrado ser un subrogado de perturbaciones antrópicas; (1) distancia al centro poblado más cercano, (2) peso de excretas de ganado, (3) número de árboles con DBH > 20 cm, donde un bajo número de árboles grandes implica una alta perturbación. Puede obtener los datos de [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/Parcelas.csv")
+
+Vamos a analizar por separado los rasgos cualitativos y los cuantitativos.
+
+Para analizar los efectos de la perturbación sobre los rasgos cualitativos de los frutos vamos a ajustar un PCA para cada rasgo; tipo de fruto, síndrome de dispersión y color del fruto. Utilizaremos la matriz de datos morfológicos cualitativos.
+Realizamos un modelo lineal usando el primer eje del PCA como variable de respuesta y cada una de las tres variables de perturbación como variables explicativas. Usaremos la función “rda” del paquete “vegan” para ajustar el PCA, y la función “lm” del paquete “stats” para el modelo lineal.

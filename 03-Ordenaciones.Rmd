@@ -1,0 +1,87 @@
+#Ordenaciones
+
+En ecología es bastante normal que dispongamos de datos que están conformados por un conjunto de sitios o localidades, para los cuales tenemos una serie de variables. Estas variables puede ser cada especie o cada condición que levantemos en el sitio, de esta forma, un sitio va a tener tantas variables como especies o factores ambientales se registren.
+
+En el capítulo de [similitud](https://ciespinosa.github.io/Similitud/index.html) ordenamos las parcelas en función de la cantidad de individuos de dos especies, de esta forma la distancia a la que se encontraba cada comunidad nos daba información sobre cuanto se parecían. Aunque esta es una forma fácil de __ordenar__ nuestras comunidades, esta forma de graficar es solo posible con dos o máximo tres especies, pero pocas comunidades tienen únicamente tres especies, cuando tenemos más de tres especies es necesario buscar otras formas de ordenación que nos permitan rescatar el gradiente ambiental.
+
+De esta forma, el objetivo de los métodos de ordenación es representar los datos a lo largo de un número reducido de ejes ortogonales, construidos de tal manera que representan, en orden, las principales tendencias de los datos [@Borcard2011]. 
+
+Las ordenaciones pueden ser indirectas y directas (constreñidas).  Las ordenaciones indirectas pueden ser utilizadas para interpretarse visualmente o asociadas a otros métodos, como regresión. Por su parte, las ordenaciones directas permiten hacer asociaciones con variables explicativas, generando un orden constreñido pobasado en unas variables explicativas. 
+
+##Pasos previos a la Ordenación
+
+__1. Decidir qué ordenación realizar__
+
+Dentro de las ordenaciones directas e indirectas, existen muchos tipos de ordenaciones ¿Cómo saber qué ordenación debo utilizar?  Una posibilidad es ver el tipo de respuesta de nuestros datos, si es una respuesta lineal (monotónica) o una respuesta unimodal (distribución en campana). 
+
+Una forma para determinar el tipo de respuesta de nuestros datos, es asumir una distribución normal y usar la desviación estándar como una medida del tipo de respuesta.  Si nuestros datos tienen una dispersión con menos de tres desviaciones estándar, podremos asumir que nuestros datos tendrán una respuesta lineal (Figura \@ref(fig:resp)a), mientras que si tiene más de tres desviaciones se asumirá una respuesta unimodal (Figura \@ref(fig:resp)b). 
+
+
+```{r resp, fig.cap="Definición del tipo de respuesta de la ordenación. El área sombreada en verde y los números marcan la cantidad de desviaciones y por lo tanto el tipo de respuesta esperado", echo = FALSE, fig.height=4, warning=FALSE}
+set.seed(589)
+x <- rnorm(n = 200, mean = 20,sd = 5)
+
+par(mfcol=c(1,2), mar=c(3,3,1,1))
+plot(density(x), lwd=2, main="a. Respuesta lineal")
+abline(v=mean(x), lwd=1.5)
+abline(v=c(mean(x)+sd(x), mean(x)+(sd(x)*2),
+           mean(x)-sd(x), mean(x)-(sd(x)*2)),
+           lwd=1.5, lty=2)
+polygon(c(mean(x)-(sd(x)*2), mean(x), mean(x), mean(x)-(sd(x)*2)), 
+        c(0,0,0.085,0.085), col=rgb(0,0.5,0,0.6) )
+text(x = c(12.5,17.5),y = 0.04, c("1","2") )
+
+plot(density(x), lwd=2, main="b. Respuesta unimodal")
+abline(v=mean(x), lwd=1.5)
+abline(v=c(mean(x)+sd(x), mean(x)+(sd(x)*2),
+           mean(x)-sd(x), mean(x)-(sd(x)*2)),
+           lwd=1.5, lty=2)
+polygon(c(mean(x)-(sd(x)*2), mean(x)+(sd(x)*1.3), mean(x)+(sd(x)*1.3), mean(x)-(sd(x)*2)), 
+        c(0,0,0.085,0.085), col=rgb(0,0.5,0,0.6) )
+text(x = c(12.5,17.5,22.5),y = 0.04, c("1","2","3") )
+
+```
+
+Una vez que sabemos que tipo de respuesta tiene nuestros datos podemos decidir el tipo de ordenación, puesto que para cada una de estas respuestas cabe un análisis de ordenación, más adelante propondremos los análisis de ordenación constreñida y no constreñida para cada tipo de respuesta. 
+
+La función _decorana_ del paquete __vegan__ nos permite evaluar la longitud del gradiente (cantidad de desviaciones estándar). El uso de la función _decorana_ necesitamos una matriz de datos con los casos en las filas y las especies en las columnas.
+
+```{r}
+library(vegan)
+
+#Cargamos los datos de Dune para usar como ejemplo
+data(dune)
+
+#Realizamos la ordenación
+ord.dca <- decorana(dune)
+
+#vemos el resultado de la ordenación
+ord.dca
+
+```
+
+Como vemos cuando ejecutamos el objeto de salida de la ordenación nos brinda alguna información, por ahora el que nos interesa es ver las unidades de desviación del eje 1 (DCA1). La longitud de este primer eje (axis lengths), muestra la cantidad de desviaciones, en el ejemplo de Dune, el eje DCA1 tiene una longitud de 3.7 unidades de desviación, con lo cual asumimos una respuesta unimodal.  Al conocer el tipo de respuesta ya podemos decidir el tipo de ordenación (ver  Tabla \@ref(tab:ordenacion).
+
+Algunas veces nuestros datos tienen restricciones sobre el tipo de distancias que se pueden usar para la ordenación. Por ejemplo, en los datos con muchos ceros no deberíamos utilizar una medida de distancia Euclidiana, deberíamos trabajar con distancia de Bray-Curtis (Ver ejercicio de [Similitud](https://ciespinosa.github.io/Similitud/index.html). De esta forma, es posible que el tipo de distancia que hemos decidido usar defina el tipo de ordenación. En el caso del ejemplo, deberíamos usar el Escalado Multidimensional (Multidimensional Scaling).  
+
+__2. Transformación y estandarización de los datos__
+
+Lo siguiente que debemos decidir es si es necesario transformar o estandarizar los datos (Ver ejercicio de [Similitud]( https://ciespinosa.github.io/Similitud/index.html)).  Muchos autores aconsejan que en medida de lo posible los datos no deberían ser transformados, sin embargo, si los datos son muy distintos es necesario realizar la transformación. Si revisan los datos de Dune verán que no existen diferencias importantes entre las abundancias de cada especie, por tanto, no se requiere hacer una transformación.  
+ 
+>Recuerden, para transformar los datos definimos la variación entre variables.  En variables con más de tres magnitudes de diferencia usamos logaritmo y con dos magnitudes de diferencia usamos raíz cuadrada.
+
+Aunque no es necesario transformar, vamos hacer el ejercicio para entender cómo funciona este proceso. Usaremos la función `decostand` del paquete vegan, que se puede utilizar para la estandarización y para la transformación.
+
+```{r}
+
+dsRaiz <- decostand(dune, "standardize", "hellinger") 
+#Estandarizado y transformado raíz cuadrada (hellinger)
+
+dslog <- decostand(dune, "standardize", "log") 
+#Estandarizado y transformado logaritmo (log)
+
+dsSta <- decostand(dune, "standardize")
+
+```
+
+Ahora que sabemos que tipo de ordenación debería realizar y mis datos estan listos para trabajar podemos iniciar los análisis de ordenación.
