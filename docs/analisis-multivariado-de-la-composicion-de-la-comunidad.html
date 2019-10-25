@@ -154,11 +154,8 @@ code > span.in { color: #008000; } /* Information */
 <p>Aunque la función <em>dist</em> nos permite calcular disimilitudes, para el análisis de comunidades biológicas utilizaremos la función <em>vegdist</em> del paquete <em>vegan</em>. Esta función nos permite calcular varios índices de disimilitud. El método de cálculo de la disimilitud por defecto es Bray-Curtis (<em>“bray”</em>).</p>
 <p>Una de las características importantes del método Bray-Curtis es que varía entre 0 y 1, dos comunidades que no comparten ninguna especie tendrían 1 como resultado.</p>
 <p>Calculemos una matriz de disimilitudes usando el método Bray-Curtis, utilizaremos los datos de Barro Colorado Island (BCI) cargados en el paquete <em>vegan</em>. Para eso necesitamos cargar el paquete y los datos de BCI, únicamente utilizaremos los datos de los primeros 10 sitios.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vegan)</code></pre></div>
-<pre><code>## Loading required package: permute</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## This is vegan 2.5-2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(BCI)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vegan)
+<span class="kw">data</span>(BCI)
 
 dist&lt;-<span class="st"> </span><span class="kw">vegdist</span>(BCI[<span class="dv">1</span>:<span class="dv">10</span>,], <span class="dt">method=</span><span class="st">&quot;bray&quot;</span>)
 dist[<span class="dv">1</span>:<span class="dv">10</span>]</code></pre></div>
