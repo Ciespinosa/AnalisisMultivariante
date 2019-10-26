@@ -2,7 +2,7 @@
 
 Las diferentes técnicas de ordenación, a excepción de los NMDS, se basan en la extracción de eigenvectors asociados con la matriz de datos. Los diferentes métodos de ordenación se pueden clasificar según la distancia preservada entre sitios y el tipo de variables que se usan.
 
-Los métodos de  ordenación como lo habíamos comentado intentan obtener información sobre la heterogeneidad que tienen los datos. En terminos sencillos la ordenación genera una nuve de puntos basado en todas las variables (especies) que tiene nuestra comunidad, tendríamos un espacio multidimensional. Normalmente, esa nube de puntos será más alargada en ciertas direcciones y más aplanada en otras direcciones. La dirección donde la nube de puntos es más aplanada se corresponde con la dirección de mayor variabilidad de nuestros datos, donde el gradiente es más claro. Este es el primer eje de ordenación que se deberá extraer. A partir de aquí se buscarán otras direcciones que vayan en forma decreciente la cantidad de variación explicada (menos alargada). Cada eje extraído es ortogonal a los otros ejes, eso quiere decir que son linearmente independientes y no correlacionados.
+Los métodos de  ordenación como lo habíamos comentado intentan obtener información sobre la heterogeneidad que tienen los datos. En términos sencillos la ordenación genera una nube de puntos basado en todas las variables (especies) que tiene nuestra comunidad, tendríamos un espacio multidimensional. Normalmente, esa nube de puntos será más alargada en ciertas direcciones y más aplanada en otras direcciones. La dirección donde la nube de puntos es más aplanada se corresponde con la dirección de mayor variabilidad de nuestros datos, donde el gradiente es más claro. Este es el primer eje de ordenación que se deberá extraer. A partir de aquí se buscarán otras direcciones que vayan en forma decreciente la cantidad de variación explicada (menos alargada). Cada eje extraído es ortogonal a los otros ejes, eso quiere decir que son linearmente independientes y no correlacionados.
 
 Cuando en los datos hay estructuras claras (gradientes o grupos) y el método ha sido eficiente para extraerlas, entonces los primeros ejes contienen la mayor parte de la información útil, es decir, han extraído la mayor parte de la varianza de los datos. En ese caso, las distancias entre sitios en la proyección en un espacio reducido (con mayor frecuencia bidimensional) son relativamente similares a las distancias entre objetos en el espacio multidimensional.
 
@@ -21,9 +21,9 @@ knitr::kable(
 
 __*1. Principal Component Analysis (PCA)*__
 
-Esta técnica de ordenación es sencilla de interpretar, las distancias entre las muestras son interpretadas directamente como distancias euclidianas. Este método de ordenación es ampliamente usado con datos ambientales, donde el valor de cero es informativo, aunque se puede usar en datos biológicos previo una transformación. El PCA al usar distancias euclideanas es fuertemente afectado por ceros, y detecta relaciones lineares de los datos.
+Esta técnica de ordenación es sencilla de interpretar, las distancias entre las muestras son interpretadas directamente como distancias euclidianas. Este método de ordenación es ampliamente usado con datos ambientales, donde el valor de cero es informativo, aunque se puede usar en datos biológicos previo una transformación. El PCA al usar distancias euclidianas es fuertemente afectado por ceros, y detecta relaciones lineares de los datos.
 
-Además de las limitantes de los dobles ceros, otro inconveniete que puede tener esta ordenación, es que la proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.
+Además de las limitantes de los dobles ceros, otro inconveniente que puede tener esta ordenación, es que la proyección de las distancias euclidias en un plano puede distorsionar algunas distancias en otros planos.
 
 Los gráficos de dispersión de la ordenación PCA, los objetos (las comunidades) se representan como puntos y las variables se muestran como flechas.
 
@@ -57,18 +57,18 @@ pca.summ$species
 
 ```
 
-La puntuación de las especies nos muestra como se asocia el primer componente a esa variable y el peso de esa variable. De esta forma, en el ejemplo, en el primer componente las variables Assault, Murder y Rape son aproximadamente iguales entre ellas y bastante superiores al asignado a UrbanPoP y tienen una asociación negativa. En el caso del componente dos UrbanPop tiene un peso más importante en ese eje y su realación es negativa. Cuando usamos _vegan_ para ajustar una ordenación las variables siempre serán mostradas como especies.
+La puntuación de las especies nos muestra cómo se asocia el primer componente a esa variable y el peso de esa variable. De esta forma, en el ejemplo, en el primer componente las variables Assault, Murder y Rape son aproximadamente iguales entre ellas y bastante superiores al asignado a UrbanPoP y tienen una asociación negativa. En el caso del componente dos UrbanPop tiene un peso más importante en ese eje y su relación es negativa. Cuando usamos _vegan_ para ajustar una ordenación las variables siempre serán mostradas como especies.
 
 ```{r}
 #Sitios
-#Usamos la función head para que se despligue únicamente los 6 primeros sitios
+#Usamos la función head para que se despliegue únicamente los 6 primeros sitios
 head(pca.summ$sites)
 
 ```
 
-Sitios se refiere al valor que recibe cada uno de los sitios (observaciones)en cada uno de los componentes, en un grafico de doble entrada serían las coordenadas. 
+Sitios se refiere al valor que recibe cada uno de los sitios (observaciones) en cada uno de los componentes, en un gráfico de doble entrada serían las coordenadas. 
 
-Finalmente, cuando queremos mostrar nuestra ordenación en un biplot o gráfico de dispersión, la forma en que se muestran los resultados pueden estar definidos de dos formas distintas. Scaling 1 es usado normalmente cuando nos interesa ver las diferencias entre los sitios. Mientras que scaling 2 es usado si lo que nos interesa es evaluar la relación entre las variables.  Veamos la diferencia en la representación gráfica.
+Finalmente, cuando queremos mostrar nuestra ordenación en un biplot o gráfico de dispersión, la forma en que se muestran los resultados puede estar definidos de dos formas distintas. Scaling 1 es usado normalmente cuando nos interesa ver las diferencias entre los sitios. Mientras que scaling 2 es usado si lo que nos interesa es evaluar la relación entre las variables.  Veamos la diferencia en la representación gráfica.
 
 ```{r, warning=FALSE}
 par(mfcol=c(1,2))
@@ -80,9 +80,9 @@ biplot(pca.Arr, scaling=2, main = "Scaling 2")
 
 __*2. Principal Coordinates Análisis (PCoA)*__ 
 
-PCoA, conocido tambien como scalado métrico multidimensional (MDS) es conceptualmente similar a PCA y análisis de correspondencia (CA) que preservan distancias Eudlicean y chi-cuadrado entre objetos, respectivamente, la diferencia con estos métodos de ordenación es que el PCoA puede preservar las distancias generadas a partir de cualquier medida de  similitud o disimilitud permitiendo un manejo más flexible de datos ecológicos complejos. PCA se usa comúnmente para similitudes y PCoA para diferencias.
+PCoA, conocido también como escalado métrico multidimensional (MDS) es conceptualmente similar a PCA y análisis de correspondencia (CA) que preservan distancias Eudlicean y chi-cuadrado entre objetos, respectivamente, la diferencia con estos métodos de ordenación es que el PCoA puede preservar las distancias generadas a partir de cualquier medida de  similitud o disimilitud permitiendo un manejo más flexible de datos ecológicos complejos. PCA se usa comúnmente para similitudes y PCoA para diferencias.
 
-Una ventaja importante es que el PCoA metrime manejar matrices de disimilitud calculadas a partir de variables cuantitativas, semicuantitativas, cualitativas y mixtas. En este caso la elección de la medida de similitud o disimilitud es crítica y debe ser adecuada para los datos con los que se esta trabajando. 
+Una ventaja importante es que el PCoA permite manejar matrices de disimilitud calculadas a partir de variables cuantitativas, semicuantitativas, cualitativas y mixtas. En este caso la elección de la medida de similitud o disimilitud es crítica y debe ser adecuada para los datos con los que se está trabajando. 
 
 Aunque, este método presenta varias ventajas hay que recordad que el PCoA representa en el plano los componentes euclidianos de la matriz, incluso si la matriz contiene distancias no euclidianas. 
 
@@ -170,7 +170,7 @@ plot(dca.dune)
 ```
 __*5. Nonmetric Multidimensional Scaling (NMDS)*__
 
-Una de las principales característias de este método es que permite ajustar la ordenación con cualquier método de distancias. De esta forma se pueden usar distancias que sean biológicamente relevantes. Un problema de este método es que la ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Esto significa que si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3, sin embargo, esa diferencias entre distancias no necesariamente tendra la dimensión exacta.	Por eso la representación gráfica del nMDS sufre menos distorsiones respecto a las distancias reales.
+Una de las principales características de este método es que permite ajustar la ordenación con cualquier método de distancias. De esta forma se pueden usar distancias que sean biológicamente relevantes. Un problema de este método es que la ordenación de las muestras utiliza el orden relativo de las distancias entre muestras y no los valores absolutos de los coeficientes de similitud. Esto significa que si la muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más cercana a la muestra 2 que a la 3, sin embargo, esa diferencias entre distancias no necesariamente tendrá la dimensión exacta. Por eso la representación gráfica del nMDS sufre menos distorsiones respecto a las distancias reales.
 
 
 ```{r, message=FALSE, cache.comments=FALSE,results='hide'}
@@ -178,7 +178,7 @@ nmds.dune <- metaMDS(dune,distance="bray", k=2, trymax=50)
 nmds.dune 
 ```
 
-A diferencia de los otros metodos que hemos visto hasta aquí el NMDS, el stress es el que nos muestra que tan efectiva ha sido la ordenación. El valor de estrés (stress) nos indica la cantidad de varianza que  __NO__ se ajustó, mientras más bajo es el estrés mayor varianza explica. Una regla general, aunque discutida, es que las ordenaciones con estrés >0.05 proporciona una representación _excelente_ en las dimensiones reducidas, >0.1 es _muy bueno_, >0.2 es _bueno_ con valores de estrés >0.3 se dice que la ordenación proporciona una pobre representación de la variación de los datos. En nuestro ejemplo el estres podría considerarse muy bueno.
+A diferencia de los otros métodos que hemos visto hasta aquí el NMDS, el stress es el que nos muestra que tan efectiva ha sido la ordenación. El valor de estrés (stress) nos indica la cantidad de varianza que  __NO__ se ajustó, mientras más bajo es el estrés mayor varianza explica. Una regla general, aunque discutida, es que las ordenaciones con estrés >0.05 proporciona una representación _excelente_ en las dimensiones reducidas, >0.1 es _muy bueno_, >0.2 es _bueno_ con valores de estrés >0.3 se dice que la ordenación proporciona una pobre representación de la variación de los datos. En nuestro ejemplo el estrés podría considerarse muy bueno.
 
 ```{r}
 #graficamos la ordenación
@@ -220,7 +220,7 @@ plot(ef, p.max = 0.05)
 
 ```
 
-Con variables categóricas podríamos hacer el mismo procedimiento pero tener una grafica de salida un poco diferente.
+Con variables categóricas podríamos hacer el mismo procedimiento pero tener una gráfica de salida un poco diferente.
 
 ```{r}
 ef <- envfit(ca.dune, dune.env, permutations = 999)
@@ -232,13 +232,13 @@ with(dune.env, ordiellipse(ca.dune, Management, kind = "se", conf = 0.95, label=
 
 ###Ejercicio
 
-Los datos que se presentan [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/TraitsVege.csv") corresponden a rasgos asociados a procesos de dispersión de semillas, incluyendo los potenciales grupos de dispersores. Colectamos información de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron seis rasgos de frutos; tipo, color, peso, largo, ancho y número de semillas. Para semillas se registraron tres rasgos; peso, longitud y ancho. Adicionalmente se asignó un síndrome de dispersión a cada especie.
+Los datos que se presentan [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/blob/gh-pages/TraitsVege.csv") corresponden a rasgos asociados a procesos de dispersión de semillas, incluyendo los potenciales grupos de dispersores. Colectamos información de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron seis rasgos de frutos; tipo, color, peso, largo, ancho y número de semillas. Para semillas se registraron tres rasgos; peso, longitud y ancho. Adicionalmente se asignó un síndrome de dispersión a cada especie.
 
-Los rasgos de frutos y semillas colectados en este trabajo, han sido asociados con la habilidad de las plantas para lidiar con el estrés. Muller-Landau (2010) sugiere que las especies con semillas pequeñas tienen una ventaja en fertilidad y dispersión, por producir más semillas y facilitar su desplazamiento a grandes distancias. Por otro lado, las semillas grandes tienen la ventaja tolerancia al estrés, porque estas proveen energía y material para el crecimiento de las plántulas. Una mayor contribución de nutrientes en semillas grandes facilita la sobrevivencia bajo ambientes más estresantes, ya sea por sombra, humedad, herbivoría o perturbaciones.
+Los rasgos de frutos y semillas colectados en este trabajo, han sido asociados con la habilidad de las plantas para lidiar con el estrés. Muller-Landau (2010) sugiere que las especies con semillas pequeñas tienen una ventaja en fertilidad y dispersión, por producir más semillas y facilitar su desplazamiento a grandes distancias. Por otro lado, las semillas grandes tienen la ventaja de la tolerancia al estrés, porque estas proveen energía y material para el crecimiento de las plántulas. Una mayor contribución de nutrientes en semillas grandes facilita la sobrevivencia bajo ambientes más estresantes, ya sea por sombra, humedad, herbivoría o perturbaciones.
 
 En este contexto, esperamos que los ambientes menos estresantes estén dominados por especies con semillas pequeñas, pero un amplio rango de tamaños de semillas. En ambientes de mayor estrés, se espera encontrar un subconjunto de especies con semillas grandes y baja capacidad de dispersión.
 
-Para analizar el impacto del disturbio sobre la estructura de la comunidad en términos de rasgos funcionales usaremos tres variables que han mostrado ser un subrogado de perturbaciones antrópicas; (1) distancia al centro poblado más cercano, (2) peso de excretas de ganado, (3) número de árboles con DBH > 20 cm, donde un bajo número de árboles grandes implica una alta perturbación. Puede obtener los datos de [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/Parcelas.csv")
+Para analizar el impacto del disturbio sobre la estructura de la comunidad en términos de rasgos funcionales usaremos tres variables que han mostrado ser un subrogado de perturbaciones antrópicas; (1) distancia al centro poblado más cercano, (2) peso de excretas de ganado, (3) número de árboles con DBH > 20 cm, donde un bajo número de árboles grandes implica una alta perturbación. Puede obtener los datos de [aquí]("https://github.com/Ciespinosa/AnalisisMultivariante/blob/gh-pages/Parcelas.csv")
 
 Vamos a analizar por separado los rasgos cualitativos y los cuantitativos.
 

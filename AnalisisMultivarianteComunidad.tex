@@ -1014,8 +1014,8 @@ diferentes métodos de ordenación se pueden clasificar según la distancia
 preservada entre sitios y el tipo de variables que se usan.
 
 Los métodos de ordenación como lo habíamos comentado intentan obtener
-información sobre la heterogeneidad que tienen los datos. En terminos
-sencillos la ordenación genera una nuve de puntos basado en todas las
+información sobre la heterogeneidad que tienen los datos. En términos
+sencillos la ordenación genera una nube de puntos basado en todas las
 variables (especies) que tiene nuestra comunidad, tendríamos un espacio
 multidimensional. Normalmente, esa nube de puntos será más alargada en
 ciertas direcciones y más aplanada en otras direcciones. La dirección
@@ -1067,10 +1067,10 @@ entre las muestras son interpretadas directamente como distancias
 euclidianas. Este método de ordenación es ampliamente usado con datos
 ambientales, donde el valor de cero es informativo, aunque se puede usar
 en datos biológicos previo una transformación. El PCA al usar distancias
-euclideanas es fuertemente afectado por ceros, y detecta relaciones
+euclidianas es fuertemente afectado por ceros, y detecta relaciones
 lineares de los datos.
 
-Además de las limitantes de los dobles ceros, otro inconveniete que
+Además de las limitantes de los dobles ceros, otro inconveniente que
 puede tener esta ordenación, es que la proyección de las distancias
 euclidias en un plano puede distorsionar algunas distancias en otros
 planos.
@@ -1151,19 +1151,19 @@ estos dos componentes explican el 86\% de la variación de los datos.
 ## Rape     -1.6011289 -0.3114185  0.9135612  0.06935934
 \end{verbatim}
 
-La puntuación de las especies nos muestra como se asocia el primer
+La puntuación de las especies nos muestra cómo se asocia el primer
 componente a esa variable y el peso de esa variable. De esta forma, en
 el ejemplo, en el primer componente las variables Assault, Murder y Rape
 son aproximadamente iguales entre ellas y bastante superiores al
 asignado a UrbanPoP y tienen una asociación negativa. En el caso del
 componente dos UrbanPop tiene un peso más importante en ese eje y su
-realación es negativa. Cuando usamos \emph{vegan} para ajustar una
+relación es negativa. Cuando usamos \emph{vegan} para ajustar una
 ordenación las variables siempre serán mostradas como especies.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Sitios}
-\CommentTok{#Usamos la función head para que se despligue únicamente los 6 primeros sitios}
+\CommentTok{#Usamos la función head para que se despliegue únicamente los 6 primeros sitios}
 \KeywordTok{head}\NormalTok{(pca.summ$sites)}
 \end{Highlighting}
 \end{Shaded}
@@ -1179,11 +1179,11 @@ ordenación las variables siempre serán mostradas como especies.
 \end{verbatim}
 
 Sitios se refiere al valor que recibe cada uno de los sitios
-(observaciones)en cada uno de los componentes, en un grafico de doble
+(observaciones) en cada uno de los componentes, en un gráfico de doble
 entrada serían las coordenadas.
 
 Finalmente, cuando queremos mostrar nuestra ordenación en un biplot o
-gráfico de dispersión, la forma en que se muestran los resultados pueden
+gráfico de dispersión, la forma en que se muestran los resultados puede
 estar definidos de dos formas distintas. Scaling 1 es usado normalmente
 cuando nos interesa ver las diferencias entre los sitios. Mientras que
 scaling 2 es usado si lo que nos interesa es evaluar la relación entre
@@ -1202,7 +1202,7 @@ las variables. Veamos la diferencia en la representación gráfica.
 
 \textbf{\emph{2. Principal Coordinates Análisis (PCoA)}}
 
-PCoA, conocido tambien como scalado métrico multidimensional (MDS) es
+PCoA, conocido también como escalado métrico multidimensional (MDS) es
 conceptualmente similar a PCA y análisis de correspondencia (CA) que
 preservan distancias Eudlicean y chi-cuadrado entre objetos,
 respectivamente, la diferencia con estos métodos de ordenación es que el
@@ -1211,11 +1211,11 @@ medida de similitud o disimilitud permitiendo un manejo más flexible de
 datos ecológicos complejos. PCA se usa comúnmente para similitudes y
 PCoA para diferencias.
 
-Una ventaja importante es que el PCoA metrime manejar matrices de
+Una ventaja importante es que el PCoA permite manejar matrices de
 disimilitud calculadas a partir de variables cuantitativas,
 semicuantitativas, cualitativas y mixtas. En este caso la elección de la
 medida de similitud o disimilitud es crítica y debe ser adecuada para
-los datos con los que se esta trabajando.
+los datos con los que se está trabajando.
 
 Aunque, este método presenta varias ventajas hay que recordad que el
 PCoA representa en el plano los componentes euclidianos de la matriz,
@@ -1421,7 +1421,7 @@ ajustar un CA usamos la función \emph{dca}
 \includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/unnamed-chunk-17-1.pdf}
 \textbf{\emph{5. Nonmetric Multidimensional Scaling (NMDS)}}
 
-Una de las principales característias de este método es que permite
+Una de las principales características de este método es que permite
 ajustar la ordenación con cualquier método de distancias. De esta forma
 se pueden usar distancias que sean biológicamente relevantes. Un
 problema de este método es que la ordenación de las muestras utiliza el
@@ -1429,7 +1429,7 @@ orden relativo de las distancias entre muestras y no los valores
 absolutos de los coeficientes de similitud. Esto significa que si la
 muestra 1 es más parecida a la 2 que a la 3 entonces se localizará más
 cercana a la muestra 2 que a la 3, sin embargo, esa diferencias entre
-distancias no necesariamente tendra la dimensión exacta. Por eso la
+distancias no necesariamente tendrá la dimensión exacta. Por eso la
 representación gráfica del nMDS sufre menos distorsiones respecto a las
 distancias reales.
 
@@ -1440,7 +1440,7 @@ distancias reales.
 \end{Highlighting}
 \end{Shaded}
 
-A diferencia de los otros metodos que hemos visto hasta aquí el NMDS, el
+A diferencia de los otros métodos que hemos visto hasta aquí el NMDS, el
 stress es el que nos muestra que tan efectiva ha sido la ordenación. El
 valor de estrés (stress) nos indica la cantidad de varianza que
 \textbf{NO} se ajustó, mientras más bajo es el estrés mayor varianza
@@ -1450,7 +1450,7 @@ con estrés \textgreater{}0.05 proporciona una representación
 \emph{muy bueno}, \textgreater{}0.2 es \emph{bueno} con valores de
 estrés \textgreater{}0.3 se dice que la ordenación proporciona una pobre
 representación de la variación de los datos. En nuestro ejemplo el
-estres podría considerarse muy bueno.
+estrés podría considerarse muy bueno.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1546,7 +1546,7 @@ ordenación de los datos.
 \includegraphics{AnalisisMultivarianteComunidad_files/figure-latex/unnamed-chunk-21-1.pdf}
 
 Con variables categóricas podríamos hacer el mismo procedimiento pero
-tener una grafica de salida un poco diferente.
+tener una gráfica de salida un poco diferente.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1611,7 +1611,7 @@ tener una grafica de salida un poco diferente.
 \subsection{Ejercicio}\label{ejercicio}
 
 Los datos que se presentan
-\href{\%22https://github.com/Ciespinosa/AnalisisMultivariante/TraitsVege.csv\%22}{aquí}
+\href{\%22https://github.com/Ciespinosa/AnalisisMultivariante/blob/gh-pages/TraitsVege.csv\%22}{aquí}
 corresponden a rasgos asociados a procesos de dispersión de semillas,
 incluyendo los potenciales grupos de dispersores. Colectamos información
 de 10 rasgos de frutos y semillas de 71 especies leñosas. Se registraron
@@ -1625,9 +1625,9 @@ asociados con la habilidad de las plantas para lidiar con el estrés.
 Muller-Landau (2010) sugiere que las especies con semillas pequeñas
 tienen una ventaja en fertilidad y dispersión, por producir más semillas
 y facilitar su desplazamiento a grandes distancias. Por otro lado, las
-semillas grandes tienen la ventaja tolerancia al estrés, porque estas
-proveen energía y material para el crecimiento de las plántulas. Una
-mayor contribución de nutrientes en semillas grandes facilita la
+semillas grandes tienen la ventaja de la tolerancia al estrés, porque
+estas proveen energía y material para el crecimiento de las plántulas.
+Una mayor contribución de nutrientes en semillas grandes facilita la
 sobrevivencia bajo ambientes más estresantes, ya sea por sombra,
 humedad, herbivoría o perturbaciones.
 
@@ -1644,7 +1644,7 @@ distancia al centro poblado más cercano, (2) peso de excretas de ganado,
 (3) número de árboles con DBH \textgreater{} 20 cm, donde un bajo número
 de árboles grandes implica una alta perturbación. Puede obtener los
 datos de
-\href{\%22https://github.com/Ciespinosa/AnalisisMultivariante/Parcelas.csv\%22}{aquí}
+\href{\%22https://github.com/Ciespinosa/AnalisisMultivariante/blob/gh-pages/Parcelas.csv\%22}{aquí}
 
 Vamos a analizar por separado los rasgos cualitativos y los
 cuantitativos.
